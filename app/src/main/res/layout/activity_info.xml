@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/gradient_background">
+
+
+    <LinearLayout
+        android:id="@+id/lin_info"
+        android:layout_width="match_parent"
+        android:layout_height="637dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/infoText"
+            android:layout_centerInParent="true"
+            android:text="INFO"
+            android:fontFamily="@font/kdwilliam"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="70dp"
+            android:textAlignment="center">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/infoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kazakov Nikolay Andreevich - creator of the app. "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30dp">
+        </TextView>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:text="To use app, add a pet then press home point and after that you can see your pet on a map">
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dog_trumpet"
+            android:layout_gravity="center"
+            android:layout_marginTop="130dp">
+        </ImageView>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lin_info"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/btn_sign_in"
+        android:text="Back">
+
+    </androidx.appcompat.widget.AppCompatButton>
+</RelativeLayout>

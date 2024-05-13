@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editTextSpecies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter species"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/editTextAge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter age"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/editTextPetName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter pet name"
+        android:inputType="text"/>
+
+</LinearLayout>

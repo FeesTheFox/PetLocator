@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PetLocator</string>
+
+    <string name="app_in_name">Pet Locator</string>
+    <string name="app_name_after">Join Us!</string>
+    <string name="text_bottom">Sign In</string>
+    <string name="btn_SignIn">Sign In</string>
+    <string name="btn_Register">Register</string>
+
+
+</resources>
+

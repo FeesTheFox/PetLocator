@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "259767324638",
+    "project_id": "petlocator-d7771",
+    "storage_bucket": "petlocator-d7771.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259767324638:android:e0db49361724d0e02d174f",
+        "android_client_info": {
+          "package_name": "com.example.petlocator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFeGObKeathEb2Euy8_HbZ2iBCqhk5LXQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

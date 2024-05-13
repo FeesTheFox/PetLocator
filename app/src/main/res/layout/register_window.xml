@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardElevation="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/emailField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/passField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/nameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/phoneField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone"
+            android:inputType="phone"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/User"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User">
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/Admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin">
+            </RadioButton>
+        </RadioGroup>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
