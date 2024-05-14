@@ -6,15 +6,14 @@ import android.os.Parcelable;
 import com.google.firebase.database.Exclude;
 
 public class Pet {
-    String species, age, owner, petname, petId;
+    String species, age, petname, petId;
     private double latitude, longitude;
     public Pet(){}
-    public Pet(String species, String age, String owner, String petname, String petId, double latitude, double longitude){
+    public Pet(String species, String age, String petname, String petId, double latitude, double longitude){
         this.age = age;
         this.species = species;
-        this.owner = owner;
         this.petname = petname;
-        this.petId = "PET" + System.currentTimeMillis(); //calling a method for an unique Id
+        this.petId = "PET" + System.currentTimeMillis(); //calling a method for a unique Id
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -22,8 +21,6 @@ public class Pet {
     public String getAge() {return age;}
     public void setAge(String age) {this.age = age;}
 
-    public String getOwner() {return owner;}
-    public void setOwner(String owner) {this.owner = owner;}
 
     public String getSpecies() {return species;}
     public void setSpecies(String species) {this.species = species;}

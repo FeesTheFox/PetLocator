@@ -93,15 +93,10 @@ public class UserActivity extends AppCompatActivity {
             });
         }
 
-        //when button Back is pressed (Gets dog into json)
+        //when button back is pressed
         binding.gone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(UserActivity.this, MapActivity.class);
-//                Gson gson = new Gson();
-//                String json = gson.toJson(dogsList);
-//                intent.putExtra("DogsList", json);
-//                startActivity(intent);
                 finish();
             }
         });
