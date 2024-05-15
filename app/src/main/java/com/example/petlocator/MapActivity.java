@@ -64,7 +64,7 @@ public class MapActivity extends AppCompatActivity {
     private Runnable runnable;
 
     private boolean isNewMarkerAdded = false;
-    private static final double MAX_DISTANCE = 50;
+    private static final double MAX_DISTANCE = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

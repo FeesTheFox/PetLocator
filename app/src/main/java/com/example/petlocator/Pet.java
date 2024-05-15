@@ -8,14 +8,16 @@ import com.google.firebase.database.Exclude;
 public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
+    private int imageResource;
     public Pet(){}
-    public Pet(String species, String age, String petname, String petId, double latitude, double longitude){
+    public Pet(String species, String age, String petname, String petId, double latitude, double longitude, int imageResource){
         this.age = age;
         this.species = species;
         this.petname = petname;
         this.petId = "PET" + System.currentTimeMillis(); //calling a method for a unique Id
         this.latitude = latitude;
         this.longitude = longitude;
+        this.imageResource = imageResource;
     }
 
     public String getAge() {return age;}
@@ -43,5 +45,7 @@ public class Pet {
 
     public void setLongitude(double longitude) {this.longitude = longitude;}
 
+    public int getImageResource() {return imageResource;}
 
+    public void setImageResource(int imageResource) {this.imageResource = imageResource;}
 }

@@ -1,11 +1,17 @@
 package com.example.petlocator;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.content.res.AppCompatResources;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +37,14 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView speciesTextView = convertView.findViewById(R.id.speciesTextView);
         TextView ageTextView = convertView.findViewById(R.id.ageTextView);
         TextView nameTextView = convertView.findViewById(R.id.nameTextView);
+        ImageView imageView = convertView.findViewById(R.id.pet_image);
 
         speciesTextView.setText(currentPet.getSpecies());
         ageTextView.setText(currentPet.getAge());
         nameTextView.setText(currentPet.getpetName());
 
+        Drawable drawable = AppCompatResources.getDrawable(mContext, R.drawable.img);
+        imageView.setImageDrawable(drawable);
         return convertView;
     }
 }
