@@ -120,7 +120,7 @@ public class UserActivity extends AppCompatActivity {
         //gets a path for User -> pets
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserUid).child("pets");
 
-        // Deletes pet from both Database and list
+        // Deletes pet from both Database and list while pressed on the item list
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -159,7 +159,71 @@ public class UserActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        // When clicked once on the item list
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showEditDogDialog(position);
+            }
+        });
+
     }
+
+    // Editing the pet data
+    private void showEditDogDialog(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.add_dog_window, null);
+        builder.setView(dialogView);
+
+        final EditText species = dialogView.findViewById(R.id.editTextSpecies);
+        final EditText age = dialogView.findViewById(R.id.editTextAge);
+        final EditText name = dialogView.findViewById(R.id.editTextPetName);
+
+        // Заполните поля диалогового окна текущими данными питомца
+        Pet pet = dogsList.get(position);
+        species.setText(pet.getSpecies());
+        age.setText(pet.getAge());
+        name.setText(pet.getpetName());
+
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Обновите данные питомца в списке и в базе данных
+                Pet updatedPet = new Pet();
+                updatedPet.setPetId(pet.getPetId());
+                updatedPet.setSpecies(species.getText().toString());
+                updatedPet.setAge(age.getText().toString());
+                updatedPet.setpetName(name.getText().toString());
+
+                updatePetInDatabase(updatedPet);
+                dogsList.set(position, updatedPet);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setTitle("Edit pet");
+        builder.show();
+    }
+
+    // Updates the pet in the database
+    private void updatePetInDatabase(Pet pet) {
+        String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference currentUserPetsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserUid).child("pets");
+
+        currentUserPetsRef.child(pet.getPetId()).setValue(pet);
+    }
+
+
 
     //Dialog of adding pet
     private void showAddDogDialog() {
