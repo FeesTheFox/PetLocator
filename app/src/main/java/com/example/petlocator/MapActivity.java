@@ -345,7 +345,7 @@ public class MapActivity extends AppCompatActivity {
                             markerOptions.icon(markerIcon);
 
                             Marker petMarker = mMap.addMarker(markerOptions);
-                            petMarkers.add(petMarker); // добавил питомца в список petMarkers
+                            petMarkers.add(petMarker);
 
                             // Set the pet's name as the marker's title
                             petMarker.setTitle(pet.getpetName());
