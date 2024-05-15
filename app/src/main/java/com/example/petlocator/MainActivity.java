@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                                             intent.putExtra("Role", user.getRole());
                                             startActivity(intent);
                                         }
-                                        if (user.getRole().equals("Admin")){
+                                        if (user.getRole().equals("Super User")){
                                             Intent intent = new Intent(MainActivity.this, MapActivity2.class);
                                             intent.putExtra("Email", user.getEmail());
                                             intent.putExtra("Name", user.getName());
