@@ -3,9 +3,13 @@ package com.example.petlocator;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,9 +25,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.Manifest;
 
 import com.example.petlocator.databinding.ActivityMap2Binding;
 import com.example.petlocator.databinding.ActivityMapBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +42,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +71,7 @@ public class MapActivity2 extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private SwitchCompat musicSwitch;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     ActivityMap2Binding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,10 +141,17 @@ public class MapActivity2 extends AppCompatActivity {
                 public void onMapReady(GoogleMap googleMap) {
                     mMap = googleMap;
 
+                    requestLocationPermission();
+                    getDeviceLocation();
+
                     // Add a listener for map clicks
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                         @Override
                         public void onMapClick(LatLng latLng) {
+                            if (!isNewMarkerAdded) {
+                                return;
+                            }
+
                             // Remove previous user marker
                             if (userMarker != null) {
                                 userMarker.remove();
@@ -312,6 +330,10 @@ public class MapActivity2 extends AppCompatActivity {
         // Create a reference to the current user's node in the database
         DatabaseReference currentUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserUid);
 
+        // Initialize pets list
+        pets = new ArrayList<>();
+        petMarkers = new ArrayList<>();
+
         currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot userDataSnapshot) {
@@ -323,10 +345,28 @@ public class MapActivity2 extends AppCompatActivity {
                         for (DataSnapshot petSnapshot : petsSnapshot.getChildren()) {
                             Pet pet = petSnapshot.getValue(Pet.class);
                             pets.add(pet);
+
+                            // Add marker for pet
+                            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(pet.getLatitude(), pet.getLongitude()));
+
+                            // Create a custom marker icon with pet's name
+                            BitmapDescriptor markerIcon = createMarkerIcon(pet.getpetName());
+                            markerOptions.icon(markerIcon);
+
+                            Marker petMarker = mMap.addMarker(markerOptions);
+                            petMarkers.add(petMarker); // добавил питомца в список petMarkers
+
+                            // Set the pet's name as the marker's title
+                            petMarker.setTitle(pet.getpetName());
                         }
                     }
 
                     Log.d("Doggies", "Pets of user: " + pets.toString());
+
+                    // Add markers for pets around user marker
+                    if (userMarker != null) {
+                        addPetsAroundUserMarker(userMarker.getPosition());
+                    }
                 } else {
                     Log.d("UserActivity", "User data not found");
                 }
@@ -338,5 +378,86 @@ public class MapActivity2 extends AppCompatActivity {
             }
         });
     }
+
+    //Geo location
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        } else {
+            enableMyLocation();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                enableMyLocation();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void getDeviceLocation() {
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                Location location = task.getResult();
+                if (location != null) {
+                    Log.d("MapActivity", "Current location: " + location.getLatitude() + ", " + location.getLongitude());
+
+                    LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    // Remove previous user marker
+                    if (userMarker != null) {
+                        userMarker.remove();
+                    }
+
+                    // Add new user marker
+                    MarkerOptions markerOptions = new MarkerOptions().position(currentLocation);
+                    userMarker = mMap.addMarker(markerOptions);
+
+                    // Remove previous pet markers
+                    for (Marker marker : petMarkers) {
+                        marker.remove();
+                    }
+                    petMarkers.clear();
+
+                    // Add markers for pets around user marker only if pets list is not empty
+                    if (!pets.isEmpty()) {
+                        addPetsAroundUserMarker(currentLocation);
+                    }
+
+                    // Start moving pets
+                    startMovingPets();
+
+                    isNewMarkerAdded = true; // устанавливаем флаг добавления нового маркера
+
+                    // Move camera to current location
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
+                }
+            }
+        });
+    }
+
 
 }

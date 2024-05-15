@@ -5,11 +5,15 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.w3c.dom.Text;
 
@@ -43,8 +47,14 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         ageTextView.setText(currentPet.getAge());
         nameTextView.setText(currentPet.getpetName());
 
+        //Vector resource image
         Drawable drawable = AppCompatResources.getDrawable(mContext, R.drawable.img);
         imageView.setImageDrawable(drawable);
+
         return convertView;
     }
+
 }
+
+
+
