@@ -4,16 +4,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -31,6 +36,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +61,55 @@ public class MainActivity extends AppCompatActivity {
 
         //creating instance for logo
         ImageView imageView = findViewById(R.id.logo);
+
+        //finding an 8 images for an animation
+        ImageView[] imageViews = new ImageView[8];
+        imageViews[0] = findViewById(R.id.image1);
+        imageViews[1] = findViewById(R.id.image2);
+        imageViews[2] = findViewById(R.id.image3);
+        imageViews[3] = findViewById(R.id.image4);
+        imageViews[4] = findViewById(R.id.image5);
+        imageViews[5] = findViewById(R.id.image6);
+        imageViews[6] = findViewById(R.id.image7);
+        imageViews[7] = findViewById(R.id.image8);
+
+        //getting the display metrics
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+        int screenHeight = displayMetrics.heightPixels;
+
+        //getting the center coords
+        int centerX = screenWidth / 2 - 120;
+        int centerY = screenHeight / 2 + 40;
+
+        //calculating the circle radius
+        int radius = Math.min(centerX, centerY);
+
+        //creating ValueAnimator
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+        animator.setDuration(1000); //Length of animation (in millisecs)
+        animator.setInterpolator(new LinearInterpolator()); //Interpolar type
+        animator.setRepeatCount(ValueAnimator.INFINITE); //on infinite loop
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float progress = animation.getAnimatedFraction();
+                for (int i = 0; i < imageViews.length; i++) {
+                    // Calculating angle for each ImageView
+                    float angle = (float) (2 * Math.PI * (i + progress) / imageViews.length);
+                    // Calculating coords for each ImageView
+                    int x = (int) (centerX + radius * Math.cos(angle));
+                    int y = (int) (centerY + radius * Math.sin(angle));
+                    // Installing the coords for each ImageView
+                    imageViews[i].setX(x);
+                    imageViews[i].setY(y);
+                }
+            }
+        });
+
+        animator.start();
 
         //creating animation based on xml file
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.up_down);
@@ -264,4 +321,5 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+
 }

@@ -87,14 +87,6 @@ public class MapActivity extends AppCompatActivity {
 
         createMapView(); //initializes map
 
-
-        binding.update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPetsData();
-            }
-        });
-
         binding.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

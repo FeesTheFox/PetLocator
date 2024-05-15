@@ -10,35 +10,102 @@
     android:background="@color/orange">
 
 
-    <LinearLayout
-        android:id="@+id/header"
+    <FrameLayout
+        android:id="@+id/imageContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image4"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image5"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image6"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image7"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+        <ImageView
+            android:id="@+id/image8"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/bark" />
+
+    </FrameLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/headerCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="vertical">
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/light_yellow">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_in_name"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:fontFamily="@font/kdwilliam"
-            android:textSize="50sp" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:layout_width="101dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/kdwilliam"
-            android:text="@string/app_name_after"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="25sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_in_name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:fontFamily="@font/kdwilliam"
+                android:textSize="50sp" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="101dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/kdwilliam"
+                android:text="@string/app_name_after"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/logo"

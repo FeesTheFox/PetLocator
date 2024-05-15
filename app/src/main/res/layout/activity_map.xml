@@ -40,17 +40,6 @@
             android:text="Info">
         </androidx.appcompat.widget.AppCompatButton>
 
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_register"
-            android:text="update">
-        </androidx.appcompat.widget.AppCompatButton>
     </LinearLayout>
 
     <fragment
