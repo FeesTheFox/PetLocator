@@ -1,10 +1,5 @@
 package com.example.petlocator;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.google.firebase.database.Exclude;
-
 public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
