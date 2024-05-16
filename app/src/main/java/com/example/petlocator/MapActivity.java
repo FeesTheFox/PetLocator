@@ -233,33 +233,32 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
+        // Deletes all markers from map
+        mMap.clear();
+
+        // Adding a geolocation marker
+        MarkerOptions markerOptions = new MarkerOptions().position(userLocation);
+        userMarker = mMap.addMarker(markerOptions);
+
         for (Pet pet : pets) {
-            // Generate random location around user location
             double newLatitude = userLocation.latitude + Math.random() * 0.001 - 0.0005;
             double newLongitude = userLocation.longitude + Math.random() * 0.001 - 0.0005;
 
-            // Check if new location is within map bounds
             LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
             if (bounds.contains(new LatLng(newLatitude, newLongitude))) {
-                // Add marker for pet
-                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
+                MarkerOptions petMarkerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
+                Marker petMarker = mMap.addMarker(petMarkerOptions);
 
-                // Create a custom marker icon with pet's name
-                BitmapDescriptor markerIcon = createMarkerIcon(pet.getpetName());
-                markerOptions.icon(markerIcon);
-
-                Marker petMarker = mMap.addMarker(markerOptions);
-                petMarkers.add(petMarker);
-
-                // Update pet's location
                 pet.setLatitude(newLatitude);
                 pet.setLongitude(newLongitude);
 
-                // Set the pet's name as the marker's title
+                petMarkers.add(petMarker);
+
                 petMarker.setTitle(pet.getpetName());
             }
         }
     }
+
 
 
 
@@ -434,14 +433,6 @@ public class MapActivity extends AppCompatActivity {
                         marker.remove();
                     }
                     petMarkers.clear();
-
-                    // Add markers for pets around user marker only if pets list is not empty
-                    if (!pets.isEmpty()) {
-                        addPetsAroundUserMarker(currentLocation);
-                    }
-
-                    // Start moving pets
-                    startMovingPets();
 
                     isNewMarkerAdded = true; // устанавливаем флаг добавления нового маркера
 
