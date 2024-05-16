@@ -65,15 +65,37 @@
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lin_info"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/btn_sign_in"
-        android:text="Back">
 
-    </androidx.appcompat.widget.AppCompatButton>
+    <LinearLayout
+        android:layout_below="@id/lin_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/btn_sign_in"
+            android:text="Back"
+            android:layout_weight="1"/>
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/btn_sign_in"
+            android:text="notification"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
 </RelativeLayout>

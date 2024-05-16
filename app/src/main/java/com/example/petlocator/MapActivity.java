@@ -6,10 +6,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,18 +25,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 import android.Manifest;
 
+import android.os.Build;
 import com.example.petlocator.databinding.ActivityMapBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -44,17 +46,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MapActivity extends AppCompatActivity {
@@ -72,12 +72,15 @@ public class MapActivity extends AppCompatActivity {
     private static final double MAX_DISTANCE = 150;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMapBinding.inflate(getLayoutInflater()); //work with binding
         View view = binding.getRoot();
         setContentView(view);
+
 
         // Get the current user's UID
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -87,7 +90,6 @@ public class MapActivity extends AppCompatActivity {
         // Initialize pets list
         pets = new ArrayList<>();
         petMarkers = new ArrayList<>();
-
 
         // Load pets data
         loadPetsData();
@@ -108,7 +110,7 @@ public class MapActivity extends AppCompatActivity {
                 }
                 intent1.putExtra("Email", intent.getStringExtra("Email"));
                 intent1.putExtra("Name", intent.getStringExtra("Name"));
-                intent1.putExtra("Role",intent.getStringExtra("Role"));
+                intent1.putExtra("Role", intent.getStringExtra("Role"));
                 startActivity(intent1);
             }
         });
@@ -121,6 +123,23 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void NotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "NOTIFICATION";
+            String description = "Thanks for using our App";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("Notification", name, importance);
+            channel.setDescription(description);
+
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+
+
+        }
     }
 
     private void createMapView() {
@@ -233,33 +252,33 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
-        // Deletes all markers from map
-        mMap.clear();
-
-        // Adding a geolocation marker
-        MarkerOptions markerOptions = new MarkerOptions().position(userLocation);
-        userMarker = mMap.addMarker(markerOptions);
-
         for (Pet pet : pets) {
+            // Generate random location around user location
             double newLatitude = userLocation.latitude + Math.random() * 0.001 - 0.0005;
             double newLongitude = userLocation.longitude + Math.random() * 0.001 - 0.0005;
 
+            // Check if new location is within map bounds
             LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
             if (bounds.contains(new LatLng(newLatitude, newLongitude))) {
-                MarkerOptions petMarkerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
-                Marker petMarker = mMap.addMarker(petMarkerOptions);
+                // Add marker for pet
+                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
 
+                // Create a custom marker icon with pet's name
+                BitmapDescriptor markerIcon = createMarkerIcon(pet.getpetName());
+                markerOptions.icon(markerIcon);
+
+                Marker petMarker = mMap.addMarker(markerOptions);
+                petMarkers.add(petMarker);
+
+                // Update pet's location
                 pet.setLatitude(newLatitude);
                 pet.setLongitude(newLongitude);
 
-                petMarkers.add(petMarker);
-
+                // Set the pet's name as the marker's title
                 petMarker.setTitle(pet.getpetName());
             }
         }
     }
-
-
 
 
     //method for pets to move
@@ -314,7 +333,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     //method for loading data from database
-    private void loadPetsData() {
+    void loadPetsData() {
         // Get the current user's UID
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // Create a reference to the current user's node in the database
@@ -370,7 +389,6 @@ public class MapActivity extends AppCompatActivity {
     }
 
 
-
     //Geo location
     private void requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -404,7 +422,7 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
-    private void getDeviceLocation() {
+    void getDeviceLocation() {
         FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -442,6 +460,7 @@ public class MapActivity extends AppCompatActivity {
             }
         });
     }
+
 }
 
 
