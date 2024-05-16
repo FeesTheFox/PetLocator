@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Notification_Activity"
+    android:background="@color/orange">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/thanks"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thanks for using our app!"
+            android:textColor="@color/black"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp"/>
+
+        <ImageView
+            android:layout_below="@id/thanks"
+            android:id="@+id/img_not"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dog_trumpet"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_below="@id/img_not"
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_sign_in"
+            android:gravity="center"
+            android:text="Finish" />
+    </LinearLayout>
+
+</RelativeLayout>
