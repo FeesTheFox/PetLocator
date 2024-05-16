@@ -447,7 +447,7 @@ public class MapActivity extends AppCompatActivity {
                     }
                     petMarkers.clear();
 
-                    isNewMarkerAdded = true; // устанавливаем флаг добавления нового маркера
+                    isNewMarkerAdded = true; // sets flag of adding new marker
 
                     // Move camera to current location
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));

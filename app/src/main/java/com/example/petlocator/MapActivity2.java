@@ -351,7 +351,7 @@ public class MapActivity2 extends AppCompatActivity {
                             markerOptions.icon(markerIcon);
 
                             Marker petMarker = mMap.addMarker(markerOptions);
-                            petMarkers.add(petMarker); // добавил питомца в список petMarkers
+                            petMarkers.add(petMarker); //pet is added in petmarker's list
 
                             // Set the pet's name as the marker's title
                             petMarker.setTitle(pet.getpetName());
@@ -447,7 +447,7 @@ public class MapActivity2 extends AppCompatActivity {
                     // Start moving pets
                     startMovingPets();
 
-                    isNewMarkerAdded = true; // устанавливаем флаг добавления нового маркера
+                    isNewMarkerAdded = true; // sets flag of adding new marker
 
                     // Move camera to current location
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15));
@@ -455,6 +455,4 @@ public class MapActivity2 extends AppCompatActivity {
             }
         });
     }
-
-
 }
