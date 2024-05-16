@@ -46,35 +46,45 @@ public class InfoActivity extends AppCompatActivity {
         binding.btNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an Intent for the activity you want to open
+
                 Intent intent = new Intent(InfoActivity.this, Notification_Activity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
 // Create a PendingIntent for the Intent
                 PendingIntent pendingIntent = PendingIntent.getActivity(InfoActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                // Check if the app has the POST_NOTIFICATIONS permission
+                if (ContextCompat.checkSelfPermission(InfoActivity.this, Manifest.permission.POST_NOTIFICATIONS)
+                        == PackageManager.PERMISSION_GRANTED) {
 
-// Add the PendingIntent to the NotificationCompat.Builder
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(InfoActivity.this, "1")
-                        .setSmallIcon(R.mipmap.notification)
-                        .setContentTitle("Haiii :3")
-                        .setContentText("Thanks for using our app!")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setContentIntent(pendingIntent); // This is the line that you need to add
+                    // Create a channel for notifications
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        CharSequence name = "MyChannel";
+                        String description = "MyChannel Description";
+                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                        NotificationChannel channel = new NotificationChannel("1", name, importance);
+                        channel.setDescription(description);
+                        channel.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.menu_music), null); // You need to provide the music_menu sound file in the raw folder
+                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                        notificationManager.createNotificationChannel(channel);
+                    }
 
-// Send the notification
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(InfoActivity.this);
-                if (ActivityCompat.checkSelfPermission(InfoActivity.this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
+                    // Create a notification
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(InfoActivity.this, "1")
+                            .setSmallIcon(R.mipmap.notification) // You need to provide a notification icon
+                            .setContentTitle("Haiii :3")
+                            .setContentText("Thanks for using our app!")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setContentIntent(pendingIntent);
+
+                    // Send the notification
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(InfoActivity.this);
+                    notificationManager.notify(0, builder.build());
+
+                } else {
+                    // The app doesn't have the permission, request it
+                    ActivityCompat.requestPermissions(InfoActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                            REQUEST_CODE); // REQUEST_CODE is an integer you can define
                 }
-                notificationManager.notify(0, builder.build());
-
             }
         });
 
