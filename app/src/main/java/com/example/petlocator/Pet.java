@@ -20,19 +20,6 @@ public class Pet {
         this.isNew = true;
     }
 
-
-    public Pet(Pet other) {
-        this.petId = other.petId;
-        this.species = other.species;
-        this.age = other.age;
-        this.petname = other.petname;
-        this.latitude = other.latitude;
-        this.longitude = other.longitude;
-        this.imageResource = other.imageResource;
-        this.isNew = other.isNew;
-    }
-
-
     public String getAge() {return age;}
     public void setAge(String age) {this.age = age;}
 

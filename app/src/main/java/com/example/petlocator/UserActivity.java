@@ -346,21 +346,22 @@ public class UserActivity extends AppCompatActivity {
                                 pet.setImageResource(uri.toString());
                                 if (pet.isNew()) {
                                     addPetToUserNode(pet);
-                                    dogsList.add(pet);
-                                    adapter.notifyDataSetChanged();
                                 } else {
                                     updatePetInDatabase(pet);
-                                    int index = dogsList.indexOf(pet);
-                                    if (index != -1) {
-                                        dogsList.set(index, pet);
-                                        adapter.notifyDataSetChanged();
-                                    }
                                 }
+                                int index = dogsList.indexOf(pet);
+                                if (index == -1) {
+                                    dogsList.add(pet);
+                                } else {
+                                    dogsList.set(index, pet);
+                                }
+                                adapter.notifyDataSetChanged();
                             }
                         });
                     }
                 });
     }
+
     private void showImagePicker() {
         Intent intent = new Intent();
         intent.setType("image/*");
