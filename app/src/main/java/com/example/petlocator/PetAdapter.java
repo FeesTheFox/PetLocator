@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +43,11 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         ageTextView.setText(currentPet.getAge());
         nameTextView.setText(currentPet.getpetName());
 
-        //Vector resource image
-        Drawable drawable = AppCompatResources.getDrawable(mContext, R.drawable.img);
-        imageView.setImageDrawable(drawable);
+        // Use Glide to load the pet's image from the Firebase Storage
+        Glide.with(mContext)
+                .load(currentPet.getImageResource())
+                .placeholder(R.drawable.img) // You can set a placeholder drawable to display while the image is loading
+                .into(imageView);
 
         return convertView;
     }

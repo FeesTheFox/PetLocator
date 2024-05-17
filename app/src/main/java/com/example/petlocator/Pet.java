@@ -1,11 +1,13 @@
 package com.example.petlocator;
 
+import android.net.Uri;
+
 public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
-    private int imageResource;
+    private String  imageResource;
     public Pet(){}
-    public Pet(String species, String age, String petname, String petId, double latitude, double longitude, int imageResource){
+    public Pet(String species, String age, String petname, String petId, double latitude, double longitude, String imageResource){
         this.age = age;
         this.species = species;
         this.petname = petname;
@@ -40,7 +42,7 @@ public class Pet {
 
     public void setLongitude(double longitude) {this.longitude = longitude;}
 
-    public int getImageResource() {return imageResource;}
+    public String getImageResource() {return imageResource;}
 
-    public void setImageResource(int imageResource) {this.imageResource = imageResource;}
+    public void setImageResource(String imageResource) {this.imageResource = imageResource;}
 }

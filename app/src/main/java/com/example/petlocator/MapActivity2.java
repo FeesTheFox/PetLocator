@@ -439,14 +439,6 @@ public class MapActivity2 extends AppCompatActivity {
                     }
                     petMarkers.clear();
 
-                    // Add markers for pets around user marker only if pets list is not empty
-                    if (!pets.isEmpty()) {
-                        addPetsAroundUserMarker(currentLocation);
-                    }
-
-                    // Start moving pets
-                    startMovingPets();
-
                     isNewMarkerAdded = true; // sets flag of adding new marker
 
                     // Move camera to current location

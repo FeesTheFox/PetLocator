@@ -25,4 +25,18 @@
         android:hint="Enter pet name"
         android:inputType="text"/>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/button_select_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="Select Image" />
+
 </LinearLayout>
