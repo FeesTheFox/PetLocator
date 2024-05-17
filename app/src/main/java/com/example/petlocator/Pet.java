@@ -6,8 +6,10 @@ public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
     private String  imageResource;
+    private boolean isNew;
     public Pet(){}
-    public Pet(String species, String age, String petname, String petId, double latitude, double longitude, String imageResource){
+    public Pet(String species, String age, String petname, String petId, double latitude, double longitude, String imageResource
+    ,boolean isNew){
         this.age = age;
         this.species = species;
         this.petname = petname;
@@ -15,7 +17,21 @@ public class Pet {
         this.latitude = latitude;
         this.longitude = longitude;
         this.imageResource = imageResource;
+        this.isNew = true;
     }
+
+
+    public Pet(Pet other) {
+        this.petId = other.petId;
+        this.species = other.species;
+        this.age = other.age;
+        this.petname = other.petname;
+        this.latitude = other.latitude;
+        this.longitude = other.longitude;
+        this.imageResource = other.imageResource;
+        this.isNew = other.isNew;
+    }
+
 
     public String getAge() {return age;}
     public void setAge(String age) {this.age = age;}
@@ -45,4 +61,8 @@ public class Pet {
     public String getImageResource() {return imageResource;}
 
     public void setImageResource(String imageResource) {this.imageResource = imageResource;}
+
+    public boolean isNew() {return isNew;}
+
+    public void setNew(boolean aNew) {isNew = aNew;}
 }

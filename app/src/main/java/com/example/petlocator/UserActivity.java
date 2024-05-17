@@ -22,7 +22,9 @@ import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 import com.example.petlocator.databinding.ActivityUserBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class UserActivity extends AppCompatActivity {
@@ -190,27 +194,42 @@ public class UserActivity extends AppCompatActivity {
         final EditText species = dialogView.findViewById(R.id.editTextSpecies);
         final EditText age = dialogView.findViewById(R.id.editTextAge);
         final EditText name = dialogView.findViewById(R.id.editTextPetName);
+        final ImageView imageView = dialogView.findViewById(R.id.imageView);
 
-        // Заполните поля диалогового окна текущими данными питомца
+        // Populate the fields with the current pet data
         Pet pet = dogsList.get(position);
+        pet.setNew(false);
         species.setText(pet.getSpecies());
         age.setText(pet.getAge());
         name.setText(pet.getpetName());
+        Glide.with(this).load(pet.getImageResource()).into(imageView);
 
+        Button buttonSelectImage = dialogView.findViewById(R.id.button_select_image);
+        buttonSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImagePicker();
+            }
+        });
 
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Обновите данные питомца в списке и в базе данных
-                Pet updatedPet = new Pet();
-                updatedPet.setPetId(pet.getPetId());
-                updatedPet.setSpecies(species.getText().toString());
-                updatedPet.setAge(age.getText().toString());
-                updatedPet.setpetName(name.getText().toString());
+                // Update the pet data in the list and the database
+                pet.setPetId(pet.getPetId());
+                pet.setSpecies(species.getText().toString());
+                pet.setAge(age.getText().toString());
+                pet.setpetName(name.getText().toString());
 
-                updatePetInDatabase(updatedPet);
-                dogsList.set(position, updatedPet);
-                adapter.notifyDataSetChanged();
+                if (imageUri != null) {
+                    // Save the new pet image in Firebase Storage and get the download URL
+                    savePetImageInFirebaseStorage(imageUri, pet);
+                } else {
+                    // Use the existing pet image
+                    updatePetInDatabase(pet);
+                    dogsList.set(position, pet);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -230,8 +249,31 @@ public class UserActivity extends AppCompatActivity {
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference currentUserPetsRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserUid).child("pets");
 
-        currentUserPetsRef.child(pet.getPetId()).setValue(pet);
+        Map<String, Object> petUpdates = new HashMap<>();
+        if (pet.getSpecies() != null && !pet.getSpecies().isEmpty()) {
+            petUpdates.put("species", pet.getSpecies());
+        }
+        if (pet.getAge() != null&& !pet.getAge().isEmpty()) {
+            petUpdates.put("age", pet.getAge());
+        }
+        if (pet.getpetName() != null&& !pet.getpetName().isEmpty()) {
+            petUpdates.put("petName", pet.getpetName());
+        }
+        if (pet.getImageResource() !=null&& !pet.getImageResource().isEmpty()) {
+            petUpdates.put("imageResource", pet.getImageResource());
+        }
+
+        if (pet.getPetId() != null) {
+            // Обновляем существующего питомца
+            currentUserPetsRef.child(pet.getPetId()).updateChildren(petUpdates);
+        } else {
+            // Добавляем нового питомца
+            String newPetId = currentUserPetsRef.push().getKey();
+            pet.setPetId(newPetId);
+            currentUserPetsRef.child(newPetId).setValue(pet);
+        }
     }
+
 
 
 
@@ -302,7 +344,18 @@ public class UserActivity extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
                                 // Save the pet with the image download Url in the Firebase Realtime Database
                                 pet.setImageResource(uri.toString());
-                                addPetToUserNode(pet);
+                                if (pet.isNew()) {
+                                    addPetToUserNode(pet);
+                                    dogsList.add(pet);
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    updatePetInDatabase(pet);
+                                    int index = dogsList.indexOf(pet);
+                                    if (index != -1) {
+                                        dogsList.set(index, pet);
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
                             }
                         });
                     }
