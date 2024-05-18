@@ -27,6 +27,7 @@ import com.example.petlocator.databinding.ActivityUserBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -305,14 +306,18 @@ public class UserActivity extends AppCompatActivity {
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Creating a Pet object
-                Pet pet = new Pet();
-                pet.setSpecies(species.getText().toString());
-                pet.setAge(age.getText().toString());
-                pet.setpetName(name.getText().toString());
+                if (imageUri == null) {
+                    // Показываем Snackbar с сообщением
+                    Snackbar.make(binding.getRoot(), "Please select an image for your pet", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    // Создаем объект питомца и сохраняем его в базе данных
+                    Pet pet = new Pet();
+                    pet.setSpecies(species.getText().toString());
+                    pet.setAge(age.getText().toString());
+                    pet.setpetName(name.getText().toString());
 
-                // Save pet image in Firebase Storage and get the download Url
-                savePetImageInFirebaseStorage(imageUri, pet);
+                    savePetImageInFirebaseStorage(imageUri, pet);
+                }
             }
         });
 
