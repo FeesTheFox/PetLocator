@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class UserActivity extends AppCompatActivity {
     private String currentUserRole;
     private static final String PREFS_FILE = "User_account";
     private static final int IMAGE_PICKER_REQUEST_CODE = 1001;
+    private static final int CAMERA_REQUEST_CODE = 1002;
     private Uri imageUri;
     private ImageView imageView;
 
@@ -363,10 +367,26 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void showImagePicker() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICKER_REQUEST_CODE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose an image")
+                .setItems(new CharSequence[]{"Gallery", "Camera"}, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The "which" argument contains the index position of the selected item
+                        if (which == 0) {
+                            // Open gallery
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICKER_REQUEST_CODE);
+                        } else if (which == 1) {
+                            // Open camera
+                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+                            }
+                        }
+                    }
+                }).show();
     }
 
     @Override
@@ -378,7 +398,27 @@ public class UserActivity extends AppCompatActivity {
             if (imageUri != null && imageView != null) {
                 Glide.with(this).load(imageUri).into(imageView);
             }
+        } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+            if (imageBitmap != null) {
+                // Convert bitmap to Uri and save it to imageUri
+                Uri tempUri = getImageUri(getApplicationContext(), imageBitmap);
+                imageUri = tempUri;
+
+                // Load the image into imageView using Glide
+                if (imageView != null) {
+                    Glide.with(this).load(imageUri).into(imageView);
+                }
+            }
         }
+    }
+
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     @Override
