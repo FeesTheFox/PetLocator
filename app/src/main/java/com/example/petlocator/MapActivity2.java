@@ -20,12 +20,17 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.petlocator.databinding.ActivityMap2Binding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -180,31 +185,68 @@ public class MapActivity2 extends AppCompatActivity {
         }
     }
 
-    private BitmapDescriptor createMarkerIcon(String petName) {
-        // Load the marker icon from resources
-        VectorDrawableCompat vectorDrawable = VectorDrawableCompat.create(getResources(), R.drawable.img, null);
-        if (vectorDrawable == null) {
-            Log.e("ICON_LOAD", "Failed to load marker icon");
-            return null;
-        }
+    private BitmapDescriptor createMarkerIcon(Pet pet, int index) {
+        final BitmapDescriptor[] bitmapDescriptor = new BitmapDescriptor[1];
 
-        // Create a bitmap with the pet name
-        Bitmap textBitmap = createTextBitmap(petName);
+        Glide.with(this)
+                .asBitmap()
+                .load(pet.getImageResource())
+                .apply(new RequestOptions().override(100, 100))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        // Create a new bitmap with the pet name
+                        Bitmap textBitmap = createTextBitmap(pet.getpetName());
 
-        // Create a new bitmap with a larger size, and copy the icon and text into it
-        int bitmapSize = 100;
-        Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.setBounds(0, 0, bitmapSize, bitmapSize);
-        vectorDrawable.draw(canvas);
-        int textMargin = 5;
-        int textX = (bitmapSize - textBitmap.getWidth()) / 2;
-        int textY = bitmapSize - textBitmap.getHeight() - textMargin;
-        canvas.drawBitmap(textBitmap, textX, textY, null);
+                        // Create a new bitmap with a larger size, and copy the icon and text into it
+                        int bitmapSize = 100;
+                        Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(bitmap);
+                        canvas.drawBitmap(resource, 0, 0, null);
+                        int textMargin = 5;
+                        int textX = (bitmapSize - textBitmap.getWidth()) / 2;
+                        int textY = bitmapSize - textBitmap.getHeight() - textMargin;
+                        canvas.drawBitmap(textBitmap, textX, textY, null);
 
-        // Return the BitmapDescriptor for the marker icon
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
+                        // Return the BitmapDescriptor for the marker icon
+                        bitmapDescriptor[0] = BitmapDescriptorFactory.fromBitmap(bitmap);
+
+                        if (petMarkers.size() > index) {
+                            MapActivity.MarkerIconCallback callback = new MapActivity.MarkerIconCallback() {
+                                @Override
+                                public void onMarkerIconReady(BitmapDescriptor markerIcon) {
+                                    // Update the marker icon
+                                    Marker petMarker = petMarkers.get(index);
+                                    petMarker.setIcon(markerIcon);
+                                }
+                            };
+                            callback.onMarkerIconReady(bitmapDescriptor[0]);
+                        }
+                    }
+                });
+
+        return bitmapDescriptor[0];
     }
+
+
+
+
+    private MapActivity.MarkerIconCallback markerIconCallback = new MapActivity.MarkerIconCallback() {
+        @Override
+        public void onMarkerIconReady(BitmapDescriptor markerIcon) {
+            if (petMarkers.size() > 0) { // check if the list is not empty
+                Marker petMarker = petMarkers.get(0); // get the first marker from the list
+                petMarker.setIcon(markerIcon); // set the icon for the marker
+                petMarkers.remove(0); // remove the marker from the list
+            }
+        }
+    };
+
+    interface MarkerIconCallback {
+        void onMarkerIconReady(BitmapDescriptor markerIcon);
+    }
+
+
 
     private Bitmap createTextBitmap(String text) {
         // Create a Paint object with the desired text properties
@@ -239,6 +281,9 @@ public class MapActivity2 extends AppCompatActivity {
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
+        petMarkers.clear(); // очищаем список petMarkers
+
+        // добавляем маркеры в список petMarkers
         for (Pet pet : pets) {
             // Generate random location around user location
             double newLatitude = userLocation.latitude + Math.random() * 0.001 - 0.0005;
@@ -246,16 +291,17 @@ public class MapActivity2 extends AppCompatActivity {
 
             // Check if new location is within map bounds
             LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-            if (bounds.contains(new LatLng(newLatitude, newLongitude))) {
+            if (bounds.contains(new LatLng(newLatitude, newLongitude)) && !petMarkers.contains(pet)) {
                 // Add marker for pet
                 MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
 
-                // Create a custom marker icon with pet's name
-                BitmapDescriptor markerIcon = createMarkerIcon(pet.getpetName());
+                // Create a custom marker icon with pet's name and image
+                int index = pets.indexOf(pet);
+                BitmapDescriptor markerIcon = createMarkerIcon(pet, index);
                 markerOptions.icon(markerIcon);
 
                 Marker petMarker = mMap.addMarker(markerOptions);
-                petMarkers.add(petMarker);
+                petMarkers.add(petMarker); // Add the marker to the list
 
                 // Update pet's location
                 pet.setLatitude(newLatitude);
@@ -265,8 +311,12 @@ public class MapActivity2 extends AppCompatActivity {
                 petMarker.setTitle(pet.getpetName());
             }
         }
-    }
 
+        if (petMarkers.size() > 0) {
+
+
+        }
+    }
 
 
     //method for pets to move
@@ -321,7 +371,7 @@ public class MapActivity2 extends AppCompatActivity {
     }
 
     //method for loading data from database
-    private void loadPetsData() {
+    void loadPetsData() {
         // Get the current user's UID
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         // Create a reference to the current user's node in the database
@@ -346,12 +396,13 @@ public class MapActivity2 extends AppCompatActivity {
                             // Add marker for pet
                             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(pet.getLatitude(), pet.getLongitude()));
 
-                            // Create a custom marker icon with pet's name
-                            BitmapDescriptor markerIcon = createMarkerIcon(pet.getpetName());
+                            // Create a custom marker icon with pet's name and image
+                            int index = pets.indexOf(pet);
+                            BitmapDescriptor markerIcon = createMarkerIcon(pet, index);
                             markerOptions.icon(markerIcon);
 
                             Marker petMarker = mMap.addMarker(markerOptions);
-                            petMarkers.add(petMarker); //pet is added in petmarker's list
+                            petMarkers.add(petMarker);
 
                             // Set the pet's name as the marker's title
                             petMarker.setTitle(pet.getpetName());

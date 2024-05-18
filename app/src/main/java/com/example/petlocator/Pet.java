@@ -1,7 +1,5 @@
 package com.example.petlocator;
 
-import android.net.Uri;
-
 public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
