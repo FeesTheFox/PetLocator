@@ -144,6 +144,11 @@ public class MapActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.update){
+            recreate();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

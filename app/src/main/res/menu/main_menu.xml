@@ -12,4 +12,9 @@
         android:title="Info"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/update"
+        android:title="Update"
+        app:showAsAction="ifRoom"/>
+
 </menu>
