@@ -15,6 +15,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.petlocator.databinding.ActivityInfoBinding;
@@ -31,59 +33,67 @@ public class InfoActivity extends AppCompatActivity {
         binding = ActivityInfoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        binding.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    }
 
 
-        binding.btNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.info_menu, menu);
+        return true;
+    }
 
-                Intent intent = new Intent(InfoActivity.this, Notification_Activity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-                // Create a PendingIntent for the Intent
-                PendingIntent pendingIntent = PendingIntent.getActivity(InfoActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-                // Check if the app has the POST_NOTIFICATIONS permission
-                if (ContextCompat.checkSelfPermission(InfoActivity.this, Manifest.permission.POST_NOTIFICATIONS)
-                        == PackageManager.PERMISSION_GRANTED) {
+        if (id == R.id.notification) {
+            Intent intent = new Intent(InfoActivity.this, Notification_Activity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    // Create a channel for notifications
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        CharSequence name = "MyChannel";
-                        String description = "MyChannel Description";
-                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-                        NotificationChannel channel = new NotificationChannel("1", name, importance);
-                        channel.setDescription(description);
-                        channel.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.menu_music), null); // You need to provide the music_menu sound file in the raw folder
-                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-                        notificationManager.createNotificationChannel(channel);
-                    }
+            // Create a PendingIntent for the Intent
+            PendingIntent pendingIntent = PendingIntent.getActivity(InfoActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+            // Check if the app has the POST_NOTIFICATIONS permission
+            if (ContextCompat.checkSelfPermission(InfoActivity.this, Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
 
-                    // Create a notification
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(InfoActivity.this, "1")
-                            .setSmallIcon(R.mipmap.notification) // You need to provide a notification icon
-                            .setContentTitle("Haiii :3")
-                            .setContentText("Thanks for using our app!")
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                            .setContentIntent(pendingIntent);
-
-                    // Send the notification
-                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(InfoActivity.this);
-                    notificationManager.notify(0, builder.build());
-
-                } else {
-                    // The app doesn't have the permission, request it
-                    ActivityCompat.requestPermissions(InfoActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                            REQUEST_CODE); // REQUEST_CODE is an integer you can define
+                // Create a channel for notifications
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    CharSequence name = "MyChannel";
+                    String description = "MyChannel Description";
+                    int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                    NotificationChannel channel = new NotificationChannel("1", name, importance);
+                    channel.setDescription(description);
+                    channel.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.menu_music), null); // You need to provide the music_menu sound file in the raw folder
+                    NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                    notificationManager.createNotificationChannel(channel);
                 }
-            }
-        });
 
+                // Create a notification
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(InfoActivity.this, "1")
+                        .setSmallIcon(R.mipmap.notification) // You need to provide a notification icon
+                        .setContentTitle("Haiii :3")
+                        .setContentText("Thanks for using our app!")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentIntent(pendingIntent);
+
+                // Send the notification
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(InfoActivity.this);
+                notificationManager.notify(0, builder.build());
+
+            } else {
+                // The app doesn't have the permission, request it
+                ActivityCompat.requestPermissions(InfoActivity.this, new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        REQUEST_CODE); // REQUEST_CODE is an integer you can define
+            }
+
+            return true;
+        }
+
+        if (id == R.id.back) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
