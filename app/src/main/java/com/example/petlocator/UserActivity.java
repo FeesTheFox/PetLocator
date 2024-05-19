@@ -209,7 +209,7 @@ public class UserActivity extends AppCompatActivity {
         name.setText(pet.getpetName());
         Glide.with(this).load(pet.getImageResource()).into(imageView);
 
-// установить imageUri для текущего питомца
+        // sets imageUri for a current pet
         imageUri = pet.getNewImageUri();
 
         Button buttonSelectImage = dialogView.findViewById(R.id.button_select_image);
@@ -275,18 +275,15 @@ public class UserActivity extends AppCompatActivity {
             petUpdates.put("imageResource", pet.getImageResource());
         }
         if (pet.getPetId() != null) {
-            // Обновляем существующего питомца
+            // Updates current pet
             currentUserPetsRef.child(pet.getPetId()).updateChildren(petUpdates);
         } else {
-            // Добавляем нового питомца
+            // Adding a new pet
             String newPetId = currentUserPetsRef.push().getKey();
             pet.setPetId(newPetId);
             currentUserPetsRef.child(newPetId).setValue(pet);
         }
     }
-
-
-
 
 
     //Dialog of adding pet
@@ -314,10 +311,10 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (imageUri == null) {
-                    // Показываем Snackbar с сообщением
+                    // Shows the snackbar with the message
                     Snackbar.make(binding.getRoot(), "Please select an image for your pet", Snackbar.LENGTH_SHORT).show();
                 } else {
-                    // Создаем объект питомца и сохраняем его в базе данных
+                    // Creates a new pet object and saves it in the database
                     Pet pet = new Pet();
                     pet.setSpecies(species.getText().toString());
                     pet.setAge(age.getText().toString());
@@ -325,7 +322,7 @@ public class UserActivity extends AppCompatActivity {
 
                     savePetImageInFirebaseStorage(imageUri, pet);
 
-// сбросить imageUri после сохранения нового питомца
+                    // sets imageUri null after saving new pet
                     imageUri = null;
                 }
             }

@@ -172,7 +172,7 @@ public class MapActivity extends AppCompatActivity {
                             // Start moving pets
                             startMovingPets();
 
-                            isNewMarkerAdded = true; // устанавливаем флаг добавления нового маркера
+                            isNewMarkerAdded = true; // sets flag of adding a new marker
                         }
                     });
                 }
@@ -276,9 +276,9 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
-        petMarkers.clear(); // очищаем список petMarkers
+        petMarkers.clear(); // clears the markers list
 
-        // добавляем маркеры в список petMarkers
+        // adds new markers into petMarkers list
         for (Pet pet : pets) {
             // Generate random location around user location
             double newLatitude = userLocation.latitude + Math.random() * 0.001 - 0.0005;

@@ -2,6 +2,7 @@ package com.example.petlocator;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -73,6 +74,8 @@ public class MapActivity2 extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private SwitchCompat musicSwitch;
+    private static final String PREF_NAME = "music_pref";
+    private static final String PREF_KEY = "music_state";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     ActivityMap2Binding binding;
     @Override
@@ -101,6 +104,12 @@ public class MapActivity2 extends AppCompatActivity {
 
         musicSwitch = findViewById(R.id.musicSwitch);
 
+        boolean isChecked = getMusicStateFromPreferences();
+        musicSwitch.setChecked(isChecked);
+        if (isChecked) {
+            mediaPlayer.start();
+        }
+
         //turns music on and off
         musicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -110,8 +119,11 @@ public class MapActivity2 extends AppCompatActivity {
                 } else {
                     mediaPlayer.pause();
                 }
+
+                saveMusicStateToPreferences(isChecked);
             }
         });
+
 
         binding.profile.setOnClickListener(new View.OnClickListener() { //profile button
             @Override
@@ -134,6 +146,29 @@ public class MapActivity2 extends AppCompatActivity {
         });
     }
 
+    //saves music state in SharedPreferences
+    private void saveMusicStateToPreferences(boolean state) {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(PREF_KEY, state);
+        editor.apply();
+    }
+
+    //gets music state from SharedPreferences
+    private boolean getMusicStateFromPreferences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        return sharedPreferences.getBoolean(PREF_KEY, false); // false - default value
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // stop and releases Mediaplayer on rotation
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
     private void createMapView() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
@@ -175,7 +210,7 @@ public class MapActivity2 extends AppCompatActivity {
                             // Start moving pets
                             startMovingPets();
 
-                            isNewMarkerAdded = true; // устанавливаем флаг добавления нового маркера
+                            isNewMarkerAdded = true; // sets flag for a new marker
                         }
                     });
                 }
@@ -242,11 +277,6 @@ public class MapActivity2 extends AppCompatActivity {
         }
     };
 
-    interface MarkerIconCallback {
-        void onMarkerIconReady(BitmapDescriptor markerIcon);
-    }
-
-
 
     private Bitmap createTextBitmap(String text) {
         // Create a Paint object with the desired text properties
@@ -281,9 +311,9 @@ public class MapActivity2 extends AppCompatActivity {
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
-        petMarkers.clear(); // очищаем список petMarkers
+        petMarkers.clear(); // clears the markers list
 
-        // добавляем маркеры в список petMarkers
+        // adds markers into petMarkers list
         for (Pet pet : pets) {
             // Generate random location around user location
             double newLatitude = userLocation.latitude + Math.random() * 0.001 - 0.0005;

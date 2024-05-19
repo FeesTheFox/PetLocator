@@ -48,9 +48,7 @@ public class Pet {
 
     public String getImageResource() {return imageResource;}
 
-    public void setImageResource(String imageResource) {
-        this.imageResource = imageResource;
-    }
+    public void setImageResource(String imageResource) {this.imageResource = imageResource;}
 
     public boolean isNew() {return isNew;}
 

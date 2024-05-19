@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         //creating instance for logo
         ImageView imageView = findViewById(R.id.logo);
 
-        //finding an 8 images for an animation
+        //finding an 8 images for the animation
         ImageView[] imageViews = new ImageView[8];
         imageViews[0] = findViewById(R.id.image1);
         imageViews[1] = findViewById(R.id.image2);

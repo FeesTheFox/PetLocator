@@ -47,7 +47,7 @@ public class InfoActivity extends AppCompatActivity {
                 Intent intent = new Intent(InfoActivity.this, Notification_Activity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-// Create a PendingIntent for the Intent
+                // Create a PendingIntent for the Intent
                 PendingIntent pendingIntent = PendingIntent.getActivity(InfoActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
                 // Check if the app has the POST_NOTIFICATIONS permission
                 if (ContextCompat.checkSelfPermission(InfoActivity.this, Manifest.permission.POST_NOTIFICATIONS)
