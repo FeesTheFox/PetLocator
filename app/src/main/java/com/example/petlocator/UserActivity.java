@@ -450,4 +450,8 @@ public class UserActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+
+    //User's avatar
+
+
 }
