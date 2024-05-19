@@ -209,11 +209,15 @@ public class UserActivity extends AppCompatActivity {
         name.setText(pet.getpetName());
         Glide.with(this).load(pet.getImageResource()).into(imageView);
 
+// установить imageUri для текущего питомца
+        imageUri = pet.getNewImageUri();
+
         Button buttonSelectImage = dialogView.findViewById(R.id.button_select_image);
         buttonSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImagePicker();
+                pet.setNewImageUri(imageUri);
             }
         });
 
@@ -264,10 +268,12 @@ public class UserActivity extends AppCompatActivity {
         if (pet.getpetName() != null&& !pet.getpetName().isEmpty()) {
             petUpdates.put("petName", pet.getpetName());
         }
-        if (pet.getImageResource() !=null&& !pet.getImageResource().isEmpty()) {
+        if (pet.getNewImageUri() != null) {
+            // Save the new pet image in Firebase Storage and get the download URL
+            savePetImageInFirebaseStorage(pet.getNewImageUri(), pet);
+        } else if (pet.getImageResource() != null && !pet.getImageResource().isEmpty()) {
             petUpdates.put("imageResource", pet.getImageResource());
         }
-
         if (pet.getPetId() != null) {
             // Обновляем существующего питомца
             currentUserPetsRef.child(pet.getPetId()).updateChildren(petUpdates);
@@ -278,6 +284,7 @@ public class UserActivity extends AppCompatActivity {
             currentUserPetsRef.child(newPetId).setValue(pet);
         }
     }
+
 
 
 
@@ -317,6 +324,9 @@ public class UserActivity extends AppCompatActivity {
                     pet.setpetName(name.getText().toString());
 
                     savePetImageInFirebaseStorage(imageUri, pet);
+
+// сбросить imageUri после сохранения нового питомца
+                    imageUri = null;
                 }
             }
         });
@@ -449,9 +459,5 @@ public class UserActivity extends AppCompatActivity {
         dogsList.add(pet);
         adapter.notifyDataSetChanged();
     }
-
-
-    //User's avatar
-
 
 }

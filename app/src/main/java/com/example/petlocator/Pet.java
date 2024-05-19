@@ -1,9 +1,12 @@
 package com.example.petlocator;
 
+import android.net.Uri;
+
 public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
     private String  imageResource;
+    private Uri newImageUri;
     private boolean isNew;
     public Pet(){}
     public Pet(String species, String age, String petname, String petId, double latitude, double longitude, String imageResource
@@ -45,9 +48,15 @@ public class Pet {
 
     public String getImageResource() {return imageResource;}
 
-    public void setImageResource(String imageResource) {this.imageResource = imageResource;}
+    public void setImageResource(String imageResource) {
+        this.imageResource = imageResource;
+    }
 
     public boolean isNew() {return isNew;}
 
     public void setNew(boolean aNew) {isNew = aNew;}
+
+    public Uri getNewImageUri() {return newImageUri;}
+
+    public void setNewImageUri(Uri newImageUri) {this.newImageUri = newImageUri;}
 }
