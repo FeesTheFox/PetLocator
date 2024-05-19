@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -102,34 +104,50 @@ public class MapActivity extends AppCompatActivity {
 
         createMapView(); //initializes map
 
-        binding.profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = getIntent();
-                Intent intent1 = new Intent(MapActivity.this, UserActivity.class);
-
-                String role = intent.getStringExtra("Role");
-                if (role != null) {
-                    intent1.putExtra("Role", role);
-                } else {
-                    Log.e("MapActivity", "Role is null or not found in intent extras");
-                }
-                intent1.putExtra("Email", intent.getStringExtra("Email"));
-                intent1.putExtra("Name", intent.getStringExtra("Name"));
-                intent1.putExtra("Role", intent.getStringExtra("Role"));
-                startActivity(intent1);
-            }
-        });
-
-        binding.info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MapActivity.this, InfoActivity.class);
-                startActivity(intent);
-            }
-        });
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_profile) {
+            // Handle click on "Profile" menu item
+            Intent intent = getIntent();
+            Intent intent1 = new Intent(MapActivity.this, UserActivity.class);
+
+            String role = intent.getStringExtra("Role");
+            if (role != null) {
+                intent1.putExtra("Role", role);
+            } else {
+                Log.e("MapActivity", "Role is null or not found in intent extras");
+            }
+            intent1.putExtra("Email", intent.getStringExtra("Email"));
+            intent1.putExtra("Name", intent.getStringExtra("Name"));
+            intent1.putExtra("Role", intent.getStringExtra("Role"));
+            startActivity(intent1);
+
+            return true;
+        }
+
+        if (id == R.id.menu_info) {
+            // Handle click on "Info" menu item
+            Intent intent = new Intent(MapActivity.this, InfoActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void createMapView() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

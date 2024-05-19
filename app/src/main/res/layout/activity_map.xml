@@ -10,40 +10,9 @@
     android:background="@color/orange">
 
 
-    <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_margin="20dp"
-        >
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_register"
-            android:text="Profile">
-        </androidx.appcompat.widget.AppCompatButton>
-        
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_register"
-            android:text="Info">
-        </androidx.appcompat.widget.AppCompatButton>
-
-    </LinearLayout>
 
     <fragment
-        android:layout_below="@+id/linear"
+
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
