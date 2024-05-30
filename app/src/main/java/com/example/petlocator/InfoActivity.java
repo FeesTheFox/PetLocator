@@ -94,6 +94,11 @@ public class InfoActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.requisite){
+            Intent intent = new Intent(InfoActivity.this, RequisiteActivity.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

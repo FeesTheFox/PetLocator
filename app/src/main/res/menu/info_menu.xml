@@ -10,4 +10,9 @@
         android:id="@+id/notification"
         android:title="Уведомление"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/requisite"
+        android:title="Реквизиты"
+        app:showAsAction="ifRoom"/>
 </menu>

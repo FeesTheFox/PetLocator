@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/orange">
+
+    <TextView
+        android:id="@+id/header_tit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textAllCaps="true"
+        android:textSize="35dp"
+        android:text="МОИ РЕКВИЗИТЫ"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:id="@+id/linMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/header_tit"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:text="Моя почта : "
+            android:layout_marginLeft="25dp"/>
+        <TextView
+            android:id="@+id/email"
+            android:textColor="@color/ripple_effect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="feesblock@gmail.com"
+            android:clickable="true"
+            android:textSize="17sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linBoosty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/linMail"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:text="Поддержите меня на бусти! : "
+            android:layout_marginLeft="25dp"/>
+        <TextView
+            android:id="@+id/boosty"
+            android:textColor="@color/ripple_effect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="Boosty"
+            android:textSize="17sp"/>
+    </LinearLayout>
+
+
+    <WebView
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/linBoosty"
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
+
+
+
+
+</RelativeLayout>
