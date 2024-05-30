@@ -8,16 +8,20 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ShopAdapter extends BaseAdapter {
     private Context context;
+    private ShopActivity shopActivity;
     private ArrayList<HashMap<String, Object>> shopItems;
 
-    public ShopAdapter(Context context, ArrayList<HashMap<String, Object>> shopItems) {
-        this.context = context;
+    public ShopAdapter(ShopActivity shopActivity, ArrayList<HashMap<String, Object>> shopItems) {
+        this.shopActivity = shopActivity;
         this.shopItems = shopItems;
     }
 
@@ -38,7 +42,7 @@ public class ShopAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) shopActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.shop_list, parent, false);
 
         HashMap<String, Object> item = shopItems.get(position);
@@ -66,7 +70,25 @@ public class ShopAdapter extends BaseAdapter {
             buyButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Реализовать логику покупки предмета
+                    int itemPrice = (int) item.get("price");
+                    int currentCoins = Integer.parseInt(shopActivity.binding.coinCountText.getText().toString());
+                    if (currentCoins >= itemPrice) {
+                        shopActivity.binding.coinCountText.setText(String.valueOf(currentCoins - itemPrice));
+
+                        // Обновить базу данных Firebase
+                        DatabaseReference userClicksRef = shopActivity.firebaseDatabase.getReference("Users").child(shopActivity.getUserId()).child("clicks");
+                        userClicksRef.setValue(currentCoins - itemPrice);
+
+                        // Обновить значение bought для соответствующего предмета в списке shopItems
+                        item.put("bought", true);
+
+                        // Обновить отображение списка
+                        notifyDataSetChanged();
+
+                        Toast.makeText(shopActivity, "Вы купили " + item.get("name"), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(shopActivity, "Недостаточно монет-гавов", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -78,12 +100,18 @@ public class ShopAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     // Реализовать логику использования предмета
+                    Toast.makeText(shopActivity, "Вы использовали " + item.get("name"), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
             useButton.setVisibility(View.GONE);
         }
 
+
+
         return view;
     }
+
+
+
 }

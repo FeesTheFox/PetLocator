@@ -29,7 +29,8 @@ import java.util.HashMap;
 
 public class ShopActivity extends AppCompatActivity {
     ActivityShopBinding binding;
-    private FirebaseDatabase firebaseDatabase;
+    FirebaseDatabase firebaseDatabase;
+    private ShopAdapter shopAdapter;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -123,9 +124,10 @@ public class ShopActivity extends AppCompatActivity {
         item5.put("use_button_visibility", View.GONE);
         shopItems.add(item5);
 
-        ShopAdapter adapter = new ShopAdapter(this, shopItems);
+        ShopAdapter shopAdapter = new ShopAdapter(this, shopItems);
         ListView shopList = binding.shopList;
-        shopList.setAdapter(adapter);
+        shopList.setAdapter(shopAdapter);
+
 
         shopList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -141,7 +143,7 @@ public class ShopActivity extends AppCompatActivity {
                     clicks -= itemPrice;
                     binding.coinCountText.setText(String.valueOf(clicks));
                     item.put("bought", true);
-                    adapter.notifyDataSetChanged();
+                    shopAdapter.notifyDataSetChanged();
                     Toast.makeText(ShopActivity.this, "Вы купили " + itemName, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ShopActivity.this, "Недостаточно монет-гавов", Toast.LENGTH_SHORT).show();
@@ -188,9 +190,17 @@ public class ShopActivity extends AppCompatActivity {
             DatabaseReference userClicksRef = firebaseDatabase.getReference("Users").child(userId).child("clicks");
             userClicksRef.setValue(clicks);
 
-            buyButton.setVisibility(View.GONE);
-            useButton.setVisibility(View.VISIBLE);
-            itemPriceTextView.setVisibility(View.GONE);
+            // Обновить значение bought для соответствующего предмета в списке shopItems
+            for (int i = 0; i < shopAdapter.getCount(); i++) {
+                HashMap<String, Object> item = (HashMap<String, Object>) shopAdapter.getItem(i);
+                if (item.get("name").equals(itemName)) {
+                    item.put("bought", true);
+                    break;
+                }
+            }
+
+            // Обновить отображение списка
+            shopAdapter.notifyDataSetChanged();
 
             Toast.makeText(ShopActivity.this, "Вы купили " + itemName, Toast.LENGTH_SHORT).show();
         } else {
@@ -201,5 +211,9 @@ public class ShopActivity extends AppCompatActivity {
     public void onUseButtonClicked(View view) {
         // Реализовать логику использования предмета
         Toast.makeText(ShopActivity.this, "Вы использовали предмет", Toast.LENGTH_SHORT).show();
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }
