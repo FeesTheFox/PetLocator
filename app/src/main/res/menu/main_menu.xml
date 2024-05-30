@@ -5,15 +5,18 @@
     <item
         android:id="@+id/menu_profile"
         android:title="Профиль"
+        android:icon="@drawable/profile_icon"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_info"
         android:title="Инфо"
+        android:icon="@drawable/info"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/update"
+        android:icon="@drawable/ic_refresh"
         android:title="Обновить"
         app:showAsAction="ifRoom"/>
 

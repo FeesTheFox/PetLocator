@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
+
     public class ShopActivity extends AppCompatActivity {
         ActivityShopBinding binding;
         FirebaseDatabase firebaseDatabase;
@@ -64,18 +65,24 @@ import java.util.HashMap;
                 purchasesRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            // Если узла "Purchases" нет, то создаем его
+                            purchasesRef.setValue(new HashMap<>());
+                        }
                         // Создаем список идентификаторов купленных предметов
                         ArrayList<String> purchasedIds = new ArrayList<>();
                         for (DataSnapshot purchaseSnapshot : snapshot.getChildren()) {
                             HashMap<String, Object> item = (HashMap<String, Object>) purchaseSnapshot.getValue();
                             String itemId = (String) item.get("id");
                             purchasedIds.add(itemId);
+                            Log.d("FirebaseIDPURCHASED", String.valueOf(purchasedIds));
                         }
 
                         // Обновляем элементы в списке
                         for (int i = 0; i < shopAdapter.getCount(); i++) {
                             HashMap<String, Object> shopItem = (HashMap<String, Object>) shopAdapter.getItem(i);
                             String itemId = (String) shopItem.get("id");
+                            Log.d("FirebaseIDPURCHASE", itemId );
                             if (purchasedIds.contains(itemId)) {
                                 shopItem.put("bought", true);
                                 shopItem.put("buy_button_visibility", View.GONE);
@@ -198,14 +205,26 @@ import java.util.HashMap;
                                 purchaseMap.put("image", selectedItem.get("image"));
 
                                 // Сохраняем информацию о покупке в базе данных Firebase
-                                purchaseRef.setValue(purchaseMap);
+                                purchaseRef.setValue(purchaseMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            // Обновляем информацию о предмете в списке, устанавливая флаг bought в true
+                                            selectedItem.put("bought", true);
+                                            selectedItem.put("buy_button_visibility", View.GONE);
+                                            selectedItem.put("use_button_visibility", View.VISIBLE);
 
-                                // Обновляем информацию о предмете в списке, устанавливая флаг bought в true
-                                selectedItem.put("bought", true);
-                                shopAdapter.notifyDataSetChanged();
+                                            // Обновляем отображение списка
+                                            shopAdapter.notifyDataSetChanged();
 
-                                // Показываем сообщение об успешной покупке
-                                Toast.makeText(ShopActivity.this, "Вы купили " + selectedItem.get("name"), Toast.LENGTH_SHORT).show();
+                                            // Показываем сообщение об успешной покупке
+                                            Toast.makeText(ShopActivity.this, "Вы купили " + selectedItem.get("name"), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // Показываем сообщение об ошибке при покупке
+                                            Toast.makeText(ShopActivity.this, "Произошла ошибка при покупке", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             } else {
                                 // Показываем сообщение об недостаточном количестве монет для покупки
                                 Toast.makeText(ShopActivity.this, "Недостаточно монет-гавов", Toast.LENGTH_SHORT).show();
