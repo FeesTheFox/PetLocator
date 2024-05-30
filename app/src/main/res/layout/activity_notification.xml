@@ -19,7 +19,7 @@
             android:textSize="50sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thanks for using our app!"
+            android:text="Спасибо, что используете моё приложение!"
             android:textColor="@color/black"/>
 
         <Space
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_sign_in"
             android:gravity="center"
-            android:text="Finish" />
+            android:text="Выйти" />
     </LinearLayout>
 
 </RelativeLayout>

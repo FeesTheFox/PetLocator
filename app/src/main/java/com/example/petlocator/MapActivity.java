@@ -295,7 +295,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void showSnackbar(String petName) {
-        Snackbar.make(findViewById(android.R.id.content), petName + " is too far away!", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко!", Snackbar.LENGTH_LONG).show();
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {

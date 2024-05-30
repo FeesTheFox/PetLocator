@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/back"
-        android:title="Back"
+        android:title="Назад"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/notification"
-        android:title="Notification"
+        android:title="Уведомление"
         app:showAsAction="ifRoom"/>
 </menu>

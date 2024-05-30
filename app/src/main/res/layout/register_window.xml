@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Email"
+            android:hint="Почта"
             android:inputType="textEmailAddress"
             android:text=""
             android:textColor="@color/design_default_color_primary"
@@ -29,7 +29,7 @@
             android:id="@+id/passField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="Пароль"
             android:inputType="textPassword"
             android:text=""
             android:textColor="@color/design_default_color_primary"
@@ -40,7 +40,7 @@
             android:id="@+id/nameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="Имя"
             android:inputType="textPersonName"
             android:text=""
             android:textColor="@color/design_default_color_primary"
@@ -51,7 +51,7 @@
             android:id="@+id/phoneField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone"
+            android:hint="Номер телефона"
             android:inputType="phone"
             android:text=""
             android:textColor="@color/design_default_color_primary"
@@ -66,14 +66,14 @@
                 android:id="@+id/User"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User">
+                android:text="Пользователь">
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/Admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Super User">
+                android:text="Супер пользователь">
             </RadioButton>
         </RadioGroup>
 

@@ -138,8 +138,8 @@ public class UserActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
-                builder.setMessage("Are you sure you want to delete pet from the list?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() { //if add
+                builder.setMessage("Вы уверены, что хотите удалить питомца?")
+                        .setPositiveButton("Да", new DialogInterface.OnClickListener() { //if add
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String petIdToDelete = dogsList.get(position).getPetId(); //gets pet ID
@@ -162,7 +162,7 @@ public class UserActivity extends AppCompatActivity {
                                 });
                             }
                             //cancels the pet removal
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -239,7 +239,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Update the pet data in the list and the database
@@ -260,14 +260,14 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        builder.setTitle("Edit pet");
+        builder.setTitle("Изменить данные");
         builder.show();
     }
 
@@ -325,12 +325,12 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (imageUri == null) {
                     // Shows the snackbar with the message
-                    Snackbar.make(binding.getRoot(), "Please select an image for your pet", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(binding.getRoot(), "Пожалуйста, выберите фотографию для питомца", Snackbar.LENGTH_SHORT).show();
                 } else {
                     // Creates a new pet object and saves it in the database
                     Pet pet = new Pet();
@@ -347,14 +347,14 @@ public class UserActivity extends AppCompatActivity {
         });
 
         // If cancels, dialog is canceled
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        builder.setTitle("Add a pet");
+        builder.setTitle("Добавление питомца");
         builder.show();
     }
     private void savePetImageInFirebaseStorage(Uri imageUri, final Pet pet) {
@@ -398,7 +398,7 @@ public class UserActivity extends AppCompatActivity {
 
     private void showImagePicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose an image")
+        builder.setTitle("Выберите фотографию")
                 .setItems(new CharSequence[]{"Gallery", "Camera"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The "which" argument contains the index position of the selected item
@@ -407,7 +407,7 @@ public class UserActivity extends AppCompatActivity {
                             Intent intent = new Intent();
                             intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_PICKER_REQUEST_CODE);
+                            startActivityForResult(Intent.createChooser(intent, "Выберите фотографию"), IMAGE_PICKER_REQUEST_CODE);
                         } else if (which == 1) {
                             // Open camera
                             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -147,7 +147,7 @@
             android:background="@drawable/btn_sign_in"
             android:layout_weight="1"
             android:layout_marginRight="6dp"
-            android:text="@string/btn_SignIn" />
+            android:text="Авторизация" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRegister"
@@ -157,7 +157,7 @@
             android:background="@drawable/btn_register"
             android:layout_weight="1"
             android:layout_marginLeft="6dp"
-            android:text="@string/btn_Register" />
+            android:text="Регистрация" />
     </LinearLayout>
 
 </RelativeLayout>

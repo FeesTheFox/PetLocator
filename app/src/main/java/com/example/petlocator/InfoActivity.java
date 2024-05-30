@@ -71,8 +71,8 @@ public class InfoActivity extends AppCompatActivity {
                 // Create a notification
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(InfoActivity.this, "1")
                         .setSmallIcon(R.mipmap.notification) // You need to provide a notification icon
-                        .setContentTitle("Haiii :3")
-                        .setContentText("Thanks for using our app!")
+                        .setContentTitle("Хаиии :3")
+                        .setContentText("Спасибо, что пользуетесь моим приложением!")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setContentIntent(pendingIntent);
 

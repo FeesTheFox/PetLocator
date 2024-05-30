@@ -9,8 +9,6 @@
     tools:context=".MainActivity"
     android:background="@color/orange">
 
-
-
     <fragment
         android:id="@+id/map2"
         android:name="com.google.android.gms.maps.SupportMapFragment"

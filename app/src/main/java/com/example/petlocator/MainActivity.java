@@ -36,7 +36,6 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sp;
-
     ActivityMainBinding binding;
     FirebaseAuth auth; //For authorizing user
     FirebaseDatabase db; //Data base
@@ -127,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
     private void showRegisterWindow() {
         //dialog window when Registration
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Register");
-        dialog.setMessage("Enter data for registration");
+        dialog.setTitle("Регистрация");
+        dialog.setMessage("Введите данные для авторизации");
         LayoutInflater inflater = LayoutInflater.from(this);
         View register_window = inflater.inflate(R.layout.register_window, null);
         dialog.setView(register_window);
@@ -149,42 +148,42 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
 
-        dialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("Зарегистрироваться", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (TextUtils.isEmpty(email.getText().toString())) {
                     Snackbar.make(binding.root,
-                            "Enter your email address",
+                            "Введите вашу почту",
                             Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(name.getText().toString())) {
                     Snackbar.make(binding.root,
-                            "Enter your name",
+                            "Введите ваше имя",
                             Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(phone.getText().toString())) {
                     Snackbar.make(binding.root,
-                            "Enter your phone number",
+                            "Введите ваш номер телефона",
                             Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 if (pass.getText().toString().length () < 5) {
                     Snackbar.make(binding.root,
-                            "Enter the password at least 5 characters",
+                            "Пароль должен содержать больше 5 символов",
                             Snackbar.LENGTH_SHORT).show();
                     return;
                 }if (choosen_role[0] == null){
                     Snackbar.make(binding.root,
-                            "Pick a role",
+                            "Выберите роль",
                             Snackbar.LENGTH_SHORT).show();
                 }
                 //User's registration
@@ -197,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
                                 user.setEmail(email.getText().toString());
                                 user.setName(name.getText().toString());
                                 user.setPhone(phone.getText().toString());
-                                user.setPass(pass.getText().toString());
                                 user.setRole(choosen_role[0].toString());
                                 //adding new user in the table (key - ID of record)
                                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -205,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                Snackbar.make(binding.root, "Success!",
+                                                Snackbar.make(binding.root, "Успешно зарегистрирован!",
                                                         Snackbar.LENGTH_SHORT).show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
@@ -231,32 +229,32 @@ public class MainActivity extends AppCompatActivity {
     private void showSignInWindow() {
         //dialog window when Signing In
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("Sign In");
-        dialog.setMessage("Enter log in data");
+        dialog.setTitle("Авторизация");
+        dialog.setMessage("Введите ваши данные");
         LayoutInflater inflater = LayoutInflater.from(this);
         View sign_in_window = inflater.inflate(R.layout.sign_in_window, null);
         dialog.setView(sign_in_window);
         final EditText email = sign_in_window.findViewById(R.id.emailField);
         final EditText pass = sign_in_window.findViewById(R.id.passField);
 
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
-        dialog.setPositiveButton("Sign In", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("Авторизоваться", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (TextUtils.isEmpty(email.getText().toString())){
                     Snackbar.make(binding.root,
-                            "Enter your email address",
+                            "Введите вашу почту",
                             Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 if (pass.getText().toString().length() < 5){
                     Snackbar.make(binding.root,
-                            "Enter the password at least 5 characters",
+                            "Пароль должен содержать больше 5 символов",
                             Snackbar.LENGTH_SHORT).show();
                     return;
                 }
@@ -274,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                                 for (DataSnapshot child : snapshot.getChildren()) {
                                     User user = child.getValue(User.class);
                                     if (user.getEmail().equals(email.getText().toString())) {
-                                        if (user.getRole().equals("User")){
+                                        if (user.getRole().equals("Пользователь")){
                                             Intent intent = new Intent(MainActivity.this, MapActivity.class);
                                             intent.putExtra("Email", user.getEmail());
                                             intent.putExtra("Name", user.getName());
@@ -282,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                                             intent.putExtra("Role", user.getRole());
                                             startActivity(intent);
                                         }
-                                        if (user.getRole().equals("Super User")){
+                                        if (user.getRole().equals("Супер пользователь")){
                                             Intent intent = new Intent(MainActivity.this, MapActivity2.class);
                                             intent.putExtra("Email", user.getEmail());
                                             intent.putExtra("Name", user.getName());
@@ -305,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) { //Fail
                         Snackbar.make(binding.root,
-                                "Authorization Error: "+
+                                "Ошибка авторизации: "+
                                 e.getMessage(), Snackbar.LENGTH_SHORT).show();
                     }
                 });

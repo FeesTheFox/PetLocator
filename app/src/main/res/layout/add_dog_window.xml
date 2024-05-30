@@ -8,21 +8,21 @@
         android:id="@+id/editTextSpecies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter species"
+        android:hint="Вид питомца"
         android:inputType="text"/>
 
     <EditText
         android:id="@+id/editTextAge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter age"
+        android:hint="Возраст питомца"
         android:inputType="number"/>
 
     <EditText
         android:id="@+id/editTextPetName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter pet name"
+        android:hint="Имя питомца"
         android:inputType="text"/>
 
     <ImageView
@@ -37,6 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="Select Image" />
+        android:text="Выберите фотографию" />
 
 </LinearLayout>
