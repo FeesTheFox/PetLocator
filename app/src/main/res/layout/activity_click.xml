@@ -6,7 +6,9 @@
     android:background="@color/orange"
     tools:context=".ClickActivity">
 
+
     <RelativeLayout
+        android:id="@+id/Data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/orange">
@@ -25,8 +27,8 @@
             android:layout_centerInParent="true"
             android:src="@drawable/img_resize" />
 
-
         <TextView
+            android:id="@+id/header_tit2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Нажми на собаку!"
@@ -45,6 +47,17 @@
             android:text="0"
             android:textSize="24sp" />
 
+        <Button
+            android:id="@+id/shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/header_tit2"
+            android:text="Магазин кликера"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"/>
+
     </RelativeLayout>
+
 
 </RelativeLayout>
