@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -433,6 +434,8 @@ public class MapActivity extends AppCompatActivity {
                     if (userMarker != null) {
                         addPetsAroundUserMarker(userMarker.getPosition());
                     }
+
+                    addPetsToContainer();
                 } else {
                     Log.d("UserActivity", "User data not found");
                 }
@@ -524,5 +527,42 @@ public class MapActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void addPetsToContainer() {
+        LinearLayout petsContainer = findViewById(R.id.pets_container);
+        petsContainer.removeAllViews(); // Clear the container
+
+        for (int i = 0; i < pets.size(); i++) {
+            Pet pet = pets.get(i);
+
+            PetView petView = new PetView(this);
+            petView.setPet(pet);
+            Glide.with(this)
+                    .load(pet.getImageResource())
+                    .apply(new RequestOptions().override(200, 200))
+                    .into(petView);
+            petsContainer.addView(petView);
+
+            // Add an onClick listener for the pet view
+            petView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Pet selectedPet = ((PetView) v).getPet();
+                    LatLng petLocation = new LatLng(selectedPet.getLatitude(), selectedPet.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(petLocation, 18));
+                }
+            });
+
+            // Add a space between the pet views
+            if (i < pets.size() - 1) {
+                View space = new View(this);
+                space.setLayoutParams(new LinearLayout.LayoutParams(16, 0)); // 16dp space
+                petsContainer.addView(space);
+            }
+        }
+    }
+
+
 
 }
