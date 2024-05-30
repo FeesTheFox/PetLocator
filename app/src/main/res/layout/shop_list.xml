@@ -10,6 +10,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center_vertical"
+        android:layout_margin="4dp"
         android:src="@drawable/img_resize" />
 
     <LinearLayout
@@ -17,7 +18,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:paddingLeft="16dp">
+        android:paddingLeft="16dp"
+        android:layout_margin="4dp">
 
         <TextView
             android:id="@+id/item_name"
@@ -25,7 +27,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="Item Name"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_margin="4dp"/>
 
         <TextView
             android:id="@+id/item_price"
@@ -33,7 +36,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="Price: 0 Coins"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:layout_margin="4dp"/>
 
     </LinearLayout>
 
@@ -42,6 +47,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="Купить" />
+        android:text="Купить"
+        android:visibility="gone"
+        android:layout_margin="4dp"
+        android:onClick="onBuyButtonClicked"/>
+
+    <Button
+        android:id="@+id/use_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Использовать"
+        android:visibility="gone"
+        android:layout_margin="4dp"
+        android:onClick="onUseButtonClicked"/>
 
 </LinearLayout>
