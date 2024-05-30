@@ -5,17 +5,19 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.petlocator.R;
 import com.example.petlocator.databinding.ActivityClickBinding;
 
 public class ClickActivity extends AppCompatActivity {
 
     private int clicks = 0;
     private MediaPlayer mediaPlayer;
+    private Animation rotateAnimation;
 
     ActivityClickBinding binding;
 
@@ -28,6 +30,8 @@ public class ClickActivity extends AppCompatActivity {
 
         mediaPlayer = MediaPlayer.create(this, com.example.petlocator.R.raw.bark);
 
+        rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_animation);
+
         binding.resizeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +40,8 @@ public class ClickActivity extends AppCompatActivity {
                 clicksTextView.setText(String.valueOf(clicks));
 
                 mediaPlayer.start();
+
+                binding.resizeImageView.startAnimation(rotateAnimation);
             }
         });
     }
