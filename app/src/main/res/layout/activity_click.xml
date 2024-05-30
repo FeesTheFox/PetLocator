@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange"
+    tools:context=".ClickActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/orange">
+
+        <ImageView
+            android:id="@+id/sun_image_view"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/sun" />
+
+        <ImageView
+            android:id="@+id/resize_image_view"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/img_resize" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Нажми на собаку!"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:layout_above="@id/sun_image_view"
+            android:textSize="35dp"
+            android:textAllCaps="true"/>
+
+        <TextView
+            android:id="@+id/clicks_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/resize_image_view"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

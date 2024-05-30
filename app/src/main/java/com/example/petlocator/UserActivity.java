@@ -129,6 +129,13 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+        binding.clicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(UserActivity.this, ClickActivity.class);
+                startActivity(intent1);
+            }
+        });
 
         //gets a path for User -> pets
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(currentUserUid).child("pets");

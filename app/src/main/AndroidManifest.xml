@@ -24,24 +24,28 @@
         android:theme="@style/Theme.PetLocator"
         tools:targetApi="31">
         <activity
+            android:name=".ClickActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />/>
+        <activity
             android:name=".Notification_Activity"
             android:exported="false" />
         <activity
             android:name=".InfoActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
             android:name=".UserActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
             android:name=".MapActivity2"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
             android:name=".MapActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

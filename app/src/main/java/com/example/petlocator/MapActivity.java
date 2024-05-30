@@ -106,6 +106,8 @@ public class MapActivity extends AppCompatActivity {
         createMapView(); //initializes map
 
 
+
+
     }
 
     @Override
