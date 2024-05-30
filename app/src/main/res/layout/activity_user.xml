@@ -66,13 +66,13 @@
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/btn_register"
             android:text="Добавить питомца"
             android:textColor="@color/white" />
 
         <Space
-            android:layout_width="20dp"
+            android:layout_width="10dp"
             android:layout_height="20dp"/>
 
         <Button
@@ -81,6 +81,17 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_register"
             android:text="Кликер"
+            android:textColor="@color/white"/>
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="20dp"/>
+
+        <Button
+            android:id="@+id/suggestions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_register"
+            android:text="Советы"
             android:textColor="@color/white"/>
     </LinearLayout>
     
