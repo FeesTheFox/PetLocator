@@ -4,5 +4,6 @@
     <item
         android:id="@+id/back"
         android:title="Назад"
+        android:icon="@drawable/arrow_back"
         app:showAsAction="ifRoom" />
 </menu>
