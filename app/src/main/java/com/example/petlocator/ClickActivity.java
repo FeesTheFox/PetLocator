@@ -41,8 +41,7 @@ public class ClickActivity extends AppCompatActivity {
     private String userId;
 
     private ImageView imageView;
-    private boolean[] isReached = {false, false, false, false};
-
+    private boolean[] isReached = {false, false, false, false, false};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,12 +102,16 @@ public class ClickActivity extends AppCompatActivity {
                     clicksToAdd = 3;
                 } else if (clicks >= 1000) {
                     clicksToAdd = 4;
+                } else if (clicks >= 3000) {
+                    clicksToAdd = 5;
                 }
                 clicks += clicksToAdd;
 
                 mediaPlayer.start();
 
                 imageView.startAnimation(rotateAnimation);
+
+
 
                 if (firebaseUser != null) {
                     HashMap<String, Object> data = new HashMap<>();
@@ -131,7 +134,15 @@ public class ClickActivity extends AppCompatActivity {
         int clicksCount = clicks;
         String clicksText = String.valueOf(clicksCount);
 
-        if (clicksCount >= 1600) {
+        if (clicksCount >= 3000){
+            imageView.setImageResource(R.drawable.img_resize6);
+            if (clicksCount == 3000 && !isReached[4]){
+                showSnackbar("Так держать, вы добрались до 3000");
+                mediaPlayer1.start();
+                isReached[4] = true;
+            }
+        }
+        else if (clicksCount >= 1600) {
             imageView.setImageResource(R.drawable.img_resize5);
             if (clicksCount == 1600 && !isReached[3]) {
                 showSnackbar("Так держать, вы добрались до 1600");
