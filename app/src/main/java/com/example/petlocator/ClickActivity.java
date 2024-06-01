@@ -41,6 +41,7 @@ public class ClickActivity extends AppCompatActivity {
     private String userId;
 
     private ImageView imageView;
+    private boolean[] isReached = {false, false, false, false};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,15 @@ public class ClickActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clicks++;
+                int clicksToAdd = 1;
+                if (clicks >= 200 && clicks < 600) {
+                    clicksToAdd = 2;
+                } else if (clicks >= 600 && clicks < 1000) {
+                    clicksToAdd = 3;
+                } else if (clicks >= 1000) {
+                    clicksToAdd = 4;
+                }
+                clicks += clicksToAdd;
 
                 mediaPlayer.start();
 
@@ -124,27 +133,31 @@ public class ClickActivity extends AppCompatActivity {
 
         if (clicksCount >= 1600) {
             imageView.setImageResource(R.drawable.img_resize5);
-            if (clicksCount == 1600){
+            if (clicksCount == 1600 && !isReached[3]) {
                 showSnackbar("Так держать, вы добрались до 1600");
                 mediaPlayer1.start();
+                isReached[3] = true;
             }
         } else if (clicksCount >= 1000) {
             imageView.setImageResource(R.drawable.img_resize4);
-            if (clicksCount == 1000) {
+            if (clicksCount == 1000 && !isReached[2]) {
                 showSnackbar("Так держать, вы добрались до 1000");
                 mediaPlayer1.start();
+                isReached[2] = true;
             }
         } else if (clicksCount >= 600) {
             imageView.setImageResource(R.drawable.img_resize3);
-            if (clicksCount == 600) {
+            if (clicksCount == 600 && !isReached[1]) {
                 showSnackbar("Так держать, вы добрались до 600");
                 mediaPlayer1.start();
+                isReached[1] = true;
             }
         } else if (clicksCount >= 200) {
             imageView.setImageResource(R.drawable.img_resize2);
-            if (clicksCount == 200) {
+            if (clicksCount == 200 && !isReached[0]) {
                 showSnackbar("Так держать, вы добрались до 200");
                 mediaPlayer1.start();
+                isReached[0] = true;
             }
         } else {
             imageView.setImageResource(R.drawable.img_resize);
