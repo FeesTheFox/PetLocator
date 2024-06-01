@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.petlocator.databinding.ActivityClickBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,25 +32,23 @@ public class ClickActivity extends AppCompatActivity {
 
     private int clicks = 0;
     private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer1;
     private Animation rotateAnimation;
-
-    ActivityClickBinding binding;
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private String userId;
 
-    TextView clicksTextView;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityClickBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        setContentView(R.layout.activity_click);
 
-        mediaPlayer = MediaPlayer.create(this, com.example.petlocator.R.raw.bark);
+        mediaPlayer = MediaPlayer.create(this, R.raw.bark);
+        mediaPlayer1 = MediaPlayer.create(this, R.raw.yippie);
 
         rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_animation);
 
@@ -56,14 +56,6 @@ public class ClickActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance("https://petlocator-d7771-default-rtdb.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-
-        binding.shop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ClickActivity.this, ShopActivity.class);
-                startActivity(intent);
-            }
-        });
 
         if (firebaseUser != null) {
             // Получаем уникальный идентификатор пользователя
@@ -87,7 +79,7 @@ public class ClickActivity extends AppCompatActivity {
                         firebaseDatabase.getReference("Users").child(userId).updateChildren(data);
                     }
                     // Отображаем количество кликов на экране
-                    clicksTextView.setText(String.valueOf(clicks));
+                    setImageAndClicksText();
                 }
 
                 @Override
@@ -97,25 +89,74 @@ public class ClickActivity extends AppCompatActivity {
             });
         }
 
-        // Получаем ссылку на элемент TextView с идентификатором clicks_text_view
-        clicksTextView = findViewById(R.id.clicks_text_view);
+        // Получаем ссылку на элемент ImageView с идентификатором resize_image_view
+        imageView = findViewById(R.id.resize_image_view);
 
-        binding.resizeImageView.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clicks++;
-                clicksTextView.setText(String.valueOf(clicks));
 
                 mediaPlayer.start();
 
-                binding.resizeImageView.startAnimation(rotateAnimation);
+                imageView.startAnimation(rotateAnimation);
 
-                HashMap<String, Object> data = new HashMap<>();
-                data.put("clicks", clicks);
+                if (firebaseUser != null) {
+                    HashMap<String, Object> data = new HashMap<>();
+                    data.put("clicks", clicks);
 
-                firebaseDatabase.getReference("Users").child(userId).updateChildren(data);
+                    firebaseDatabase.getReference("Users").child(userId).updateChildren(data)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // Отображаем количество кликов на экране
+                                    setImageAndClicksText();
+                                }
+                            });
+                }
             }
         });
+    }
+
+    private void setImageAndClicksText() {
+        int clicksCount = clicks;
+        String clicksText = String.valueOf(clicksCount);
+
+        if (clicksCount >= 1600) {
+            imageView.setImageResource(R.drawable.img_resize5);
+            if (clicksCount == 1600){
+                showSnackbar("Так держать, вы добрались до 1600");
+                mediaPlayer1.start();
+            }
+        } else if (clicksCount >= 1000) {
+            imageView.setImageResource(R.drawable.img_resize4);
+            if (clicksCount == 1000) {
+                showSnackbar("Так держать, вы добрались до 1000");
+                mediaPlayer1.start();
+            }
+        } else if (clicksCount >= 600) {
+            imageView.setImageResource(R.drawable.img_resize3);
+            if (clicksCount == 600) {
+                showSnackbar("Так держать, вы добрались до 600");
+                mediaPlayer1.start();
+            }
+        } else if (clicksCount >= 200) {
+            imageView.setImageResource(R.drawable.img_resize2);
+            if (clicksCount == 200) {
+                showSnackbar("Так держать, вы добрались до 200");
+                mediaPlayer1.start();
+            }
+        } else {
+            imageView.setImageResource(R.drawable.img_resize);
+        }
+
+        // Отображаем количество кликов на экране
+        TextView clicksTextView = findViewById(R.id.clicks_text_view);
+        clicksTextView.setText(clicksText);
+    }
+
+    private void showSnackbar(String message) {
+        Snackbar.make(imageView, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
