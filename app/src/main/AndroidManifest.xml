@@ -24,7 +24,7 @@
         android:theme="@style/Theme.PetLocator"
         tools:targetApi="31">
         <activity
-            android:name=".ShopActivity"
+            android:name=".FlappyActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
         <activity

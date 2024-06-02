@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.petlocator.databinding.ActivityClickBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -185,7 +184,7 @@ public class ClickActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.back_menu, menu);
+        getMenuInflater().inflate(R.menu.game_menu, menu);
         return true;
     }
 
@@ -196,6 +195,11 @@ public class ClickActivity extends AppCompatActivity {
         if (id == R.id.back) {
             finish();
 
+            return true;
+        }
+        if (id == R.id.flappyBird){
+            Intent intent = new Intent(ClickActivity.this, FlappyActivity.class);
+            startActivity(intent);
             return true;
         }
 
