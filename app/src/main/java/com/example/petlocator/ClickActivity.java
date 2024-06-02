@@ -197,7 +197,7 @@ public class ClickActivity extends AppCompatActivity {
 
             return true;
         }
-        if (id == R.id.flappyBird){
+        if (id == R.id.Flappy){
             Intent intent = new Intent(ClickActivity.this, FlappyActivity.class);
             startActivity(intent);
             return true;
