@@ -1,8 +1,6 @@
 package com.example.petlocator;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,9 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -29,16 +25,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterInside;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.petlocator.databinding.ActivityMapBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -107,9 +97,6 @@ public class MapActivity extends AppCompatActivity {
         loadPetsData();
 
         createMapView(); //initializes map
-
-
-
 
     }
 
@@ -258,18 +245,6 @@ public class MapActivity extends AppCompatActivity {
 
         return bitmapDescriptor[0];
     }
-
-
-    private MarkerIconCallback markerIconCallback = new MarkerIconCallback() {
-        @Override
-        public void onMarkerIconReady(BitmapDescriptor markerIcon) {
-            if (petMarkers.size() > 0) { // check if the list is not empty
-                Marker petMarker = petMarkers.get(0); // get the first marker from the list
-                petMarker.setIcon(markerIcon); // set the icon for the marker
-                petMarkers.remove(0); // remove the marker from the list
-            }
-        }
-    };
 
     interface MarkerIconCallback {
         void onMarkerIconReady(BitmapDescriptor markerIcon);

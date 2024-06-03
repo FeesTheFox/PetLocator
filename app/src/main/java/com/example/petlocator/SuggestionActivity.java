@@ -1,7 +1,5 @@
 package com.example.petlocator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -10,7 +8,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.petlocator.databinding.ActivityClickBinding;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.petlocator.databinding.ActivitySuggestionBinding;
 
 public class SuggestionActivity extends AppCompatActivity {
