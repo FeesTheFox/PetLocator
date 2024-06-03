@@ -5,9 +5,11 @@ import android.net.Uri;
 public class Pet {
     String species, age, petname, petId;
     private double latitude, longitude;
+    private double previousLatitude, previousLongitude;
     private String  imageResource;
     private Uri newImageUri;
     private boolean isNew;
+    private int color;
     public Pet(){}
     public Pet(String species, String age, String petname, String petId, double latitude, double longitude, String imageResource
     ,boolean isNew){
@@ -57,4 +59,16 @@ public class Pet {
     public Uri getNewImageUri() {return newImageUri;}
 
     public void setNewImageUri(Uri newImageUri) {this.newImageUri = newImageUri;}
+
+    public double getPreviousLatitude() {return previousLatitude;}
+
+    public void setPreviousLatitude(double previousLatitude) {this.previousLatitude = previousLatitude;}
+
+    public double getPreviousLongitude() {return previousLongitude;}
+
+    public void setPreviousLongitude(double previousLongitude) {this.previousLongitude = previousLongitude;}
+
+    public int getColor() {return color;}
+
+    public void setColor(int color) {this.color = color;}
 }

@@ -53,6 +53,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -80,7 +82,7 @@ public class MapActivity extends AppCompatActivity {
     private boolean isNewMarkerAdded = false;
     private static final double MAX_DISTANCE = 150;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-
+    private List<Polyline> petPolylines;
 
 
     @Override
@@ -99,6 +101,7 @@ public class MapActivity extends AppCompatActivity {
         // Initialize pets list
         pets = new ArrayList<>();
         petMarkers = new ArrayList<>();
+        petPolylines = new ArrayList<>();
 
         // Load pets data
         loadPetsData();
@@ -191,6 +194,11 @@ public class MapActivity extends AppCompatActivity {
                                 marker.remove();
                             }
                             petMarkers.clear();
+
+                            for (Polyline polyline : petPolylines) {
+                                polyline.remove();
+                            }
+                            petPolylines.clear();
 
                             // Add markers for pets around user marker
                             addPetsAroundUserMarker(latLng);
@@ -303,6 +311,7 @@ public class MapActivity extends AppCompatActivity {
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
         petMarkers.clear(); // clears the markers list
+        petPolylines.clear();
 
         // adds new markers into petMarkers list
         for (Pet pet : pets) {
@@ -316,6 +325,9 @@ public class MapActivity extends AppCompatActivity {
                 // Add marker for pet
                 MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
 
+                int color = Color.argb(255, (int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
+                pet.setColor(color);
+
                 // Create a custom marker icon with pet's name and image
                 int index = pets.indexOf(pet);
                 BitmapDescriptor markerIcon = createMarkerIcon(pet, index);
@@ -327,6 +339,16 @@ public class MapActivity extends AppCompatActivity {
                 // Update pet's location
                 pet.setLatitude(newLatitude);
                 pet.setLongitude(newLongitude);
+                pet.setPreviousLatitude(newLatitude);
+                pet.setPreviousLongitude(newLongitude);
+
+
+                PolylineOptions polylineOptions = new PolylineOptions()
+                        .add(new LatLng(pet.getPreviousLatitude(), pet.getPreviousLongitude()), new LatLng(newLatitude, newLongitude))
+                        .width(5)
+                        .color(pet.getColor());
+                Polyline petPolyline = mMap.addPolyline(polylineOptions);
+                petPolylines.add(petPolyline);
 
                 // Set the pet's name as the marker's title
                 petMarker.setTitle(pet.getpetName());
@@ -363,6 +385,11 @@ public class MapActivity extends AppCompatActivity {
                         Marker petMarker = petMarkers.get(i);
                         petMarker.setPosition(petLocation);
                         newPetMarkers.add(petMarker); // Adding an updated marker into list of pet markers
+
+                        Polyline petPolyline = petPolylines.get(i);
+                        List<LatLng> points = petPolyline.getPoints();
+                        points.add(petLocation);
+                        petPolyline.setPoints(points);
 
                         // Checks the range between user's marker and pet's marker
                         if (userMarker != null) {
@@ -553,6 +580,16 @@ public class MapActivity extends AppCompatActivity {
                     Pet selectedPet = ((PetView) v).getPet();
                     LatLng petLocation = new LatLng(selectedPet.getLatitude(), selectedPet.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(petLocation, 18));
+
+                    for (Polyline polyline : petPolylines) {
+                        if ((polyline.getPoints().get(0).equals(new LatLng(selectedPet.getPreviousLatitude(), selectedPet.getPreviousLongitude())) &&
+                                polyline.getPoints().get(polyline.getPoints().size() - 1).equals(petLocation)) &&
+                        polyline.getColor() == selectedPet.getColor()) {
+                            polyline.setWidth(10);
+                        } else {
+                            polyline.setWidth(5);
+                        }
+                    }
                 }
             });
 
