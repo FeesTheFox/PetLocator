@@ -1,6 +1,7 @@
 package com.example.petlocator;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -420,10 +423,23 @@ public class MapActivity2 extends AppCompatActivity {
                         pet.setLatitude(newLatitude);
                         pet.setLongitude(newLongitude);
 
-                        // Update pet's marker position
+                        // Update pet's marker position with Interpolator
                         LatLng petLocation = new LatLng(pet.getLatitude(), pet.getLongitude());
                         Marker petMarker = petMarkers.get(i);
-                        petMarker.setPosition(petLocation);
+                        long duration = 1000; // Set the duration of the animation to 1 second
+                        LinearInterpolator interpolator = new LinearInterpolator(); // or TimeInterpolator interpolator = new LinearInterpolator();
+                        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+                        valueAnimator.setDuration(duration);
+                        valueAnimator.setInterpolator((android.animation.TimeInterpolator) interpolator);
+                        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                            @Override
+                            public void onAnimationUpdate(ValueAnimator animation) {
+                                float animatedFraction = animation.getAnimatedFraction();
+                                LatLng newPosition = SphericalUtil.interpolate(petMarker.getPosition(), petLocation, animatedFraction);
+                                petMarker.setPosition(newPosition);
+                            }
+                        });
+                        valueAnimator.start();
                         newPetMarkers.add(petMarker); // Adding an updated marker into list of pet markers
 
                         Polyline petPolyline = petPolylines.get(i);
