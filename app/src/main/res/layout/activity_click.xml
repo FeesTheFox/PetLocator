@@ -18,6 +18,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/catSwitch" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/gameReload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/btn_register"
+            android:text="Начать заново"
+            android:padding="20dp"/>
+
         <ImageView
             android:id="@+id/sun_image_view"
             android:layout_width="300dp"

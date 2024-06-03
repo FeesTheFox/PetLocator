@@ -1,5 +1,6 @@
 package com.example.petlocator;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.petlocator.databinding.ActivityClickBinding;
@@ -62,6 +64,35 @@ public class ClickActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance("https://petlocator-d7771-default-rtdb.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
+        binding.gameReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ClickActivity.this);
+                dialogBuilder.setTitle("Начать игру заново?");
+                dialogBuilder.setMessage("Вы уверены, что хотите начать игру заново?");
+                dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Сбрасываем счётчик кликера
+                        clicks = 0;
+                        if (firebaseUser != null) {
+                            HashMap<String, Object> data = new HashMap<>();
+                            data.put("clicks", clicks);
+                            firebaseDatabase.getReference("Users").child(userId).updateChildren(data);
+                        }
+                        setImageAndClicksText();
+                    }
+                });
+                dialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
+            }
+        });
 
         binding.catSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
