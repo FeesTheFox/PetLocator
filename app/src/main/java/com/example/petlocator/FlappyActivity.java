@@ -45,7 +45,7 @@ public class FlappyActivity extends AppCompatActivity {
         });
 
         // Load the URL
-        webView.loadUrl("https://flappybird.io");
+        webView.loadUrl("https://flappy-bird.io");
     }
 
 
