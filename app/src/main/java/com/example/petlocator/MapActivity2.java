@@ -348,8 +348,9 @@ public class MapActivity2 extends AppCompatActivity {
         return bitmap;
     }
 
-    private void showSnackbar(String petName) {
-        Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко!", Snackbar.LENGTH_LONG).show();
+    private void showSnackbar(String petName, float distance) {
+        int dist = Math.round(distance);
+        Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко!" + " " + dist + " м. от дома" , Snackbar.LENGTH_LONG).show();
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
@@ -459,7 +460,7 @@ public class MapActivity2 extends AppCompatActivity {
 
                             float distance = userLocation.distanceTo(petLocationObj);
                             if (distance > MAX_DISTANCE) {
-                                showSnackbar(pet.getpetName());
+                                showSnackbar(pet.getpetName(),distance);
                             }
                         }
                     }
