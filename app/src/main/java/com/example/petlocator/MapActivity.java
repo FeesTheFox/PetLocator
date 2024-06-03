@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -92,6 +93,18 @@ public class MapActivity extends AppCompatActivity {
         pets = new ArrayList<>();
         petMarkers = new ArrayList<>();
         petPolylines = new ArrayList<>();
+
+        binding.trailSwitch.setChecked(true);
+
+
+        binding.trailSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (Polyline polyline : petPolylines) {
+                    polyline.setVisible(isChecked);
+                }
+            }
+        });
 
         // Load pets data
         loadPetsData();

@@ -113,6 +113,8 @@ public class MapActivity2 extends AppCompatActivity {
 
         musicSwitch = findViewById(R.id.musicSwitch);
 
+        binding.trailSwitch.setChecked(true);
+
         boolean isChecked = getMusicStateFromPreferences();
         musicSwitch.setChecked(isChecked);
         if (isChecked) {
@@ -130,6 +132,16 @@ public class MapActivity2 extends AppCompatActivity {
                 }
 
                 saveMusicStateToPreferences(isChecked);
+            }
+        });
+
+
+        binding.trailSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                for (Polyline polyline : petPolylines) {
+                    polyline.setVisible(isChecked);
+                }
             }
         });
 
