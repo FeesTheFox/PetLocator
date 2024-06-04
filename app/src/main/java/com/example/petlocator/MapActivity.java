@@ -207,6 +207,12 @@ public class MapActivity extends AppCompatActivity {
                             }
                             petPolylines.clear();
 
+
+                            for (Pet pet : pets) {
+                                pet.setPreviousLatitude(latLng.latitude);
+                                pet.setPreviousLongitude(latLng.longitude);
+                            }
+
                             // Add markers for pets around user marker
                             addPetsAroundUserMarker(latLng);
 
