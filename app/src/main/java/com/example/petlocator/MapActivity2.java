@@ -282,6 +282,7 @@ public class MapActivity2 extends AppCompatActivity {
 
         Glide.with(this)
                 .asBitmap()
+                .transform(new RoundedCornersTransformation(16))
                 .load(pet.getImageResource())
                 .apply(new RequestOptions().override(100, 100))
                 .into(new SimpleTarget<Bitmap>() {
@@ -618,6 +619,7 @@ public class MapActivity2 extends AppCompatActivity {
             petView.setPet(pet);
             Glide.with(this)
                     .load(pet.getImageResource())
+                    .transform(new RoundedCornersTransformation(16))
                     .apply(new RequestOptions().override(200, 200))
                     .into(petView);
             petsContainer.addView(petView);

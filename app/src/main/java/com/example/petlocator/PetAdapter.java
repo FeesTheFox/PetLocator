@@ -49,6 +49,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         // Use Glide to load the pet's image from the Firebase Storage
         Glide.with(mContext)
                 .load(currentPet.getImageResource())
+                .transform(new RoundedCornersTransformation(16))
                 .placeholder(R.drawable.img) // You can set a placeholder drawable to display while the image is loading
                 .into(imageView);
 

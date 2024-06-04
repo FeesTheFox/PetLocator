@@ -237,7 +237,7 @@ public class UserActivity extends AppCompatActivity {
         species.setText(pet.getSpecies());
         age.setText(pet.getAge());
         name.setText(pet.getpetName());
-        Glide.with(this).load(pet.getImageResource()).into(imageView);
+        Glide.with(this).load(pet.getImageResource()).transform(new RoundedCornersTransformation(16)).into(imageView);
 
         // sets imageUri for a current pet
         imageUri = pet.getNewImageUri();
@@ -438,7 +438,7 @@ public class UserActivity extends AppCompatActivity {
         if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
             if (imageUri != null && imageView != null) {
-                Glide.with(this).load(imageUri).into(imageView);
+                Glide.with(this).load(imageUri).transform(new RoundedCornersTransformation(16)).into(imageView);
             }
         } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
@@ -449,7 +449,7 @@ public class UserActivity extends AppCompatActivity {
 
                 // Load the image into imageView using Glide
                 if (imageView != null) {
-                    Glide.with(this).load(imageUri).into(imageView);
+                    Glide.with(this).load(imageUri).transform(new RoundedCornersTransformation(16)).into(imageView);
                 }
             }
         }

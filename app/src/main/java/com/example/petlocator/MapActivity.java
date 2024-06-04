@@ -578,6 +578,7 @@ public class MapActivity extends AppCompatActivity {
             petView.setPet(pet);
             Glide.with(this)
                     .load(pet.getImageResource())
+                    .transform(new RoundedCornersTransformation(16))
                     .apply(new RequestOptions().override(200, 200))
                     .into(petView);
             petsContainer.addView(petView);
