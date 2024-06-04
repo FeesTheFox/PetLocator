@@ -120,7 +120,7 @@ public class ClickActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mediaPlayer3.start();
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ClickActivity.this);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ClickActivity.this,R.style.DialogStyle);
                 dialogBuilder.setTitle("Начать игру заново?");
                 dialogBuilder.setMessage("Вы уверены, что хотите начать игру заново?");
                 dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {

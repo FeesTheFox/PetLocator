@@ -47,7 +47,7 @@ public class RequisiteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mediaPlayer.start();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(RequisiteActivity.this);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(RequisiteActivity.this, R.style.DialogStyle);
                 dialog.setTitle("Написать на почту");
                 dialog.setMessage("Вы хотите написать на почту feesblock@gmail.com?");
                 dialog.setPositiveButton("Да", new DialogInterface.OnClickListener() {

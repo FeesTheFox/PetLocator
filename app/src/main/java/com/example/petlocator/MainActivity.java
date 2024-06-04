@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showRegisterWindow() {
         //dialog window when Registration
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.DialogStyle);
         dialog.setTitle("Регистрация");
         dialog.setMessage("Введите данные для авторизации");
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -144,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText phone = register_window.findViewById(R.id.phoneField);
 
         String[] choosen_role = new String[1]; //getting role
+
         RadioGroup group = register_window.findViewById(R.id.radiogroup);
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -237,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSignInWindow() {
         //dialog window when Signing In
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.DialogStyle);
         dialog.setTitle("Авторизация");
         dialog.setMessage("Введите ваши данные");
         LayoutInflater inflater = LayoutInflater.from(this);

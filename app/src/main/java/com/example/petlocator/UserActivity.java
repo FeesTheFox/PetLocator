@@ -158,7 +158,7 @@ public class UserActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this, R.style.DialogStyle);
                 builder.setMessage("Вы уверены, что хотите удалить питомца?")
                         .setPositiveButton("Да", new DialogInterface.OnClickListener() { //if add
                             @Override
@@ -234,7 +234,7 @@ public class UserActivity extends AppCompatActivity {
 
     // Editing the pet data
     private void showEditDogDialog(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogStyle);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.add_dog_window, null);
         builder.setView(dialogView);
@@ -333,7 +333,7 @@ public class UserActivity extends AppCompatActivity {
 
     //Dialog of adding pet
     private void showAddDogDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogStyle);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.add_dog_window, null);
         builder.setView(dialogView);

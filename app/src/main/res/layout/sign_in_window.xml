@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,8 +21,7 @@
             android:hint="Почта"
             android:inputType="textEmailAddress"
             android:text=""
-            android:textColor="@color/design_default_color_primary"
-            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
         <EditText
@@ -32,9 +31,8 @@
             android:hint="Пароль"
             android:inputType="textPassword"
             android:text=""
-            android:textColor="@color/design_default_color_primary"
-            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textColor="@color/black"
             android:textSize="20sp" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>
