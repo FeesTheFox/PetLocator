@@ -19,6 +19,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
@@ -623,6 +624,25 @@ public class MapActivity2 extends AppCompatActivity {
                     .apply(new RequestOptions().override(200, 200))
                     .into(petView);
             petsContainer.addView(petView);
+
+
+            petView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            // Set background to semi-transparent when touched
+                            v.setAlpha(0.5f);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                        case MotionEvent.ACTION_CANCEL:
+                            // Reset background transparency when not touched
+                            v.setAlpha(1.0f);
+                            break;
+                    }
+                    return false;
+                }
+            });
 
             // Add an onClick listener for the pet view
             petView.setOnClickListener(new View.OnClickListener() {
