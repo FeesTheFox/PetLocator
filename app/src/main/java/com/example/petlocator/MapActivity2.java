@@ -174,6 +174,7 @@ public class MapActivity2 extends AppCompatActivity {
             } else {
                 Log.e("MapActivity", "Role is null or not found in intent extras");
             }
+            intent1.putExtra("Phone", intent.getStringExtra("Phone"));
             intent1.putExtra("Email", intent.getStringExtra("Email"));
             intent1.putExtra("Name", intent.getStringExtra("Name"));
             intent1.putExtra("Role", intent.getStringExtra("Role"));

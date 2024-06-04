@@ -72,10 +72,12 @@ public class UserActivity extends AppCompatActivity {
         if (intent.hasExtra("Name")) {
             binding.name.setText(intent.getStringExtra("Name"));
             binding.mail.setText(intent.getStringExtra("Email"));
+            binding.phone.setText(intent.getStringExtra("Phone"));
 
         } else {
             binding.name.setText(sp.getString("Name", ""));
             binding.mail.setText(sp.getString("Email", ""));
+            binding.phone.setText(sp.getString("Phone", ""));
         }
 
         currentUserEmail = sp.getString("Email", "");

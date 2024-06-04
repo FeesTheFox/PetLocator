@@ -20,8 +20,7 @@
             android:id="@+id/avatar"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:background="@color/white"
-            android:backgroundTint="@color/cyan"
+            android:background="@drawable/list_item_view"
             android:src="@drawable/profile"/>
         <TextView
             android:id="@+id/name"
@@ -56,14 +55,38 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/line3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/line2"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:text="Номер телефона: "
+            android:layout_marginLeft="25dp"/>
+        <TextView
+            android:id="@+id/phone"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="17sp"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/line_btns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
-        android:layout_below="@+id/line2"
+        android:layout_below="@+id/line3"
         android:orientation="horizontal">
 
         <Button
+            android:padding="10dp"
             android:id="@+id/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,8 +118,11 @@
             android:text="Советы"
             android:textColor="@color/white"/>
     </LinearLayout>
+
+
     
     <ListView
+        android:layout_marginTop="15dp"
         android:background="@color/white"
         android:id="@+id/doglist"
         android:layout_width="match_parent"
