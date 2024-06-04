@@ -19,50 +19,50 @@
         <ImageView
             android:id="@+id/image1"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image2"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image3"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image4"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image5"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image6"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image7"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
         <ImageView
             android:id="@+id/image8"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/bark" />
+            android:layout_height="150dp"
+            android:src="@drawable/barkrus" />
 
     </FrameLayout>
 
