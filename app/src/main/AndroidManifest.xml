@@ -26,42 +26,42 @@
         <activity
             android:name=".HowToActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".FlappyActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SuggestionActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".RequisiteActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ClickActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Notification_Activity"
             android:exported="false" />
         <activity
             android:name=".InfoActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".UserActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MapActivity2"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MapActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
