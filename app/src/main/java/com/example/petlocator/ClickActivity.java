@@ -84,10 +84,7 @@ public class ClickActivity extends AppCompatActivity {
 
         particleImageView = new ImageView(this);
 
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                100,
-                100);
-        particleImageView.setLayoutParams(layoutParams);
+
 
         //root component for ImageView
         ViewGroup rootContainer = findViewById(android.R.id.content);
@@ -273,8 +270,8 @@ public class ClickActivity extends AppCompatActivity {
                     float vy = (float) (Math.sin(angle) * 500); // Скорость по оси Y в зависимости от угла
                     float ax = (float) (Math.random() * 360); // Случайный угол поворота вокруг оси X
                     float ay = (float) (Math.random() * 360); // Случайный угол поворота вокруг оси Y
-                    float sx = (float) (Math.random() * 0.5 + 0.5); // Случайный масштаб по оси X
-                    float sy = (float) (Math.random() * 0.5 + 0.5); // Случайный масштаб по оси Y
+                    float sx = (float) (Math.random() * 0.5 + 1); // Случайный масштаб по оси X
+                    float sy = (float) (Math.random() * 0.5 + 1); // Случайный масштаб по оси Y
                     float x = cx + (float) (Math.cos(angle) * radius); // Координата X в зависимости от угла и радиуса
                     float y = cy + (float) (Math.sin(angle) * radius); // Координата Y в зависимости от угла и радиуса
                     createParticles(x, y, vx, vy, ax, ay, sx, sy); // Создаем партикл
@@ -314,6 +311,9 @@ public class ClickActivity extends AppCompatActivity {
         matrix.postRotate(ay, sx, sy);
         matrix.postScale(sx, sy, vx, vy);
         particleImageView.setImageMatrix(matrix);
+
+        particleImageView.setScaleX(sx);
+        particleImageView.setScaleY(sy);
 
         float dx = vx / 1000; // offset X in 1 millisecond
         float dy = vy / 1000; // offset Y in 1 millisecond
