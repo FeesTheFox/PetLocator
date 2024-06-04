@@ -1,12 +1,20 @@
 package com.example.petlocator;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
@@ -16,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.petlocator.databinding.ActivityClickBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +58,11 @@ public class ClickActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private boolean[] isReached = {false, false, false, false, false};
+
+
+    private AnimationDrawable particleAnimation;
+    private ImageView particleImageView;
+    private Animation particleAlphaAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +81,43 @@ public class ClickActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance("https://petlocator-d7771-default-rtdb.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+
+        particleImageView = new ImageView(this);
+
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                100,
+                100);
+        particleImageView.setLayoutParams(layoutParams);
+
+        //root component for ImageView
+        ViewGroup rootContainer = findViewById(android.R.id.content);
+        rootContainer.addView(particleImageView);
+
+        particleImageView.setVisibility(View.INVISIBLE);
+
+        particleAnimation = (AnimationDrawable) ContextCompat.getDrawable(
+                this, R.drawable.particle_animation);
+
+        particleImageView.setImageDrawable(particleAnimation);
+
+        particleAlphaAnimation = AnimationUtils.loadAnimation(this, R.anim.particle_alpha_animation);
+
+        particleAlphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // Пустой метод
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                particleImageView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Пустой метод
+            }
+        });
 
         binding.gameReload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,6 +264,23 @@ public class ClickActivity extends AppCompatActivity {
 
                 imageView.startAnimation(rotateAnimation);
 
+                float cx = v.getX() + imageView.getWidth() / 2; // Центр окружности по оси X
+                float cy = v.getY() + imageView.getHeight() / 2; // Центр окружности по оси Y
+                float radius = imageView.getWidth() / 2; // Радиус окружности
+                for (int i = 0; i < 10; i++) { // Создаем 10 партиклов
+                    float angle = (float) (Math.random() * 2 * Math.PI); // Случайный угол в радианах
+                    float vx = (float) (Math.cos(angle) * 500); // Скорость по оси X в зависимости от угла
+                    float vy = (float) (Math.sin(angle) * 500); // Скорость по оси Y в зависимости от угла
+                    float ax = (float) (Math.random() * 360); // Случайный угол поворота вокруг оси X
+                    float ay = (float) (Math.random() * 360); // Случайный угол поворота вокруг оси Y
+                    float sx = (float) (Math.random() * 0.5 + 0.5); // Случайный масштаб по оси X
+                    float sy = (float) (Math.random() * 0.5 + 0.5); // Случайный масштаб по оси Y
+                    float x = cx + (float) (Math.cos(angle) * radius); // Координата X в зависимости от угла и радиуса
+                    float y = cy + (float) (Math.sin(angle) * radius); // Координата Y в зависимости от угла и радиуса
+                    createParticles(x, y, vx, vy, ax, ay, sx, sy); // Создаем партикл
+                }
+
+
                 if (firebaseUser != null) {
                     HashMap<String, Object> data = new HashMap<>();
                     data.put("clicks", clicks);
@@ -228,6 +296,53 @@ public class ClickActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    private void createParticles(float x, float y, float vx, float vy, float ax, float ay, float sx, float sy) {
+        // Создайте ImageView для партиклов
+        ImageView particleImageView = new ImageView(this);
+        // Установите размеры ImageView
+        particleImageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        // Установите изображение для ImageView
+        particleImageView.setImageResource(R.drawable.star);
+        // Установите позицию ImageView
+        particleImageView.setX(x);
+        particleImageView.setY(y);
+        // Добавьте ImageView в ваш корневой контейнер
+        ViewGroup rootContainer = findViewById(android.R.id.content);
+        rootContainer.addView(particleImageView);
+
+        // Создайте матрицу преобразования для партиклов
+        Matrix matrix = new Matrix();
+        matrix.postTranslate(vx, vy);
+        matrix.postRotate(ax, sx, sy);
+        matrix.postRotate(ay, sx, sy);
+        matrix.postScale(sx, sy, vx, vy);
+        // Примените матрицу преобразования к ImageView
+        particleImageView.setImageMatrix(matrix);
+
+        // Создайте ObjectAnimator для перемещения партиклов по оси X
+        float dx = vx / 1000; // Смещение по оси X за 1 миллисекунду
+        float dy = vy / 1000; // Смещение по оси Y за 1 миллисекунду
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(particleImageView, "x", particleImageView.getX(), particleImageView.getX() + dx * 1000);
+        animatorX.setDuration(1000);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(particleImageView, "y", particleImageView.getY(), particleImageView.getY() + dy * 1000);
+        animatorY.setDuration(1000);
+        // Создайте AnimatorSet для объединения анимаций
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(animatorX, animatorY);
+        // Добавьте слушатель завершения анимации
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                // Удалите ImageView из корневого контейнера
+                rootContainer.removeView(particleImageView);
+            }
+        });
+        // Запустите аниматоры
+        animatorSet.start();
     }
 
     private void setImageAndClicksText() {
