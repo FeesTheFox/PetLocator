@@ -188,6 +188,14 @@ public class MapActivity2 extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.howto){
+            mediaPlayer1.start();
+            Intent intent = new Intent(MapActivity2.this, HowToActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
+
         if (id == R.id.menu_info) {
             mediaPlayer1.start();
             // Handle click on "Info" menu item

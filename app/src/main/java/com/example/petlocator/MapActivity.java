@@ -68,6 +68,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -157,10 +158,16 @@ public class MapActivity extends AppCompatActivity {
 
             return true;
         }
+        if (id == R.id.howto){
+            mediaPlayer.start();
+            Intent intent = new Intent(MapActivity.this, HowToActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
 
         if (id == R.id.menu_info) {
             mediaPlayer.start();
-            // Handle click on "Info" menu item
             Intent intent = new Intent(MapActivity.this, InfoActivity.class);
             startActivity(intent);
 

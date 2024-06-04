@@ -10,14 +10,21 @@
 
     <item
         android:id="@+id/menu_info"
-        android:title="Инфо"
+        android:title="Об авторе"
         android:icon="@drawable/info"
         app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/howto"
+        android:title="Инструкция"
+        android:icon="@drawable/info"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/update"
         android:icon="@drawable/ic_refresh"
         android:title="Обновить"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
 </menu>

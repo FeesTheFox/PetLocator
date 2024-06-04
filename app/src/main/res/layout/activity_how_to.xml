@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/gradient_background">
+    android:background="@color/orange"
+    tools:context=".HowToActivity">
 
 
     <LinearLayout
@@ -27,36 +25,35 @@
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="60dp"
-            android:textAlignment="center"
-            android:layout_weight="1">
+            android:textAlignment="center">
 
         </TextView>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
 
         <TextView
-            android:id="@+id/infoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Казаков Николай Андреевич, ИКБО-13-22 "
+            android:text="Приложение PetLocator создано для отслеживания питомцев по карте, а также были добавлены мини-игры и советы по уходу за питомцами"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textColor="@color/black"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Чтобы начать пользоваться приложением - cоздайте питомца, обновите карту и установите маркер на ней маркер"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="30dp"
-            android:layout_weight="1">
+            android:textSize="30dp">
         </TextView>
-
-
-        <ImageView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dog_trumpet"
-            android:layout_gravity="center"
-            android:layout_marginTop="130dp">
-        </ImageView>
-
     </LinearLayout>
-
-
 
 
 </RelativeLayout>
