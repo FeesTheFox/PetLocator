@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -84,6 +85,8 @@ public class MapActivity extends AppCompatActivity {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private List<Polyline> petPolylines;
 
+    private MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,8 @@ public class MapActivity extends AppCompatActivity {
         petPolylines = new ArrayList<>();
 
         binding.trailSwitch.setChecked(true);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
 
         binding.trailSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -133,6 +138,7 @@ public class MapActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_profile) {
+            mediaPlayer.start();
             // Handle click on "Profile" menu item
             Intent intent = getIntent();
             Intent intent1 = new Intent(MapActivity.this, UserActivity.class);
@@ -153,6 +159,7 @@ public class MapActivity extends AppCompatActivity {
         }
 
         if (id == R.id.menu_info) {
+            mediaPlayer.start();
             // Handle click on "Info" menu item
             Intent intent = new Intent(MapActivity.this, InfoActivity.class);
             startActivity(intent);
@@ -161,6 +168,7 @@ public class MapActivity extends AppCompatActivity {
         }
 
         if (id == R.id.update){
+            mediaPlayer.start();
             recreate();
             return true;
         }
@@ -615,6 +623,7 @@ public class MapActivity extends AppCompatActivity {
             petView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mediaPlayer.start();
                     Pet selectedPet = ((PetView) v).getPet();
                     LatLng petLocation = new LatLng(selectedPet.getLatitude(), selectedPet.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(petLocation, 18));

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -58,6 +59,7 @@ public class UserActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST_CODE = 1002;
     private Uri imageUri;
     private ImageView imageView;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,8 @@ public class UserActivity extends AppCompatActivity {
         }
 
         currentUserEmail = sp.getString("Email", "");
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
         //getting the ID of a user
         String currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -124,6 +128,7 @@ public class UserActivity extends AppCompatActivity {
         binding.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.start();
                 showAddDogDialog();
             }
         });
@@ -131,6 +136,7 @@ public class UserActivity extends AppCompatActivity {
         binding.clicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.start();
                 Intent intent1 = new Intent(UserActivity.this, ClickActivity.class);
                 startActivity(intent1);
             }
@@ -139,6 +145,7 @@ public class UserActivity extends AppCompatActivity {
         binding.suggestions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.start();
                 Intent intent1 = new Intent(UserActivity.this, SuggestionActivity.class);
                 startActivity(intent1);
             }
@@ -156,6 +163,7 @@ public class UserActivity extends AppCompatActivity {
                         .setPositiveButton("Да", new DialogInterface.OnClickListener() { //if add
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                mediaPlayer.start();
                                 String petIdToDelete = dogsList.get(position).getPetId(); //gets pet ID
                                 Query query = databaseReference.orderByChild("petId").equalTo(petIdToDelete); //seeks for petId in Database by the name "petId"
                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -179,6 +187,7 @@ public class UserActivity extends AppCompatActivity {
                         }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                mediaPlayer.start();
                                 dialog.dismiss();
                             }
                         });
@@ -192,6 +201,7 @@ public class UserActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mediaPlayer.start();
                 showEditDogDialog(position);
             }
         });
@@ -213,6 +223,7 @@ public class UserActivity extends AppCompatActivity {
 
 
         if (id == R.id.back) {
+            mediaPlayer.start();
             finish();
 
             return true;
@@ -256,6 +267,7 @@ public class UserActivity extends AppCompatActivity {
         builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mediaPlayer.start();
                 // Update the pet data in the list and the database
                 pet.setPetId(pet.getPetId());
                 pet.setSpecies(species.getText().toString());
@@ -277,6 +289,7 @@ public class UserActivity extends AppCompatActivity {
         builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mediaPlayer.start();
                 dialog.cancel();
             }
         });
@@ -342,6 +355,7 @@ public class UserActivity extends AppCompatActivity {
         builder.setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mediaPlayer.start();
                 if (imageUri == null) {
                     // Shows the snackbar with the message
                     Snackbar.make(binding.getRoot(), "Пожалуйста, выберите фотографию для питомца", Snackbar.LENGTH_SHORT).show();
@@ -364,6 +378,7 @@ public class UserActivity extends AppCompatActivity {
         builder.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mediaPlayer.start();
                 dialog.cancel();
             }
         });
@@ -417,12 +432,14 @@ public class UserActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // The "which" argument contains the index position of the selected item
                         if (which == 0) {
+                            mediaPlayer.start();
                             // Open gallery
                             Intent intent = new Intent();
                             intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
                             startActivityForResult(Intent.createChooser(intent, "Выберите фотографию"), IMAGE_PICKER_REQUEST_CODE);
                         } else if (which == 1) {
+                            mediaPlayer.start();
                             // Open camera
                             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             if (cameraIntent.resolveActivity(getPackageManager()) != null) {

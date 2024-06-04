@@ -37,6 +37,8 @@ public class ClickActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private MediaPlayer mediaPlayer1;
     private MediaPlayer mediaPlayer2;
+
+    private MediaPlayer mediaPlayer3;
     private Animation rotateAnimation;
 
     private FirebaseDatabase firebaseDatabase;
@@ -57,6 +59,7 @@ public class ClickActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.bark);
         mediaPlayer1 = MediaPlayer.create(this, R.raw.yippie);
         mediaPlayer2 = MediaPlayer.create(this, R.raw.meow);
+        mediaPlayer3 = MediaPlayer.create(this, R.raw.click);
 
         rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_animation);
 
@@ -68,6 +71,7 @@ public class ClickActivity extends AppCompatActivity {
         binding.gameReload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer3.start();
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ClickActivity.this);
                 dialogBuilder.setTitle("Начать игру заново?");
                 dialogBuilder.setMessage("Вы уверены, что хотите начать игру заново?");
@@ -87,6 +91,8 @@ public class ClickActivity extends AppCompatActivity {
                 dialogBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mediaPlayer3.start();
+                        dialog.dismiss();
                     }
                 });
                 AlertDialog dialog = dialogBuilder.create();
@@ -335,11 +341,13 @@ public class ClickActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.back) {
+            mediaPlayer3.start();
             finish();
 
             return true;
         }
         if (id == R.id.Flappy){
+            mediaPlayer3.start();
             Intent intent = new Intent(ClickActivity.this, FlappyActivity.class);
             startActivity(intent);
             return true;

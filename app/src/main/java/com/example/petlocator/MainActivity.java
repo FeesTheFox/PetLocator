@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase db; //Data base
     DatabaseReference users; //Table in Data base
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance(); //Authorization launch
         db = FirebaseDatabase.getInstance(); //Connecting to Data base
         users = db.getReference("Users"); //Table with user's data
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
         //creating instance for logo
         ImageView imageView = findViewById(R.id.logo);
@@ -111,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.start();
                 showRegisterWindow();
             }
         });
@@ -118,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer.start();
                 showSignInWindow();
             }
         });
@@ -151,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mediaPlayer.start();
                 dialogInterface.dismiss();
             }
         });
@@ -158,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setPositiveButton("Зарегистрироваться", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mediaPlayer.start();
                 if (TextUtils.isEmpty(email.getText().toString())) {
                     Snackbar.make(binding.root,
                             "Введите вашу почту",
@@ -240,12 +249,14 @@ public class MainActivity extends AppCompatActivity {
         dialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mediaPlayer.start();
                 dialogInterface.dismiss();
             }
         });
         dialog.setPositiveButton("Авторизоваться", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mediaPlayer.start();
                 if (TextUtils.isEmpty(email.getText().toString())){
                     Snackbar.make(binding.root,
                             "Введите вашу почту",

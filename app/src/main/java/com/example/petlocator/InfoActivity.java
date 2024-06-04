@@ -12,6 +12,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class InfoActivity extends AppCompatActivity {
     ActivityInfoBinding binding;
     private static final int REQUEST_CODE = 100; // You can use any integer value
     public static final int NOTIFICATION_ID = 1;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class InfoActivity extends AppCompatActivity {
         binding = ActivityInfoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
     }
 
 
@@ -47,6 +51,7 @@ public class InfoActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.notification) {
+            mediaPlayer.start();
             Intent intent = new Intent(InfoActivity.this, Notification_Activity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -90,11 +95,13 @@ public class InfoActivity extends AppCompatActivity {
         }
 
         if (id == R.id.back) {
+            mediaPlayer.start();
             finish();
             return true;
         }
 
         if (id == R.id.requisite){
+            mediaPlayer.start();
             Intent intent = new Intent(InfoActivity.this, RequisiteActivity.class);
             startActivity(intent);
         }

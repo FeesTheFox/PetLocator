@@ -1,5 +1,6 @@
 package com.example.petlocator;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -15,7 +16,7 @@ import com.example.petlocator.databinding.ActivitySuggestionBinding;
 public class SuggestionActivity extends AppCompatActivity {
     ActivitySuggestionBinding binding;
     private WebView webView;
-
+    private MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,7 @@ public class SuggestionActivity extends AppCompatActivity {
 
         // Find the WebView in your layout
         webView = binding.webView;
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
         // Enable JavaScript for the WebView
         webView.getSettings().setJavaScriptEnabled(true);
@@ -71,6 +73,7 @@ public class SuggestionActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.back) {
+            mediaPlayer.start();
             finish();
 
             return true;

@@ -81,6 +81,7 @@ public class MapActivity2 extends AppCompatActivity {
     private static final double MAX_DISTANCE = 150;
 
     private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer1;
     private SwitchCompat musicSwitch;
     private static final String PREF_NAME = "music_pref";
     private static final String PREF_KEY = "music_state";
@@ -114,6 +115,9 @@ public class MapActivity2 extends AppCompatActivity {
 
         mediaPlayer = MediaPlayer.create(this,R.raw.menu_music); //creates music
         mediaPlayer.setLooping(true); //sets music on the loop
+
+
+        mediaPlayer1 = MediaPlayer.create(this, R.raw.click);
 
         musicSwitch = findViewById(R.id.musicSwitch);
 
@@ -164,6 +168,7 @@ public class MapActivity2 extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_profile) {
+            mediaPlayer1.start();
             // Handle click on "Profile" menu item
             Intent intent = getIntent();
             Intent intent1 = new Intent(MapActivity2.this, UserActivity.class);
@@ -184,6 +189,7 @@ public class MapActivity2 extends AppCompatActivity {
         }
 
         if (id == R.id.menu_info) {
+            mediaPlayer1.start();
             // Handle click on "Info" menu item
             Intent intent = new Intent(MapActivity2.this, InfoActivity.class);
             startActivity(intent);
@@ -192,6 +198,7 @@ public class MapActivity2 extends AppCompatActivity {
         }
 
         if (id == R.id.update){
+            mediaPlayer1.start();
             recreate();
             return true;
         }
@@ -649,6 +656,7 @@ public class MapActivity2 extends AppCompatActivity {
             petView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mediaPlayer1.start();
                     Pet selectedPet = ((PetView) v).getPet();
                     LatLng petLocation = new LatLng(selectedPet.getLatitude(), selectedPet.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(petLocation, 18));

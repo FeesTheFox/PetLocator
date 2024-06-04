@@ -2,6 +2,7 @@ package com.example.petlocator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -14,6 +15,8 @@ public class FlappyActivity extends AppCompatActivity {
     private com.example.petlocator.databinding.ActivityFlappyBinding binding;
 
     private WebView webView;
+
+    private MediaPlayer mediaPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,8 @@ public class FlappyActivity extends AppCompatActivity {
 
         // Enable JavaScript for the WebView
         webView.getSettings().setJavaScriptEnabled(true);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
         // Set a WebViewClient to the WebView, so it will not open the link in a browser
         webView.setWebViewClient(new WebViewClient() {
@@ -60,6 +65,7 @@ public class FlappyActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.back) {
+            mediaPlayer.start();
             finish();
 
             return true;
