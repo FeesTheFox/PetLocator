@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/orange">
+    android:background="@drawable/frame">
 
 
     <FrameLayout
@@ -94,11 +94,11 @@
                 android:textSize="50sp" />
 
             <TextView
-                android:layout_width="101dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/kdwilliam"
-                android:text="@string/app_name_after"
+                android:text="Присоединяйтесь!"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="25sp" />
@@ -118,16 +118,18 @@
         android:src="@drawable/img" />
 
 
+
+
     <TextView
         android:id="@+id/text_bottom"
         android:layout_alignParentBottom="true"
         android:textSize="12sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
-        android:text="Authorization" />
+        android:text="Авторизация" />
 
     <LinearLayout
         android:id="@+id/btns"
@@ -139,6 +141,8 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal" >
 
+
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_SignIn"
             android:layout_width="wrap_content"
@@ -147,7 +151,7 @@
             android:background="@drawable/btn_sign_in"
             android:layout_weight="1"
             android:layout_marginRight="6dp"
-            android:text="Авторизация" />
+            android:text="Войти в аккаунт" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnRegister"
@@ -158,6 +162,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="6dp"
             android:text="Регистрация" />
+
     </LinearLayout>
 
 </RelativeLayout>
