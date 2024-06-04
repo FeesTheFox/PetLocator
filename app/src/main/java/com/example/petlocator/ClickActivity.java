@@ -264,7 +264,7 @@ public class ClickActivity extends AppCompatActivity {
                 float cx = v.getX() + imageView.getWidth() / 2; // Центр окружности по оси X
                 float cy = v.getY() + imageView.getHeight() / 2; // Центр окружности по оси Y
                 float radius = imageView.getWidth() / 2; // Радиус окружности
-                for (int i = 0; i < 10; i++) { // Создаем 10 партиклов
+                for (int i = 0; i < 5; i++) { // Создаем 10 партиклов
                     float angle = (float) (Math.random() * 2 * Math.PI); // Случайный угол в радианах
                     float vx = (float) (Math.cos(angle) * 500); // Скорость по оси X в зависимости от угла
                     float vy = (float) (Math.sin(angle) * 500); // Скорость по оси Y в зависимости от угла
@@ -318,12 +318,12 @@ public class ClickActivity extends AppCompatActivity {
         float dx = vx / 1000; // offset X in 1 millisecond
         float dy = vy / 1000; // offset Y in 1 millisecond
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(particleImageView, "x", particleImageView.getX(), particleImageView.getX() + dx * 1000);
-        animatorX.setDuration(1000);
+        animatorX.setDuration(500);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(particleImageView, "y", particleImageView.getY(), particleImageView.getY() + dy * 1000);
-        animatorY.setDuration(1000);
+        animatorY.setDuration(500);
 
         ObjectAnimator animatorAlpha = ObjectAnimator.ofFloat(particleImageView, "alpha", 1f, 0f);
-        animatorAlpha.setDuration(1000);
+        animatorAlpha.setDuration(500);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(animatorX, animatorY, animatorAlpha);

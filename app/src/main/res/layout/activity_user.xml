@@ -8,6 +8,16 @@
     android:background="@color/orange"
     android:id="@+id/studentRoot"
     tools:context=".UserActivity">
+
+
+    <View
+        android:layout_marginTop="-100dp"
+        android:id="@+id/curtain"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginLeft="-50dp"
+        android:layout_marginRight="-50dp"
+        android:background="@drawable/curtain" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,9 +28,9 @@
         android:orientation="vertical">
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:background="@drawable/list_item_view"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:background="@drawable/list_item_view2"
             android:src="@drawable/profile"/>
         <TextView
             android:id="@+id/name"
