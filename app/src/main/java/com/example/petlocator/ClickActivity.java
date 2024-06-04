@@ -300,48 +300,54 @@ public class ClickActivity extends AppCompatActivity {
 
 
     private void createParticles(float x, float y, float vx, float vy, float ax, float ay, float sx, float sy) {
-        // Создайте ImageView для партиклов
         ImageView particleImageView = new ImageView(this);
-        // Установите размеры ImageView
         particleImageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        // Установите изображение для ImageView
         particleImageView.setImageResource(R.drawable.star);
-        // Установите позицию ImageView
         particleImageView.setX(x);
         particleImageView.setY(y);
-        // Добавьте ImageView в ваш корневой контейнер
         ViewGroup rootContainer = findViewById(android.R.id.content);
         rootContainer.addView(particleImageView);
 
-        // Создайте матрицу преобразования для партиклов
         Matrix matrix = new Matrix();
         matrix.postTranslate(vx, vy);
         matrix.postRotate(ax, sx, sy);
         matrix.postRotate(ay, sx, sy);
         matrix.postScale(sx, sy, vx, vy);
-        // Примените матрицу преобразования к ImageView
         particleImageView.setImageMatrix(matrix);
 
-        // Создайте ObjectAnimator для перемещения партиклов по оси X
-        float dx = vx / 1000; // Смещение по оси X за 1 миллисекунду
-        float dy = vy / 1000; // Смещение по оси Y за 1 миллисекунду
+        float dx = vx / 1000; // offset X in 1 millisecond
+        float dy = vy / 1000; // offset Y in 1 millisecond
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(particleImageView, "x", particleImageView.getX(), particleImageView.getX() + dx * 1000);
         animatorX.setDuration(1000);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(particleImageView, "y", particleImageView.getY(), particleImageView.getY() + dy * 1000);
         animatorY.setDuration(1000);
-        // Создайте AnimatorSet для объединения анимаций
+
+        ObjectAnimator animatorAlpha = ObjectAnimator.ofFloat(particleImageView, "alpha", 1f, 0f);
+        animatorAlpha.setDuration(1000);
+
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(animatorX, animatorY);
-        // Добавьте слушатель завершения анимации
-        animatorSet.addListener(new AnimatorListenerAdapter() {
+        animatorSet.playTogether(animatorX, animatorY, animatorAlpha);
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                // Удалите ImageView из корневого контейнера
-                rootContainer.removeView(particleImageView);
+                particleImageView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
             }
         });
-        // Запустите аниматоры
         animatorSet.start();
     }
 
@@ -349,7 +355,6 @@ public class ClickActivity extends AppCompatActivity {
         int clicksCount = clicks;
         String clicksText = String.valueOf(clicksCount);
 
-        // Проверяем, включен ли переключатель
         if (binding.catSwitch.isChecked()) {
             // Изменяем изображение на cat.xml, cat2.xml, cat3.xml и т.д. в зависимости от количества кликов
             if (clicksCount >= 3000) {
