@@ -60,6 +60,8 @@ public class UserActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView imageView;
     private MediaPlayer mediaPlayer;
+    private AlertDialog addDogDialog;
+    private ImageView addDogImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -342,7 +344,7 @@ public class UserActivity extends AppCompatActivity {
         final EditText species = dialogView.findViewById(R.id.editTextSpecies);
         final EditText age = dialogView.findViewById(R.id.editTextAge);
         final EditText name = dialogView.findViewById(R.id.editTextPetName);
-        ImageView imageView = dialogView.findViewById(R.id.imageView);
+        addDogImageView = dialogView.findViewById(R.id.imageView);
 
         Button buttonSelectImage = dialogView.findViewById(R.id.button_select_image);
         buttonSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -384,7 +386,7 @@ public class UserActivity extends AppCompatActivity {
         });
 
         builder.setTitle("Добавление питомца");
-        builder.show();
+        addDogDialog = builder.show();
     }
     private void savePetImageInFirebaseStorage(Uri imageUri, final Pet pet) {
         // Get a reference to the Firebase Cloud Storage
@@ -459,6 +461,12 @@ public class UserActivity extends AppCompatActivity {
             if (imageUri != null && imageView != null) {
                 Glide.with(this).load(imageUri).transform(new RoundedCornersTransformation(16)).into(imageView);
             }
+            if (addDogDialog != null && addDogImageView != null) {
+                Glide.with(this)
+                        .load(imageUri)
+                        .into(addDogImageView);
+            }
+
         } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
             if (imageBitmap != null) {
