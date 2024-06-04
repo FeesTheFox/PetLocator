@@ -57,6 +57,7 @@ public class UserActivity extends AppCompatActivity {
     private static final String PREFS_FILE = "User_account";
     private static final int IMAGE_PICKER_REQUEST_CODE = 1001;
     private static final int CAMERA_REQUEST_CODE = 1002;
+    private static final int DRAWING_REQUEST_CODE = 1003;
     private Uri imageUri;
     private ImageView imageView;
     private MediaPlayer mediaPlayer;
@@ -430,7 +431,7 @@ public class UserActivity extends AppCompatActivity {
     private void showImagePicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Выберите фотографию")
-                .setItems(new CharSequence[]{"Галерея", "Камера"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Галерея", "Камера", "Нарисовать"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The "which" argument contains the index position of the selected item
                         if (which == 0) {
@@ -447,6 +448,9 @@ public class UserActivity extends AppCompatActivity {
                             if (cameraIntent.resolveActivity(getPackageManager()) != null) {
                                 startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
                             }
+                        } else if (which == 2) {
+                            Intent intent = new Intent(UserActivity.this, DrawingActivity.class);
+                            startActivityForResult(intent, DRAWING_REQUEST_CODE);
                         }
                     }
                 }).show();
@@ -465,6 +469,11 @@ public class UserActivity extends AppCompatActivity {
                 Glide.with(this)
                         .load(imageUri)
                         .into(addDogImageView);
+            }
+            if (requestCode == DRAWING_REQUEST_CODE && resultCode == RESULT_OK) {
+                Uri imageUri = Uri.parse(data.getStringExtra("image_uri"));
+
+                imageView.setImageURI(imageUri);
             }
 
         } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
