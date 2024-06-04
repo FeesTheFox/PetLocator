@@ -411,7 +411,7 @@ public class UserActivity extends AppCompatActivity {
     private void showImagePicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Выберите фотографию")
-                .setItems(new CharSequence[]{"Gallery", "Camera"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Галерея", "Камера"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The "which" argument contains the index position of the selected item
                         if (which == 0) {
