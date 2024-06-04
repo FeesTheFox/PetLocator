@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,6 +42,10 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         ageTextView.setText(currentPet.getAge());
         nameTextView.setText(currentPet.getpetName());
 
+
+        RelativeLayout rootLayout = convertView.findViewById(R.id.root);
+        rootLayout.setBackgroundResource(R.drawable.list_item_background);
+
         // Use Glide to load the pet's image from the Firebase Storage
         Glide.with(mContext)
                 .load(currentPet.getImageResource())
@@ -50,6 +56,5 @@ public class PetAdapter extends ArrayAdapter<Pet> {
     }
 
 }
-
 
 
