@@ -159,6 +159,25 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         });
     }
 
+    private void showLeaveDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogStyle);
+        dialogBuilder.setTitle("Выход с холста");
+        dialogBuilder.setMessage("Вы уверены, что хотите покинуть холст? Весь прогресс сбросится");
+
+        dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.show();
+    }
+
     private void refreshDialog(){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogStyle);
         dialogBuilder.setTitle("Очищение холста");
@@ -228,7 +247,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
         if (id == R.id.back) {
             mediaPlayer.start();
-            finish();
+            showLeaveDialog();
 
             return true;
         }
