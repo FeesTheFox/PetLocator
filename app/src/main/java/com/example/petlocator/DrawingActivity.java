@@ -127,15 +127,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
 
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Вызываем диалоговое окно для сохранения рисунка
-                showSaveDialog();
-            }
-        });
-
-
         // Create a bitmap to use as a canvas when the image view is laid out
         imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -305,6 +296,15 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         if (id == R.id.clear){
             mediaPlayer.start();
             refreshDialog(); //refresh
+
+            return true;
+        }
+
+        if (id == R.id.btnSave){
+            mediaPlayer.start();
+            showSaveDialog();
+
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

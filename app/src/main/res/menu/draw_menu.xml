@@ -9,10 +9,14 @@
         android:icon="@drawable/arrow_back"
         app:showAsAction="ifRoom" />
 
-
     <item
         android:id="@+id/clear"
         android:icon="@drawable/ic_refresh"
         android:title="Обновить"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/btnSave"
+        android:title="Сохранить"
         app:showAsAction="always"/>
 </menu>
