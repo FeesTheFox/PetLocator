@@ -304,7 +304,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
         if (id == R.id.clear){
             mediaPlayer.start();
-            refreshDialog();
+            refreshDialog(); //refresh
         }
 
         return super.onOptionsItemSelected(item);
