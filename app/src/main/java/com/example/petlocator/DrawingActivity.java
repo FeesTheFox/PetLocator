@@ -80,8 +80,12 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });
 
-
-
+        binding.clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshDialog();
+            }
+        });
 
 
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +115,29 @@ public class DrawingActivity extends AppCompatActivity {
         });
     }
 
+    private void refreshDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogStyle);
+        dialogBuilder.setTitle("Очищение холста");
+        dialogBuilder.setMessage("Хотите очистить холст?");
+        dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Create a new bitmap for the next drawing
+                bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(bitmap);
+
+                // Update the image view to display the new bitmap
+                imageView.setImageBitmap(bitmap);
+            }
+        }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.show();
+    }
+
     private void showSaveDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogStyle);
         dialogBuilder.setTitle("Сохранить рисунок");
@@ -125,12 +152,7 @@ public class DrawingActivity extends AppCompatActivity {
                         // Выводим сообщение об успешном сохранении
                         Toast.makeText(DrawingActivity.this, "Рисунок сохранен", Toast.LENGTH_SHORT).show();
 
-                        // Create a new bitmap for the next drawing
-                        bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
-                        canvas = new Canvas(bitmap);
 
-                        // Update the image view to display the new bitmap
-                        imageView.setImageBitmap(bitmap);
                     }
                 });
             }
