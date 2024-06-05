@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/btn_sign_in"
             android:padding="16dp"
-            android:src= "@drawable/brush"/>
+            android:src= "@drawable/opacity"/>
 
     </LinearLayout>
 

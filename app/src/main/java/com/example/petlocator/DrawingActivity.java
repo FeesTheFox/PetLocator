@@ -47,7 +47,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     MediaPlayer mediaPlayer;
     private Path drawPath;
     private Paint drawPaint;
-    private int currentBrushSize = 50;
+    private int currentBrushSize = 20;
+    private int currentBrushOpacity = 255;
     ActivityDrawingBinding binding;
 
 
@@ -96,8 +97,9 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                         return false;
                 }
 
-                // Set the color of the paint
+                // Set the color and opacity of the paint
                 drawPaint.setColor(paintColor);
+                drawPaint.setAlpha(currentBrushOpacity);
 
                 // Draw the path on the canvas
                 canvas.drawPath(drawPath, drawPaint);
@@ -226,35 +228,56 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         View dialogView = getLayoutInflater().inflate(R.layout.brush_size_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final SeekBar seekBar = dialogView.findViewById(R.id.brush_size_seek_bar);
-        seekBar.setProgress(currentBrushSize); // Устанавливаем значение SeekBar в соответствии с текущим размером кисти
+        final SeekBar sizeSeekBar = dialogView.findViewById(R.id.brush_size_seek_bar);
+        sizeSeekBar.setProgress(currentBrushSize);
 
-        // Добавляем обработчик изменения значения для SeekBar
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        final SeekBar opacitySeekBar = dialogView.findViewById(R.id.brush_opacity_seek_bar);
+        int initialOpacity = (int) (currentBrushOpacity * 100 / 255);
+        opacitySeekBar.setProgress(initialOpacity);
+
+        sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // Обновляем размер кисти в соответствии с текущим значением SeekBar
                 drawPaint.setStrokeWidth(progress);
-                currentBrushSize = progress; // Сохраняем текущий размер кисти
+                currentBrushSize = progress;
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // Этот метод вызывается, когда пользователь начинает перемещать ползунок
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // Этот метод вызывается, когда пользователь отпускает ползунок
+            }
+        });
+
+        opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                currentBrushOpacity = (int) (progress * 255 / 100);
+                drawPaint.setARGB(currentBrushOpacity, Color.red(paintColor), Color.green(paintColor), Color.blue(paintColor));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
 
         dialogBuilder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int brushSize = seekBar.getProgress();
+                int brushSize = sizeSeekBar.getProgress();
                 drawPaint.setStrokeWidth(brushSize);
-                currentBrushSize = brushSize; // Сохраняем текущий размер кисти
+                currentBrushSize = brushSize;
+
+                int brushOpacity = opacitySeekBar.getProgress();
+                currentBrushOpacity = (int) (brushOpacity * 255 / 100);
+                drawPaint.setARGB(currentBrushOpacity, Color.red(paintColor), Color.green(paintColor), Color.blue(paintColor));
             }
         });
 
@@ -263,6 +286,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+
+
 
 
     private void showColorPickerDialog() {
