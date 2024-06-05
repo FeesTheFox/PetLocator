@@ -431,7 +431,7 @@ public class UserActivity extends AppCompatActivity {
     private void showImagePicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Выберите фотографию")
-                .setItems(new CharSequence[]{"Галерея", "Камера", "Нарисовать"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Галерея", "Камера"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The "which" argument contains the index position of the selected item
                         if (which == 0) {
@@ -448,9 +448,6 @@ public class UserActivity extends AppCompatActivity {
                             if (cameraIntent.resolveActivity(getPackageManager()) != null) {
                                 startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
                             }
-                        } else if (which == 2) {
-                            Intent intent = new Intent(UserActivity.this, DrawingActivity.class);
-                            startActivityForResult(intent, DRAWING_REQUEST_CODE);
                         }
                     }
                 }).show();
@@ -459,6 +456,8 @@ public class UserActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        imageView = findViewById(R.id.imageView);
 
         if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             imageUri = data.getData();
@@ -470,13 +469,9 @@ public class UserActivity extends AppCompatActivity {
                         .load(imageUri)
                         .into(addDogImageView);
             }
-            if (requestCode == DRAWING_REQUEST_CODE && resultCode == RESULT_OK) {
-                Uri imageUri = Uri.parse(data.getStringExtra("image_uri"));
 
-                imageView.setImageURI(imageUri);
-            }
 
-        } else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+        }else if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
             if (imageBitmap != null) {
                 // Convert bitmap to Uri and save it to imageUri

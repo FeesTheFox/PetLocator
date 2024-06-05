@@ -466,6 +466,13 @@ public class ClickActivity extends AppCompatActivity {
 
             return true;
         }
+
+        if (id == R.id.draw){
+            mediaPlayer3.start();
+            Intent intent = new Intent(ClickActivity.this, DrawingActivity.class);
+            startActivity(intent);
+            return true;
+        }
         if (id == R.id.Flappy){
             mediaPlayer3.start();
             Intent intent = new Intent(ClickActivity.this, FlappyActivity.class);

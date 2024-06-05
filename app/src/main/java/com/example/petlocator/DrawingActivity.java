@@ -1,22 +1,29 @@
 package com.example.petlocator;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +34,7 @@ public class DrawingActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Canvas canvas;
     private ImageView imageView;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +43,21 @@ public class DrawingActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.image_view);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.click);
+
         // Set up touch events for drawing
         imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 // Get the current touch position
-                float x = event.getX();
-                float y = event.getY();
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                // Set the pixel at the touch position to black
+                bitmap.setPixel(x, y, Color.BLACK);
+
+                // Create a canvas for the bitmap
+                Canvas canvas = new Canvas(bitmap);
 
                 // Draw a circle at the touch position
                 Paint paint = new Paint();
@@ -56,19 +72,15 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });
 
+
         // Add a save button to the layout
         Button saveButton = new Button(this);
         saveButton.setText("Сохранить");
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Save the bitmap and return to the UserActivity
-                Uri imageUri = saveBitmapToFile(bitmap);
-                Intent resultIntent = new Intent();
-                resultIntent.setData(imageUri);
-                resultIntent.putExtra("image_uri", imageUri.toString());
-                setResult(RESULT_OK, resultIntent);
-                finish();
+                // Вызываем диалоговое окно для сохранения рисунка
+                showSaveDialog();
             }
         });
 
@@ -104,5 +116,53 @@ public class DrawingActivity extends AppCompatActivity {
             return null;
         }
         return Uri.fromFile(imageFile);
+    }
+
+    private void showSaveDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogStyle);
+        dialogBuilder.setTitle("Сохранить рисунок");
+        dialogBuilder.setMessage("Хотите сохранить рисунок?");
+        dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String fileName = "my_image_" + System.currentTimeMillis() + ".png";
+                ImageSaver.saveImage(DrawingActivity.this, bitmap, fileName, new ImageSaver.OnImageSavedListener() {
+                    @Override
+                    public void onImageSaved(Uri imageUri) {
+                        // Выводим сообщение об успешном сохранении
+                        Toast.makeText(DrawingActivity.this, "Рисунок сохранен", Toast.LENGTH_SHORT).show();
+
+                        // Create a new bitmap for the next drawing
+                        bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
+                        canvas = new Canvas(bitmap);
+
+                        // Update the image view to display the new bitmap
+                        imageView.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        });
+        dialogBuilder.setNegativeButton("Нет", null);
+        dialogBuilder.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.back_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.back) {
+            mediaPlayer.start();
+            finish();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

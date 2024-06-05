@@ -8,7 +8,14 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/draw"
+        android:title="Рисовать"
+        android:icon="@drawable/brush"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/Flappy"
         android:title="Птичка"
+        android:icon="@drawable/bird"
         app:showAsAction="ifRoom"/>
 </menu>
