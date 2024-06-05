@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -25,6 +26,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.petlocator.databinding.ActivityDrawingBinding;
@@ -104,6 +107,14 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
                 // Return true to indicate that the touch event was handled
                 return true;
+            }
+        });
+
+
+        binding.brushSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBrushSizeDialog();
             }
         });
 
@@ -222,6 +233,30 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         });
         dialogBuilder.setNegativeButton("Нет", null);
         dialogBuilder.show();
+    }
+
+
+    private void showBrushSizeDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this, R.style.DialogStyle);
+        View dialogView = getLayoutInflater().inflate(R.layout.brush_size_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final SeekBar seekBar = dialogView.findViewById(R.id.brush_size_progress_bar);
+        seekBar.setProgress(50);
+
+
+        dialogBuilder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int brushSize = seekBar.getProgress();
+                drawPaint.setStrokeWidth(brushSize);
+            }
+        });
+
+        dialogBuilder.setNegativeButton("Отмена", null);
+
+        AlertDialog dialog = dialogBuilder.create();
+        dialog.show();
     }
 
     private void showColorPickerDialog() {
