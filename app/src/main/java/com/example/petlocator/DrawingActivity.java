@@ -47,7 +47,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     MediaPlayer mediaPlayer;
     private Path drawPath;
     private Paint drawPaint;
-
+    private int currentBrushSize = 50;
     ActivityDrawingBinding binding;
 
 
@@ -125,12 +125,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
             }
         });
 
-        binding.clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshDialog();
-            }
-        });
 
 
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
@@ -242,14 +236,34 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         dialogBuilder.setView(dialogView);
 
         final SeekBar seekBar = dialogView.findViewById(R.id.brush_size_progress_bar);
-        seekBar.setProgress(50);
+        seekBar.setProgress(currentBrushSize); // Устанавливаем значение SeekBar в соответствии с текущим размером кисти
 
+        // Добавляем обработчик изменения значения для SeekBar
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Обновляем размер кисти в соответствии с текущим значением SeekBar
+                drawPaint.setStrokeWidth(progress);
+                currentBrushSize = progress; // Сохраняем текущий размер кисти
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Этот метод вызывается, когда пользователь начинает перемещать ползунок
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Этот метод вызывается, когда пользователь отпускает ползунок
+            }
+        });
 
         dialogBuilder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int brushSize = seekBar.getProgress();
                 drawPaint.setStrokeWidth(brushSize);
+                currentBrushSize = brushSize; // Сохраняем текущий размер кисти
             }
         });
 
@@ -258,6 +272,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
     }
+
 
     private void showColorPickerDialog() {
         ColorPickerDialog.newBuilder()
@@ -272,7 +287,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.back_menu, menu);
+        getMenuInflater().inflate(R.menu.draw_menu, menu);
         return true;
     }
 
@@ -285,6 +300,11 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
             showLeaveDialog();
 
             return true;
+        }
+
+        if (id == R.id.clear){
+            mediaPlayer.start();
+            refreshDialog();
         }
 
         return super.onOptionsItemSelected(item);
