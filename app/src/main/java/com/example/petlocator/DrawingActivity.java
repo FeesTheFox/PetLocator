@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -51,6 +53,11 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private int currentBrushOpacity = 255;
     ActivityDrawingBinding binding;
 
+    private int drawingMode = DRAWING_MODE_BRUSH;
+
+    private static final int DRAWING_MODE_BRUSH = 0;
+    private static final int DRAWING_MODE_EYEDROPPER = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,46 +77,56 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        isDrawing = true;
-                        lastX = event.getX();
-                        lastY = event.getY();
-                        drawPath.reset();
-                        drawPath.moveTo(lastX, lastY);
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (isDrawing) {
-                            float dx = Math.abs(event.getX() - lastX);
-                            float dy = Math.abs(event.getY() - lastY);
-                            if (dx >= 4 || dy >= 4) {
-                                // Save the current point as the end of the previous line
-                                float midX = (event.getX() + lastX) / 2;
-                                float midY = (event.getY() + lastY) / 2;
-                                drawPath.quadTo(lastX, lastY, midX, midY);
-                                canvas.drawPath(drawPath, drawPaint);
-                                drawPath.reset();
-                                drawPath.moveTo(midX, midY);
+                if (drawingMode == DRAWING_MODE_BRUSH) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            isDrawing = true;
+                            lastX = event.getX();
+                            lastY = event.getY();
+                            drawPath.reset();
+                            drawPath.moveTo(lastX, lastY);
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (isDrawing) {
+                                float dx = Math.abs(event.getX() - lastX);
+                                float dy = Math.abs(event.getY() - lastY);
+                                if (dx >= 4 || dy >= 4) {
+                                    // Save the current point as the end of the previous line
+                                    float midX = (event.getX() + lastX) / 2;
+                                    float midY = (event.getY() + lastY) / 2;
+                                    drawPath.quadTo(lastX, lastY, midX, midY);
+                                    canvas.drawPath(drawPath, drawPaint);
+                                    drawPath.reset();
+                                    drawPath.moveTo(midX, midY);
 
-                                // Draw a line between the previous and current points with the desired opacity
-                                drawPaint.setAlpha(currentBrushOpacity);
-                                canvas.drawLine(lastX, lastY, midX, midY, drawPaint);
+                                    // Draw a line between the previous and current points with the desired opacity
+                                    drawPaint.setAlpha(currentBrushOpacity);
+                                    canvas.drawLine(lastX, lastY, midX, midY, drawPaint);
 
-                                lastX = event.getX();
-                                lastY = event.getY();
+                                    lastX = event.getX();
+                                    lastY = event.getY();
+                                }
                             }
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        isDrawing = false;
-                        drawPath.lineTo(event.getX(), event.getY());
-                        // Draw the final line between the previous and current points with the desired opacity
-                        drawPaint.setAlpha(currentBrushOpacity);
-                        canvas.drawPath(drawPath, drawPaint);
-                        canvas.drawLine(lastX, lastY, event.getX(), event.getY(), drawPaint);
-                        break;
-                    default:
-                        return false;
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isDrawing = false;
+                            drawPath.lineTo(event.getX(), event.getY());
+                            // Draw the final line between the previous and current points with the desired opacity
+                            drawPaint.setAlpha(currentBrushOpacity);
+                            canvas.drawPath(drawPath, drawPaint);
+                            canvas.drawLine(lastX, lastY, event.getX(), event.getY(), drawPaint);
+                            break;
+                        default:
+                            return false;
+                    }
+                } else if (drawingMode == DRAWING_MODE_EYEDROPPER) {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        // Взять цвет пикселя по координатам нажатия
+                        int color = bitmap.getPixel((int) event.getX(), (int) event.getY());
+                        // Установить его в качестве текущего цвета кисти
+                        paintColor = color;
+                        drawPaint.setColor(paintColor);
+                    }
                 }
 
                 // Update the image view to display the new canvas
@@ -120,6 +137,13 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
             }
         });
 
+
+        binding.brushes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeBrushDialog();
+            }
+        });
 
         binding.brushSize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -293,6 +317,36 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
         AlertDialog dialog = dialogBuilder.create();
         dialog.show();
+    }
+
+
+    private void showChangeBrushDialog(){
+        View dialogView = LayoutInflater.from(DrawingActivity.this).inflate(R.layout.brush_change_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(DrawingActivity.this);
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        ImageButton brushButton = dialogView.findViewById(R.id.changeBrush);
+        brushButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingMode = DRAWING_MODE_BRUSH;
+                alertDialog.dismiss();
+            }
+        });
+
+        ImageButton pipetteButton = dialogView.findViewById(R.id.changeColorPicker);
+        pipetteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingMode = DRAWING_MODE_EYEDROPPER;
+                alertDialog.dismiss();
+                // Тут вы можете добавить код для перехода в режим пипетки
+            }
+        });
+
+        alertDialog.show();
     }
 
 
