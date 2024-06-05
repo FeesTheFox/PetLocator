@@ -83,7 +83,18 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                             float dx = Math.abs(event.getX() - lastX);
                             float dy = Math.abs(event.getY() - lastY);
                             if (dx >= 4 || dy >= 4) {
-                                drawPath.quadTo(lastX, lastY, (event.getX() + lastX) / 2, (event.getY() + lastY) / 2);
+                                // Save the current point as the end of the previous line
+                                float midX = (event.getX() + lastX) / 2;
+                                float midY = (event.getY() + lastY) / 2;
+                                drawPath.quadTo(lastX, lastY, midX, midY);
+                                canvas.drawPath(drawPath, drawPaint);
+                                drawPath.reset();
+                                drawPath.moveTo(midX, midY);
+
+                                // Draw a line between the previous and current points with the desired opacity
+                                drawPaint.setAlpha(currentBrushOpacity);
+                                canvas.drawLine(lastX, lastY, midX, midY, drawPaint);
+
                                 lastX = event.getX();
                                 lastY = event.getY();
                             }
@@ -92,17 +103,14 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                     case MotionEvent.ACTION_UP:
                         isDrawing = false;
                         drawPath.lineTo(event.getX(), event.getY());
+                        // Draw the final line between the previous and current points with the desired opacity
+                        drawPaint.setAlpha(currentBrushOpacity);
+                        canvas.drawPath(drawPath, drawPaint);
+                        canvas.drawLine(lastX, lastY, event.getX(), event.getY(), drawPaint);
                         break;
                     default:
                         return false;
                 }
-
-                // Set the color and opacity of the paint
-                drawPaint.setColor(paintColor);
-                drawPaint.setAlpha(currentBrushOpacity);
-
-                // Draw the path on the canvas
-                canvas.drawPath(drawPath, drawPaint);
 
                 // Update the image view to display the new canvas
                 imageView.setImageBitmap(bitmap);
@@ -338,6 +346,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     @Override
     public void onColorSelected(int dialogId, int color) {
         paintColor = color;
+        drawPaint.setColor(paintColor);
+        drawPaint.setAlpha(currentBrushOpacity);
         imageView.invalidate();
     }
 
