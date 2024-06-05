@@ -114,7 +114,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         binding.brushSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showBrushSizeDialog();
+                showBrushSizeDialog();//dialog for choosing stroke width
             }
         });
 
