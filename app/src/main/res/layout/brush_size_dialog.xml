@@ -8,11 +8,33 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выберите размер кисти:" />
+        android:text="Размер кисти:" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
 
     <SeekBar
         android:clickable="true"
-        android:id="@+id/brush_size_progress_bar"
+        android:id="@+id/brush_size_seek_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:focusable="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Опасность:" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <SeekBar
+        android:clickable="true"
+        android:id="@+id/brush_opacity_seek_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

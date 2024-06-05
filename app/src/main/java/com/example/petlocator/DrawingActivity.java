@@ -226,7 +226,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         View dialogView = getLayoutInflater().inflate(R.layout.brush_size_dialog, null);
         dialogBuilder.setView(dialogView);
 
-        final SeekBar seekBar = dialogView.findViewById(R.id.brush_size_progress_bar);
+        final SeekBar seekBar = dialogView.findViewById(R.id.brush_size_seek_bar);
         seekBar.setProgress(currentBrushSize); // Устанавливаем значение SeekBar в соответствии с текущим размером кисти
 
         // Добавляем обработчик изменения значения для SeekBar
