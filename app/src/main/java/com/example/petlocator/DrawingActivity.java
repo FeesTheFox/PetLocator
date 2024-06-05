@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.petlocator.databinding.ActivityDrawingBinding;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,10 +39,14 @@ public class DrawingActivity extends AppCompatActivity {
     private ImageView imageView;
     MediaPlayer mediaPlayer;
 
+    ActivityDrawingBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawing);
+        binding = ActivityDrawingBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         imageView = findViewById(R.id.image_view);
 
@@ -75,11 +81,10 @@ public class DrawingActivity extends AppCompatActivity {
         });
 
 
-        // Add a save button to the layout
-        Button saveButton = new Button(this);
 
-        saveButton.setText("Сохранить");
-        saveButton.setOnClickListener(new View.OnClickListener() {
+
+
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Вызываем диалоговое окно для сохранения рисунка
@@ -87,9 +92,6 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });
 
-        // Add the save button to the layout
-        LinearLayout layout = findViewById(R.id.drawing_layout);
-        layout.addView(saveButton);
 
         // Create a bitmap to use as a canvas when the image view is laid out
         imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
