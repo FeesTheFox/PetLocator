@@ -27,19 +27,23 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.petlocator.databinding.ActivityDrawingBinding;
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class DrawingActivity extends AppCompatActivity {
+public class DrawingActivity extends AppCompatActivity implements ColorPickerDialogListener  {
 
     private Bitmap bitmap;
     private Canvas canvas;
     private ImageView imageView;
+    private int paintColor = Color.BLACK;
     MediaPlayer mediaPlayer;
 
     ActivityDrawingBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class DrawingActivity extends AppCompatActivity {
                 int y = (int) event.getY();
 
                 // Set the pixel at the touch position to black
-                bitmap.setPixel(x, y, Color.BLACK);
+                bitmap.setPixel(x, y, paintColor);
 
                 // Create a canvas for the bitmap
                 Canvas canvas = new Canvas(bitmap);
@@ -69,7 +73,7 @@ public class DrawingActivity extends AppCompatActivity {
 
                 // Draw a circle at the touch position
                 Paint paint = new Paint();
-                paint.setColor(Color.BLACK);
+                paint.setColor(paintColor);
                 canvas.drawCircle(x, y, 10, paint);
 
                 // Update the image view to display the new canvas
@@ -77,6 +81,13 @@ public class DrawingActivity extends AppCompatActivity {
 
                 // Return true to indicate that the touch event was handled
                 return true;
+            }
+        });
+
+        binding.btnColorPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showColorPickerDialog();
             }
         });
 
@@ -161,6 +172,17 @@ public class DrawingActivity extends AppCompatActivity {
         dialogBuilder.show();
     }
 
+    private void showColorPickerDialog() {
+        ColorPickerDialog.newBuilder()
+                .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
+                .setAllowPresets(false)
+                .setColor(paintColor)
+                .setDialogId(1)
+                .show(this);
+
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.back_menu, menu);
@@ -179,5 +201,16 @@ public class DrawingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        paintColor = color;
+        imageView.invalidate();
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
+
     }
 }
