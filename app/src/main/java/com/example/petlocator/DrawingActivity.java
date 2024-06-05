@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +42,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private ImageView imageView;
     private int paintColor = Color.BLACK;
     MediaPlayer mediaPlayer;
+    private Path drawPath;
+    private Paint drawPaint;
 
     ActivityDrawingBinding binding;
 
@@ -58,23 +61,43 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
         // Set up touch events for drawing
         imageView.setOnTouchListener(new View.OnTouchListener() {
+            private float lastX, lastY;
+            private boolean isDrawing = false;
+
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                // Get the current touch position
-                int x = (int) event.getX();
-                int y = (int) event.getY();
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        isDrawing = true;
+                        lastX = event.getX();
+                        lastY = event.getY();
+                        drawPath.reset();
+                        drawPath.moveTo(lastX, lastY);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (isDrawing) {
+                            float dx = Math.abs(event.getX() - lastX);
+                            float dy = Math.abs(event.getY() - lastY);
+                            if (dx >= 4 || dy >= 4) {
+                                drawPath.quadTo(lastX, lastY, (event.getX() + lastX) / 2, (event.getY() + lastY) / 2);
+                                lastX = event.getX();
+                                lastY = event.getY();
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        isDrawing = false;
+                        drawPath.lineTo(event.getX(), event.getY());
+                        break;
+                    default:
+                        return false;
+                }
 
-                // Set the pixel at the touch position to black
-                bitmap.setPixel(x, y, paintColor);
+                // Set the color of the paint
+                drawPaint.setColor(paintColor);
 
-                // Create a canvas for the bitmap
-                Canvas canvas = new Canvas(bitmap);
-
-
-                // Draw a circle at the touch position
-                Paint paint = new Paint();
-                paint.setColor(paintColor);
-                canvas.drawCircle(x, y, 10, paint);
+                // Draw the path on the canvas
+                canvas.drawPath(drawPath, drawPaint);
 
                 // Update the image view to display the new canvas
                 imageView.setImageBitmap(bitmap);
@@ -119,6 +142,16 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
                 canvas.drawColor(Color.WHITE);
+
+                // Create a Path for drawing
+                drawPath = new Path();
+
+                // Create a Paint for the Path
+                drawPaint = new Paint();
+                drawPaint.setStyle(Paint.Style.STROKE);
+                drawPaint.setStrokeJoin(Paint.Join.ROUND);
+                drawPaint.setStrokeCap(Paint.Cap.ROUND);
+                drawPaint.setStrokeWidth(20);
 
                 // Set the image view to display the bitmap
                 imageView.setImageBitmap(bitmap);
