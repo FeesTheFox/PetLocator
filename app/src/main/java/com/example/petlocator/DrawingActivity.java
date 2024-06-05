@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,6 +60,7 @@ public class DrawingActivity extends AppCompatActivity {
                 // Create a canvas for the bitmap
                 Canvas canvas = new Canvas(bitmap);
 
+
                 // Draw a circle at the touch position
                 Paint paint = new Paint();
                 paint.setColor(Color.BLACK);
@@ -75,6 +77,7 @@ public class DrawingActivity extends AppCompatActivity {
 
         // Add a save button to the layout
         Button saveButton = new Button(this);
+
         saveButton.setText("Сохранить");
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,24 +101,12 @@ public class DrawingActivity extends AppCompatActivity {
                 // Create a bitmap to use as a canvas
                 bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
+                canvas.drawColor(Color.WHITE);
 
                 // Set the image view to display the bitmap
                 imageView.setImageBitmap(bitmap);
             }
         });
-    }
-
-    // Метод для сохранения Bitmap в файл и получения Uri этого файла
-    private Uri saveBitmapToFile(Bitmap bitmap) {
-        File imageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "pet_image.png");
-        try (FileOutputStream outputStream = new FileOutputStream(imageFile)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            outputStream.flush();
-        } catch (IOException e) {
-            Log.e("LOGTAG", "Failed to save bitmap to file", e);
-            return null;
-        }
-        return Uri.fromFile(imageFile);
     }
 
     private void showSaveDialog() {
