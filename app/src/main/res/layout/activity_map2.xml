@@ -34,7 +34,7 @@
         android:layout_height="125dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/panel_view"
-        android:padding="8dp">
+        android:padding="20dp">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
