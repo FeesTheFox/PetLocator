@@ -3,14 +3,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="text_bottom">#C9C9C9</color>
-    <color name="ripple_effect">#AA5353</color>
-    <color name="btn_sign_in">#ED7171</color>
-    <color name="btn_sign_in_stroke">#D66060</color>
-    <color name="btn_register">#E27A5D</color>
-    <color name="btn_register_stroke">#D16E53</color>
+    <color name="ripple_effect">#059669</color>
+    <color name="ripple_effect2">#DB2777</color>
+    <color name="btn_sign_in">#065F46</color>
+    <color name="btn_sign_in_stroke">#059669</color>
+    <color name="btn_register">#9D174D</color>
+    <color name="btn_register_stroke">#DB2777</color>
     <color name="cyan">#30D5C8</color>
     <color name="orange">#FBAA6F</color>
     <color name="light_yellow">#FDC59C</color>
     <color name="dark_orange">#cc5500</color>
     <color name="dark_blue">#00008b</color>
+    <color name="brown">#8B4513</color>
+    <color name="yellow">#F0E68C</color>
 </resources>

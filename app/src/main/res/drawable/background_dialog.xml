@@ -8,9 +8,10 @@
     <shape android:shape="rectangle">
         <corners android:radius="10dp" />
         <gradient
-            android:startColor="@color/dark_orange"
-            android:endColor="@color/light_yellow"
-            android:type="linear"
+            android:startColor="@color/brown"
+            android:endColor="@color/brown"
+            android:type="radial"
             android:angle="270"/>
+
     </shape>
 </inset>

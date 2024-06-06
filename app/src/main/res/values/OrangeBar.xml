@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/dark_orange</item>
-        <item name="colorPrimaryVariant">@color/dark_orange</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="colorPrimary">@color/brown</item>
+        <item name="colorPrimaryVariant">@color/brown</item>
+        <item name="colorOnPrimary">@color/yellow</item>
+        <item name="android:windowBackground">@color/yellow</item>
     </style>
+
 </resources>
