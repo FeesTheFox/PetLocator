@@ -11,6 +11,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     MediaPlayer mediaPlayer;
     private Path drawPath;
     private Paint drawPaint;
+    private Paint erasePaint;
     private int currentBrushSize = 20;
     private int currentBrushOpacity = 255;
     ActivityDrawingBinding binding;
@@ -57,6 +60,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
     private static final int DRAWING_MODE_BRUSH = 0;
     private static final int DRAWING_MODE_EYEDROPPER = 1;
+    private static final int DRAWING_MODE_ERASER = 2;
+    private static final int DRAWING_MODE_FILL = 3;
 
 
     @Override
@@ -77,7 +82,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
             @Override
             public boolean onTouch(View view, MotionEvent event) {
-                if (drawingMode == DRAWING_MODE_BRUSH) {
+                if (drawingMode == DRAWING_MODE_BRUSH) { //BRUSH
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             isDrawing = true;
@@ -119,13 +124,56 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                         default:
                             return false;
                     }
-                } else if (drawingMode == DRAWING_MODE_EYEDROPPER) {
+                } else if (drawingMode == DRAWING_MODE_EYEDROPPER) { //EYEDROPPER
                     if (event.getAction() == MotionEvent.ACTION_UP) {
                         // Взять цвет пикселя по координатам нажатия
                         int color = bitmap.getPixel((int) event.getX(), (int) event.getY());
                         // Установить его в качестве текущего цвета кисти
                         paintColor = color;
                         drawPaint.setColor(paintColor);
+                    }
+                } else if (drawingMode == DRAWING_MODE_ERASER) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            isDrawing = true;
+                            lastX = event.getX();
+                            lastY = event.getY();
+                            drawPath.reset();
+                            drawPath.moveTo(lastX, lastY);
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            if (isDrawing){
+                                float dx = Math.abs(event.getX() - lastX);
+                                float dy = Math.abs(event.getY() - lastY);
+                                if (dx >= 4 || dy >= 4) {
+                                    // Save the current point as the end of the previous line
+                                    float midX = (event.getX() + lastX) / 2;
+                                    float midY = (event.getY() + lastY) / 2;
+                                    drawPath.quadTo(lastX, lastY, midX, midY);
+                                    canvas.drawPath(drawPath, erasePaint);
+                                    drawPath.reset();
+                                    drawPath.moveTo(midX, midY);
+
+                                    // Draw a line between the previous and current points with the desired opacity
+                                    canvas.drawLine(lastX, lastY, midX, midY, erasePaint);
+
+                                    lastX = event.getX();
+                                    lastY = event.getY();
+                                }
+                            }
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isDrawing = false;
+                            drawPath.lineTo(event.getX(), event.getY());
+                            canvas.drawPath(drawPath, erasePaint);
+                            canvas.drawLine(lastX, lastY, event.getX(),event.getY(),erasePaint);
+                            break;
+                    }
+                    erasePaint.setXfermode(null);
+                }else if (drawingMode == DRAWING_MODE_FILL){   //FILL
+                    if (event.getAction() == MotionEvent.ACTION_UP){
+                        int color = bitmap.getPixel((int) event.getX(), (int) event.getY());
+                        canvas.drawColor(color, PorterDuff.Mode.SRC_IN);
                     }
                 }
 
@@ -182,6 +230,14 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 drawPaint.setStrokeJoin(Paint.Join.ROUND);
                 drawPaint.setStrokeCap(Paint.Cap.ROUND);
                 drawPaint.setStrokeWidth(20);
+
+                erasePaint = new Paint();
+                erasePaint.setStyle(Paint.Style.STROKE);
+                erasePaint.setStrokeJoin(Paint.Join.ROUND);
+                erasePaint.setStrokeCap(Paint.Cap.ROUND);
+                erasePaint.setStrokeWidth(currentBrushSize);
+                erasePaint.setColor(Color.WHITE);
+                erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 
                 // Set the image view to display the bitmap
                 imageView.setImageBitmap(bitmap);
@@ -345,6 +401,26 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 // Тут вы можете добавить код для перехода в режим пипетки
             }
         });
+
+
+        ImageButton eraserButton = dialogView.findViewById(R.id.changeEraser);
+        eraserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingMode = DRAWING_MODE_ERASER;
+                alertDialog.dismiss();
+            }
+        });
+
+        ImageButton fillButton = dialogView.findViewById(R.id.changeFill);
+        fillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawingMode = DRAWING_MODE_FILL;
+                alertDialog.dismiss();
+            }
+        });
+
 
         alertDialog.show();
     }

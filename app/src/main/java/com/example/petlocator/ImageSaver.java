@@ -22,7 +22,7 @@ public class ImageSaver {
     public static void saveImage(Context context, Bitmap bitmap, String fileName, OnImageSavedListener listener) {
         File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName);
         try (FileOutputStream outputStream = new FileOutputStream(imageFile)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             outputStream.flush();
         } catch (IOException e) {
             Log.e(TAG, "Failed to save bitmap to file", e);

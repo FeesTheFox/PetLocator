@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp" />
 
             <ImageButton
                 android:id="@+id/changeBrush"
@@ -31,18 +32,19 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_register"
                 android:padding="16dp"
-                android:src="@drawable/brush"/>
+                android:src="@drawable/brush" />
 
         </LinearLayout>
 
         <Space
-            android:layout_width="100dp"
-            android:layout_height="20dp"/>
+            android:layout_width="25dp"
+            android:layout_height="20dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,23 +53,80 @@
 
             <Space
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"/>
+                android:layout_height="20dp" />
 
             <ImageButton
                 android:id="@+id/changeColorPicker"
-                android:background="@drawable/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_register"
                 android:padding="16dp"
-                android:src="@drawable/color_picker"/>
+                android:src="@drawable/color_picker" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="25dp"
+            android:layout_height="20dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Ластик" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="20dp" />
+
+            <ImageButton
+                android:id="@+id/changeEraser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_register"
+                android:padding="20dp"
+                android:src="@drawable/eraser" />
+
+
+
 
         </LinearLayout>
 
 
+        <Space
+            android:layout_width="25dp"
+            android:layout_height="20dp" />
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Заливка" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="20dp" />
+
+            <ImageButton
+                android:id="@+id/changeFill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_register"
+                android:padding="16.5dp"
+                android:src="@drawable/fill" />
+
+        </LinearLayout>
     </LinearLayout>
-
-
-
-
 </LinearLayout>
