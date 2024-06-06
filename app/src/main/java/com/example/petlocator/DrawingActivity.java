@@ -41,6 +41,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Stack;
 
 public class DrawingActivity extends AppCompatActivity implements ColorPickerDialogListener  {
 
@@ -56,13 +57,13 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private int currentBrushSize = 20;
     private int currentBrushOpacity = 255;
     ActivityDrawingBinding binding;
+    private boolean[][] processed;
 
     private int drawingMode = DRAWING_MODE_BRUSH;
 
     private static final int DRAWING_MODE_BRUSH = 0;
     private static final int DRAWING_MODE_EYEDROPPER = 1;
     private static final int DRAWING_MODE_ERASER = 2;
-    private static final int DRAWING_MODE_FILL = 3;
 
 
     @Override
@@ -73,6 +74,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         setContentView(view);
 
         imageView = findViewById(R.id.image_view);
+
 
         mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
@@ -171,11 +173,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                             break;
                     }
                     erasePaint.setXfermode(null);
-                }else if (drawingMode == DRAWING_MODE_FILL){   //FILL
-                    if (event.getAction() == MotionEvent.ACTION_UP){
-                        int color = bitmap.getPixel((int) event.getX(), (int) event.getY());
-                        canvas.drawColor(color, PorterDuff.Mode.SRC_IN);
-                    }
                 }
 
                 // Update the image view to display the new canvas
@@ -240,6 +237,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 erasePaint.setStrokeWidth(currentBrushSize);
                 erasePaint.setColor(Color.WHITE);
                 erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+
+                processed = new boolean[bitmap.getWidth()][bitmap.getHeight()];
 
                 // Set the image view to display the bitmap
                 imageView.setImageBitmap(bitmap);
@@ -414,18 +413,57 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
             }
         });
 
-        ImageButton fillButton = dialogView.findViewById(R.id.changeFill);
-        fillButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawingMode = DRAWING_MODE_FILL;
-                alertDialog.dismiss();
-            }
-        });
-
-
         alertDialog.show();
     }
+
+    private void floodFill(int x, int y, int targetColor, int newColor) {
+        if (x < 0 || x >= bitmap.getWidth() || y < 0 || y >= bitmap.getHeight()) {
+            return;
+        }
+
+        int currentColor = bitmap.getPixel(x, y);
+        if (currentColor != targetColor || processed[x][y]) {
+            return;
+        }
+
+        bitmap.setPixel(x, y, newColor);
+        processed[x][y] = true;
+
+        Stack<Integer> stack = new Stack<>();
+        stack.push(x);
+        stack.push(y);
+
+        while (!stack.isEmpty()) {
+            y = stack.pop();
+            x = stack.pop();
+
+            if (x < 0 || x >= bitmap.getWidth() || y < 0 || y >= bitmap.getHeight()) {
+                continue;
+            }
+
+            currentColor = bitmap.getPixel(x, y);
+            if (currentColor != targetColor || processed[x][y]) {
+                continue;
+            }
+
+            bitmap.setPixel(x, y, newColor);
+            processed[x][y] = true;
+
+            stack.push(x - 1);
+            stack.push(y);
+            stack.push(x + 1);
+            stack.push(y);
+            stack.push(x);
+            stack.push(y - 1);
+            stack.push(x);
+            stack.push(y + 1);
+        }
+
+        imageView.invalidate();
+    }
+
+
+
 
 
 
