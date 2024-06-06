@@ -65,6 +65,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private static final int DRAWING_MODE_EYEDROPPER = 1;
     private static final int DRAWING_MODE_ERASER = 2;
 
+    private View colorIndicator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,19 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
 
         mediaPlayer = MediaPlayer.create(this, R.raw.click);
+
+
+        colorIndicator = new View(this);
+
+        colorIndicator.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
+
+        colorIndicator.setBackgroundColor(paintColor);
+
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) colorIndicator.getLayoutParams();
+        layoutParams.setMargins(0, 15, 0, 0);
+        colorIndicator.setLayoutParams(layoutParams);
+
+        binding.drawingLayout.addView(colorIndicator);
 
         // Set up touch events for drawing
         imageView.setOnTouchListener(new View.OnTouchListener() {
@@ -134,6 +149,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                         // Установить его в качестве текущего цвета кисти
                         paintColor = color;
                         drawPaint.setColor(paintColor);
+
+                        colorIndicator.setBackgroundColor(paintColor);
                     }
                 } else if (drawingMode == DRAWING_MODE_ERASER) {
                     switch (event.getAction()) {
@@ -519,10 +536,19 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         drawPaint.setColor(paintColor);
         drawPaint.setAlpha(currentBrushOpacity);
         imageView.invalidate();
+
+        // Вызываем метод для изменения цвета кисти и обновления цвета фона View для индикатора цвета
+        changeBrushColor(color);
     }
 
     @Override
     public void onDialogDismissed(int dialogId) {
 
     }
+
+    private void changeBrushColor(int newColor) {
+
+        colorIndicator.setBackgroundColor(paintColor);
+    }
+
 }
