@@ -23,10 +23,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="125dp"
+        android:layout_height="145dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/orange"
-        android:padding="8dp">
+        android:background="@drawable/panel_view"
+        android:padding="20dp">
 
         <HorizontalScrollView
             android:layout_width="match_parent"

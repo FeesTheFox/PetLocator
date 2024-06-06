@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
@@ -445,7 +446,13 @@ public class ClickActivity extends AppCompatActivity {
     }
 
     private void showSnackbar(String message) {
-        Snackbar.make(imageView, message, Snackbar.LENGTH_LONG).show();
+        Snackbar snackbar = Snackbar.make(imageView, message, Snackbar.LENGTH_LONG);
+
+        snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+        snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+        snackbar.show();
     }
 
     @Override

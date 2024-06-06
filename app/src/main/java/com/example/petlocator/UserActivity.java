@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -361,7 +362,12 @@ public class UserActivity extends AppCompatActivity {
                 mediaPlayer.start();
                 if (imageUri == null) {
                     // Shows the snackbar with the message
-                    Snackbar.make(binding.getRoot(), "Пожалуйста, выберите фотографию для питомца", Snackbar.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(binding.getRoot(), "Пожалуйста, выберите фотографию для питомца", Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                 } else {
                     // Creates a new pet object and saves it in the database
                     Pet pet = new Pet();

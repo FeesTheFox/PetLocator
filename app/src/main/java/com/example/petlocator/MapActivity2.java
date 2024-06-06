@@ -2,6 +2,7 @@ package com.example.petlocator;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,7 +24,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -368,8 +371,16 @@ public class MapActivity2 extends AppCompatActivity {
 
     private void showSnackbar(String petName, float distance) {
         int dist = Math.round(distance);
-        Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко!" + " " + dist + " м. от дома" , Snackbar.LENGTH_LONG).show();
+
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко! " + dist + " м. от дома", Snackbar.LENGTH_LONG);
+
+        snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+        snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+        snackbar.show();
     }
+
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
         petMarkers.clear(); // clears the markers list

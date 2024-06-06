@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -169,32 +170,57 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 mediaPlayer.start();
                 if (TextUtils.isEmpty(email.getText().toString())) {
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите вашу почту",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                     return;
                 }
                 if (TextUtils.isEmpty(name.getText().toString())) {
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите ваше имя",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                     return;
                 }
                 if (TextUtils.isEmpty(phone.getText().toString())) {
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите ваш номер телефона",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                     return;
                 }
                 if (pass.getText().toString().length () < 5) {
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Пароль должен содержать больше 5 символов",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                     return;
                 }if (choosen_role[0] == null){
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Выберите роль",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                 }
                 //User's registration
                 auth.createUserWithEmailAndPassword(email.getText().toString(),
@@ -213,22 +239,39 @@ public class MainActivity extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                Snackbar.make(binding.root, "Успешно зарегистрирован!",
-                                                        Snackbar.LENGTH_SHORT).show();
+                                                Snackbar snackbar = Snackbar.make(binding.root, "Успешно зарегистрирован!",
+                                                        Snackbar.LENGTH_SHORT);
+                                                snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                                                snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                                                snackbar.show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Snackbar.make(binding.root, e.getMessage(),
-                                                        Snackbar.LENGTH_SHORT).show();
+                                                Snackbar snackbar = Snackbar.make(binding.root, e.getMessage(),
+                                                        Snackbar.LENGTH_SHORT);
+
+                                                snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                                                snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                                                snackbar.show();
                                             }
                                         });
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Snackbar.make(binding.root, e.getMessage(),
-                                        Snackbar.LENGTH_SHORT).show();
+                                Snackbar snackbar = Snackbar.make(binding.root, e.getMessage(),
+                                        Snackbar.LENGTH_SHORT);
+
+                                snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                                snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                                snackbar.show();
                             }
                         });
             }
@@ -259,15 +302,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 mediaPlayer.start();
                 if (TextUtils.isEmpty(email.getText().toString())){
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите вашу почту",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                     return;
                 }
                 if (pass.getText().toString().length() < 5){
-                    Snackbar.make(binding.root,
+                    Snackbar snackbar = Snackbar.make(binding.root,
                             "Пароль должен содержать больше 5 символов",
-                            Snackbar.LENGTH_SHORT).show();
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                    snackbar.show();
                     return;
                 }
                 //user's authorizing
@@ -314,9 +368,14 @@ public class MainActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) { //Fail
-                        Snackbar.make(binding.root,
-                                "Ошибка авторизации: "+
-                                e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                        Snackbar snackbar = Snackbar.make(binding.root, e.getMessage(),
+                                Snackbar.LENGTH_SHORT);
+
+                        snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+
+                        snackbar.setTextColor(Color.parseColor("#F0E68C"));
+
+                        snackbar.show();
                     }
                 });
 
