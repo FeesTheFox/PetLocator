@@ -50,6 +50,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private int paintColor = Color.BLACK;
     MediaPlayer mediaPlayer;
     private Path drawPath;
+    private Path fillPath;
     private Paint drawPaint;
     private Paint erasePaint;
     private int currentBrushSize = 20;
@@ -224,6 +225,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 // Create a Path for drawing
                 drawPath = new Path();
 
+
                 // Create a Paint for the Path
                 drawPaint = new Paint();
                 drawPaint.setStyle(Paint.Style.STROKE);
@@ -237,7 +239,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 erasePaint.setStrokeCap(Paint.Cap.ROUND);
                 erasePaint.setStrokeWidth(currentBrushSize);
                 erasePaint.setColor(Color.WHITE);
-                erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
 
                 // Set the image view to display the bitmap
                 imageView.setImageBitmap(bitmap);
