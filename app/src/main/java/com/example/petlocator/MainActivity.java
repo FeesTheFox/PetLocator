@@ -1,10 +1,12 @@
 package com.example.petlocator;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,10 +20,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.petlocator.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -173,6 +177,11 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите вашу почту",
                             Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -184,6 +193,11 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите ваше имя",
                             Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -195,6 +209,11 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(binding.root,
                             "Введите ваш номер телефона",
                             Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -206,6 +225,11 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(binding.root,
                             "Пароль должен содержать больше 5 символов",
                             Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -216,6 +240,11 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(binding.root,
                             "Выберите роль",
                             Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -241,6 +270,11 @@ public class MainActivity extends AppCompatActivity {
                                             public void onSuccess(Void unused) {
                                                 Snackbar snackbar = Snackbar.make(binding.root, "Успешно зарегистрирован!",
                                                         Snackbar.LENGTH_SHORT);
+
+                                                Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                                                @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                                                TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                                                textView.setTypeface(typeface);
                                                 snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                                                 snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -253,6 +287,10 @@ public class MainActivity extends AppCompatActivity {
                                                 Snackbar snackbar = Snackbar.make(binding.root, e.getMessage(),
                                                         Snackbar.LENGTH_SHORT);
 
+                                                Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                                                @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                                                TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                                                textView.setTypeface(typeface);
                                                 snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                                                 snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -267,6 +305,10 @@ public class MainActivity extends AppCompatActivity {
                                 Snackbar snackbar = Snackbar.make(binding.root, e.getMessage(),
                                         Snackbar.LENGTH_SHORT);
 
+                                Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                                @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                                TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                                textView.setTypeface(typeface);
                                 snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                                 snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -306,6 +348,10 @@ public class MainActivity extends AppCompatActivity {
                             "Введите вашу почту",
                             Snackbar.LENGTH_SHORT);
 
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -317,6 +363,11 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar snackbar = Snackbar.make(binding.root,
                             "Пароль должен содержать больше 5 символов",
                             Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
@@ -371,6 +422,10 @@ public class MainActivity extends AppCompatActivity {
                         Snackbar snackbar = Snackbar.make(binding.root, e.getMessage(),
                                 Snackbar.LENGTH_SHORT);
 
+                        Typeface typeface = ResourcesCompat.getFont(MainActivity.this,R.font.kdwilliam);
+                        @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                        TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                        textView.setTypeface(typeface);
                         snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                         snackbar.setTextColor(Color.parseColor("#F0E68C"));

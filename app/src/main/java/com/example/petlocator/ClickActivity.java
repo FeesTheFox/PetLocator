@@ -3,10 +3,12 @@ package com.example.petlocator;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.petlocator.databinding.ActivityClickBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -448,6 +451,10 @@ public class ClickActivity extends AppCompatActivity {
     private void showSnackbar(String message) {
         Snackbar snackbar = Snackbar.make(imageView, message, Snackbar.LENGTH_LONG);
 
+        Typeface typeface = ResourcesCompat.getFont(ClickActivity.this,R.font.kdwilliam);
+        @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+        TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+        textView.setTypeface(typeface);
         snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
         snackbar.setTextColor(Color.parseColor("#F0E68C"));

@@ -1,11 +1,13 @@
 package com.example.petlocator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,10 +22,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.petlocator.databinding.ActivityUserBinding;
@@ -363,6 +367,11 @@ public class UserActivity extends AppCompatActivity {
                 if (imageUri == null) {
                     // Shows the snackbar with the message
                     Snackbar snackbar = Snackbar.make(binding.getRoot(), "Пожалуйста, выберите фотографию для питомца", Snackbar.LENGTH_SHORT);
+
+                    Typeface typeface = ResourcesCompat.getFont(UserActivity.this,R.font.kdwilliam);
+                    @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+                    TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+                    textView.setTypeface(typeface);
                     snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
 
                     snackbar.setTextColor(Color.parseColor("#F0E68C"));
