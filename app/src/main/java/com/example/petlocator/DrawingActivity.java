@@ -46,7 +46,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private int currentBrushSize = 20;
     private int currentBrushOpacity = 255;
     ActivityDrawingBinding binding;
-    private boolean[][] processed;
 
     private int drawingMode = DRAWING_MODE_BRUSH;
 
@@ -228,7 +227,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 // Create a Path for drawing
                 drawPath = new Path();
 
-
                 // Create a Paint for the Path
                 drawPaint = new Paint();
                 drawPaint.setStyle(Paint.Style.STROKE);
@@ -243,8 +241,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 erasePaint.setStrokeWidth(currentBrushSize);
                 erasePaint.setColor(Color.WHITE);
                 erasePaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
-
-                processed = new boolean[bitmap.getWidth()][bitmap.getHeight()];
 
                 // Set the image view to display the bitmap
                 imageView.setImageBitmap(bitmap);
@@ -421,59 +417,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
         alertDialog.show();
     }
-
-    private void floodFill(int x, int y, int targetColor, int newColor) {
-        if (x < 0 || x >= bitmap.getWidth() || y < 0 || y >= bitmap.getHeight()) {
-            return;
-        }
-
-        int currentColor = bitmap.getPixel(x, y);
-        if (currentColor != targetColor || processed[x][y]) {
-            return;
-        }
-
-        bitmap.setPixel(x, y, newColor);
-        processed[x][y] = true;
-
-        Stack<Integer> stack = new Stack<>();
-        stack.push(x);
-        stack.push(y);
-
-        while (!stack.isEmpty()) {
-            y = stack.pop();
-            x = stack.pop();
-
-            if (x < 0 || x >= bitmap.getWidth() || y < 0 || y >= bitmap.getHeight()) {
-                continue;
-            }
-
-            currentColor = bitmap.getPixel(x, y);
-            if (currentColor != targetColor || processed[x][y]) {
-                continue;
-            }
-
-            bitmap.setPixel(x, y, newColor);
-            processed[x][y] = true;
-
-            stack.push(x - 1);
-            stack.push(y);
-            stack.push(x + 1);
-            stack.push(y);
-            stack.push(x);
-            stack.push(y - 1);
-            stack.push(x);
-            stack.push(y + 1);
-        }
-
-        imageView.invalidate();
-    }
-
-
-
-
-
-
-
     private void showColorPickerDialog() {
         ColorPickerDialog.newBuilder()
                 .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
@@ -483,7 +426,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 .show(this);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
