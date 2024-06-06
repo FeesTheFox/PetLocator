@@ -1,16 +1,14 @@
 package com.example.petlocator;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.petlocator.databinding.ActivityHowToBinding;
-import com.example.petlocator.databinding.ActivityInfoBinding;
 
 public class HowToActivity extends AppCompatActivity {
 
