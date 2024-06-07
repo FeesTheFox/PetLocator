@@ -3,6 +3,7 @@ package com.example.petlocator;
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,6 +22,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,6 +32,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -715,6 +719,52 @@ public class MapActivity2 extends AppCompatActivity {
                             polyline.setWidth(5);
                         }
                     }
+                }
+            });
+
+            petView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mediaPlayer1.start();
+                    Pet selectedPet = ((PetView) v).getPet();
+
+                    // Create a PopupWindow
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View popupView = inflater.inflate(R.layout.popup_window, null);
+                    int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    boolean focusable = true;
+                    final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                    // Set the pet's name in the PopupWindow
+                    TextView petNameTextView = popupView.findViewById(R.id.pet_name);
+                    petNameTextView.setText(selectedPet.getpetName());
+
+                    // Show the PopupWindow above the PetView
+                    int[] location = new int[2];
+                    v.getLocationOnScreen(location);
+                    popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, location[0], location[1] - popupView.getHeight());
+
+                    // Dismiss the PopupWindow when the user clicks outside of it
+                    popupView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            popupWindow.dismiss();
+                            return true;
+                        }
+                    });
+
+                    // Dismiss the PopupWindow automatically after 3 seconds
+                    Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            popupWindow.dismiss();
+                        }
+                    };
+                    handler.postDelayed(runnable, 3000);
+
+                    return true;
                 }
             });
 
