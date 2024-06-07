@@ -54,6 +54,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
     private static final int DRAWING_MODE_ERASER = 2;
 
     private View colorIndicator;
+    private boolean isLeaving = false;
 
 
     @Override
@@ -256,7 +257,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
+                isLeaving = true;
+                onBackPressed();
             }
         }).setNegativeButton("Нет", new DialogInterface.OnClickListener() {
             @Override
@@ -482,4 +484,13 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         colorIndicator.setBackgroundColor(paintColor);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isLeaving) {
+            super.onBackPressed();
+        }
+        else {
+            showLeaveDialog();
+        }
+    }
 }
