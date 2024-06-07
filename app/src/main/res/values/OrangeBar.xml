@@ -5,6 +5,8 @@
         <item name="colorPrimaryVariant">@color/brown</item>
         <item name="colorOnPrimary">@color/yellow</item>
         <item name="android:windowBackground">@color/yellow</item>
+        <item name="android:statusBarColor">@color/brown</item>
+        <item name="android:navigationBarColor">@color/brown</item>
     </style>
 
 </resources>
