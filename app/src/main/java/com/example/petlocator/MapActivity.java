@@ -11,8 +11,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -64,8 +67,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -321,15 +326,36 @@ public class MapActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    private void showSnackbar(String petName, float distance) {
-        int dist = Math.round(distance);
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко! " + dist + " м. от дома", Snackbar.LENGTH_LONG);
+    private void showSnackbar(final String petName, final float distance, final LatLng petLocation) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                Geocoder geocoder = new Geocoder(MapActivity.this, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(petLocation.latitude, petLocation.longitude, 1);
+                    if (addresses != null && addresses.size() > 0) {
+                        String street = addresses.get(0).getThoroughfare();
+                        if (street != null) {
+                            return street;
+                        }
+                    }
+                } catch (IOException e) {
+                    Log.e("MapActivity2", "Error getting address from location", e);
+                }
+                return null;
+            }
 
-        snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
-
-        snackbar.setTextColor(Color.parseColor("#F0E68C"));
-
-        snackbar.show();
+            @Override
+            protected void onPostExecute(String street) {
+                if (street != null) {
+                    int dist = Math.round(distance);
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), petName + " очень далеко! " + dist + " м. от дома на улице " + street, Snackbar.LENGTH_LONG);
+                    snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
+                    snackbar.setTextColor(Color.parseColor("#F0E68C"));
+                    snackbar.show();
+                }
+            }
+        }.execute();
     }
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
@@ -439,7 +465,7 @@ public class MapActivity extends AppCompatActivity {
 
                             float distance = userLocation.distanceTo(petLocationObj);
                             if (distance > MAX_DISTANCE) {
-                                showSnackbar(pet.getpetName(), distance);
+                                showSnackbar(pet.getpetName(), distance, petLocation);
                             }
                         }
                     }
