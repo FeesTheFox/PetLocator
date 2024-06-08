@@ -19,6 +19,8 @@ public class ImageSaver {
         void onImageSaved(Uri imageUri);
     }
 
+
+    //saves into the gallery, JPEG
     public static void saveImage(Context context, Bitmap bitmap, String fileName, OnImageSavedListener listener) {
         File imageFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName);
         try (FileOutputStream outputStream = new FileOutputStream(imageFile)) {

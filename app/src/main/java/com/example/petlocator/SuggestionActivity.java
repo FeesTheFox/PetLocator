@@ -37,7 +37,7 @@ public class SuggestionActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                // Wait for the button to be rendered (this is just an example, you might need to adjust the delay)
+                // Wait for the button to be rendered
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

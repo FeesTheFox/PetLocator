@@ -79,7 +79,7 @@ public class ClickActivity extends AppCompatActivity {
 
         rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_animation);
 
-        // Инициализируем Firebase Database и Firebase Auth
+        // Initialization of FirebaseDatabase and FirebaseAuth
         firebaseDatabase = FirebaseDatabase.getInstance("https://petlocator-d7771-default-rtdb.firebaseio.com/");
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -104,7 +104,7 @@ public class ClickActivity extends AppCompatActivity {
         particleAlphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                // Пустой метод
+
             }
 
             @Override
@@ -114,7 +114,7 @@ public class ClickActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-                // Пустой метод
+
             }
         });
 
@@ -128,7 +128,7 @@ public class ClickActivity extends AppCompatActivity {
                 dialogBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Сбрасываем счётчик кликера
+                        // Drops counter to 0
                         clicks = 0;
                         if (firebaseUser != null) {
                             HashMap<String, Object> data = new HashMap<>();
@@ -153,14 +153,14 @@ public class ClickActivity extends AppCompatActivity {
         binding.catSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Сохраняем значение переключателя в базу данных Firebase
+                // Saves the state of the switch to database
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("catSwitch", isChecked);
                 firebaseDatabase.getReference("Users").child(userId).updateChildren(data)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                // Отображаем количество кликов на экране
+                                // Shows an amount of clicks
                                 setImageAndClicksText();
                             }
                         });
@@ -168,7 +168,7 @@ public class ClickActivity extends AppCompatActivity {
         });
 
         if (firebaseUser != null) {
-            // Получаем уникальный идентификатор пользователя
+            // Getting a unique user Id
             userId = firebaseUser.getUid();
 
             DatabaseReference userRef = firebaseDatabase.getReference("Users").child(userId);
@@ -184,7 +184,7 @@ public class ClickActivity extends AppCompatActivity {
                             binding.catSwitch.setVisibility(View.GONE);
                         }
 
-                        // Загружаем значение переключателя из базы данных Firebase
+                        // Loads the switch state from database
 
                         if (snapshot.child("catSwitch").exists()) {
                             boolean catSwitch = snapshot.child("catSwitch").getValue(Boolean.class);
@@ -202,44 +202,44 @@ public class ClickActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Обработать ошибку
+
                 }
             });
 
-            // Загружаем клики из базы данных Firebase
+            // Loads clicks from database
             DatabaseReference clicksRef = firebaseDatabase.getReference("Users").child(userId).child("clicks");
             clicksRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    // Проверяем, существует ли значение кликов в базе данных Firebase
+                    // If clicks are stored in database
                     if (snapshot.exists()) {
-                        // Получаем количество кликов из базы данных Firebase
+                        // gets the clicks
                         clicks = snapshot.getValue(Integer.class);
                     } else {
-                        // Устанавливаем начальное значение кликов равным 0
+                        // sets clicks to 0
                         clicks = 0;
-                        // Сохраняем начальное значение кликов в базе данных Firebase
+                        // saves the amount of clicks
                         HashMap<String, Object> data = new HashMap<>();
                         data.put("clicks", clicks);
                         firebaseDatabase.getReference("Users").child(userId).updateChildren(data);
                     }
-                    // Отображаем количество кликов на экране
+                    // shows clicks
                     setImageAndClicksText();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Обрабатываем ошибку загрузки данных из базы данных Firebase
+
                 }
             });
         }
 
-        // Получаем ссылку на элемент ImageView с идентификатором resize_image_view
+
         imageView = findViewById(R.id.resize_image_view);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) { //multiplier of clicks
                 int clicksToAdd = 1;
                 if (clicks >= 200 && clicks < 600) {
                     clicksToAdd = 2;
@@ -252,31 +252,31 @@ public class ClickActivity extends AppCompatActivity {
                 }
                 clicks += clicksToAdd;
 
-                // Проверяем, включен ли переключатель
+                // if the switch is on
                 if (binding.catSwitch.isChecked()) {
-                    // Проигрываем мяуканье
+                    // meowing plays
                     mediaPlayer2.start();
                 } else {
-                    // Проигрываем лай
+                    // bark plays
                     mediaPlayer.start();
                 }
 
                 imageView.startAnimation(rotateAnimation);
 
-                float cx = v.getX() + imageView.getWidth() / 2; // Центр окружности по оси X
-                float cy = v.getY() + imageView.getHeight() / 2; // Центр окружности по оси Y
-                float radius = imageView.getWidth() / 2; // Радиус окружности
-                for (int i = 0; i < 5; i++) { // Создаем 10 партиклов
-                    float angle = (float) (Math.random() * 2 * Math.PI); // Случайный угол в радианах
-                    float vx = (float) (Math.cos(angle) * 500); // Скорость по оси X в зависимости от угла
-                    float vy = (float) (Math.sin(angle) * 500); // Скорость по оси Y в зависимости от угла
-                    float ax = (float) (Math.random() * 360); // Случайный угол поворота вокруг оси X
-                    float ay = (float) (Math.random() * 360); // Случайный угол поворота вокруг оси Y
-                    float sx = (float) (Math.random() * 0.5 + 1); // Случайный масштаб по оси X
-                    float sy = (float) (Math.random() * 0.5 + 1); // Случайный масштаб по оси Y
-                    float x = cx + (float) (Math.cos(angle) * radius); // Координата X в зависимости от угла и радиуса
-                    float y = cy + (float) (Math.sin(angle) * radius); // Координата Y в зависимости от угла и радиуса
-                    createParticles(x, y, vx, vy, ax, ay, sx, sy); // Создаем партикл
+                float cx = v.getX() + imageView.getWidth() / 2; // Round's center on X axis
+                float cy = v.getY() + imageView.getHeight() / 2; // Round's center on Y axis
+                float radius = imageView.getWidth() / 2; // Round's radius
+                for (int i = 0; i < 5; i++) { // Creates 5 particles
+                    float angle = (float) (Math.random() * 2 * Math.PI); // Random angle in radians
+                    float vx = (float) (Math.cos(angle) * 500); // Velocity on X depending on the angle
+                    float vy = (float) (Math.sin(angle) * 500); // Velocity on Y depending on the angle
+                    float ax = (float) (Math.random() * 360); // Random rotation angle around X axis
+                    float ay = (float) (Math.random() * 360); // Random rotation angle around Y axis
+                    float sx = (float) (Math.random() * 0.5 + 1); // Random volume on X axis
+                    float sy = (float) (Math.random() * 0.5 + 1); // Random volume on Y axis
+                    float x = cx + (float) (Math.cos(angle) * radius); // X coordination depending on angle and radius
+                    float y = cy + (float) (Math.sin(angle) * radius); // Y coordination depending on angle and radius
+                    createParticles(x, y, vx, vy, ax, ay, sx, sy); // creates particles
                 }
 
 
@@ -288,7 +288,7 @@ public class ClickActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    // Отображаем количество кликов на экране
+                                    // Shows the amount of clicks on the screen
                                     setImageAndClicksText();
                                 }
                             });
@@ -307,7 +307,7 @@ public class ClickActivity extends AppCompatActivity {
         ViewGroup rootContainer = findViewById(android.R.id.content);
         rootContainer.addView(particleImageView);
 
-        Matrix matrix = new Matrix();
+        Matrix matrix = new Matrix(); //transformation matrix for rotation
         matrix.postTranslate(vx, vy);
         matrix.postRotate(ax, sx, sy);
         matrix.postRotate(ay, sx, sy);
@@ -337,7 +337,7 @@ public class ClickActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                particleImageView.setVisibility(View.INVISIBLE);
+                particleImageView.setVisibility(View.INVISIBLE); //goes invisible after some time
             }
 
             @Override
@@ -358,7 +358,7 @@ public class ClickActivity extends AppCompatActivity {
         String clicksText = String.valueOf(clicksCount);
 
         if (binding.catSwitch.isChecked()) {
-            // Изменяем изображение на cat.xml, cat2.xml, cat3.xml и т.д. в зависимости от количества кликов
+            // Changes the cat to dogs depending on amount of clicks
             if (clicksCount >= 3000) {
                 imageView.setImageResource(R.drawable.cat6);
                 if (clicksCount == 3000 && !isReached[4]) {
@@ -400,7 +400,7 @@ public class ClickActivity extends AppCompatActivity {
 
             binding.headerTit2.setText("Нажми на кошку!");
         } else {
-            // Изменяем изображение в зависимости от количества кликов
+            // Changes dogs depending on amount of clicks
             if (clicksCount >= 3000) {
                 imageView.setImageResource(R.drawable.img_resize6);
                 if (clicksCount == 3000 && !isReached[4]) {
@@ -443,7 +443,7 @@ public class ClickActivity extends AppCompatActivity {
             binding.headerTit2.setText("Нажми на собаку!");
         }
 
-        // Отображаем количество кликов на экране
+        // Shows the clicks amount on the screen
         TextView clicksTextView = findViewById(R.id.clicks_text_view);
         clicksTextView.setText(clicksText);
     }

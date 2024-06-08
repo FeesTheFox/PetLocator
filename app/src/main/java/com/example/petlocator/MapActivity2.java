@@ -116,20 +116,20 @@ public class MapActivity2 extends AppCompatActivity {
         // Initialize pets list
         pets = new ArrayList<>();
         petMarkers = new ArrayList<>();
-        petPolylines = new ArrayList<>();
+        petPolylines = new ArrayList<>(); //initialization of the trail lines that pets are leaving behind
 
         // Load pets data
         loadPetsData();
 
-        createMapView(); //initializes map
+        createMapView(); //initializes map and creates map based on fragment
 
         mediaPlayer = MediaPlayer.create(this,R.raw.menu_music); //creates music
         mediaPlayer.setLooping(true); //sets music on the loop
 
 
-        mediaPlayer1 = MediaPlayer.create(this, R.raw.click);
+        mediaPlayer1 = MediaPlayer.create(this, R.raw.click); //  creates music player for a clicking sound
 
-        musicSwitch = findViewById(R.id.musicSwitch);
+        musicSwitch = findViewById(R.id.musicSwitch); //musicSwitch that turns music on and off
 
         binding.trailSwitch.setChecked(true);
 
@@ -154,6 +154,7 @@ public class MapActivity2 extends AppCompatActivity {
         });
 
 
+        //turn on and off trail lines
         binding.trailSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -177,7 +178,7 @@ public class MapActivity2 extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.menu_profile) {
+        if (id == R.id.menu_profile) { //transfers info about user into the UserActivity
             mediaPlayer1.start();
             // Handle click on "Profile" menu item
             Intent intent = getIntent();
@@ -198,7 +199,7 @@ public class MapActivity2 extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.howto){
+        if (id == R.id.howto){ //instructions activity
             mediaPlayer1.start();
             Intent intent = new Intent(MapActivity2.this, HowToActivity.class);
             startActivity(intent);
@@ -206,7 +207,7 @@ public class MapActivity2 extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.menu_info) {
+        if (id == R.id.menu_info) { //about author activity
             mediaPlayer1.start();
             // Handle click on "Info" menu item
             Intent intent = new Intent(MapActivity2.this, InfoActivity.class);
@@ -215,7 +216,7 @@ public class MapActivity2 extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.update){
+        if (id == R.id.update){ //refreshes the activity (basically recreates it)
             mediaPlayer1.start();
             recreate();
             return true;
@@ -257,8 +258,8 @@ public class MapActivity2 extends AppCompatActivity {
                 public void onMapReady(GoogleMap googleMap) {
                     mMap = googleMap;
 
-                    requestLocationPermission();
-                    getDeviceLocation();
+                    requestLocationPermission(); //requests geolocation
+                    getDeviceLocation(); //gets users geolocation
 
                     // Add a listener for map clicks
                     mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -380,13 +381,13 @@ public class MapActivity2 extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                Geocoder geocoder = new Geocoder(MapActivity2.this, Locale.getDefault());
+                Geocoder geocoder = new Geocoder(MapActivity2.this, Locale.getDefault()); //getting an instance of Geocoder
                 try {
-                    List<Address> addresses = geocoder.getFromLocation(petLocation.latitude, petLocation.longitude, 1);
+                    List<Address> addresses = geocoder.getFromLocation(petLocation.latitude, petLocation.longitude, 1); //gets pets location (street)
                     if (addresses != null && addresses.size() > 0) {
                         String street = addresses.get(0).getThoroughfare();
                         if (street != null) {
-                            return street;
+                            return street; //return the street address
                         }
                     }
                 } catch (IOException e) {
@@ -411,7 +412,7 @@ public class MapActivity2 extends AppCompatActivity {
 
     private void addPetsAroundUserMarker(LatLng userLocation) {
         petMarkers.clear(); // clears the markers list
-        petPolylines.clear();
+        petPolylines.clear(); // clears the trails
 
         // adds markers into petMarkers list
         for (Pet pet : pets) {
@@ -426,7 +427,7 @@ public class MapActivity2 extends AppCompatActivity {
                 MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(newLatitude, newLongitude));
 
                 int color = Color.argb(255, (int) (Math.random() * 256), (int) (Math.random() * 256), (int) (Math.random() * 256));
-                pet.setColor(color);
+                pet.setColor(color); //random colour for the trail
 
                 // Create a custom marker icon with pet's name and image
                 int index = pets.indexOf(pet);
@@ -443,7 +444,7 @@ public class MapActivity2 extends AppCompatActivity {
                 pet.setPreviousLongitude(newLongitude);
 
 
-                PolylineOptions polylineOptions = new PolylineOptions()
+                PolylineOptions polylineOptions = new PolylineOptions() //creates the trail
                         .add(new LatLng(pet.getPreviousLatitude(), pet.getPreviousLongitude()), new LatLng(newLatitude, newLongitude))
                         .width(5)
                         .color(pet.getColor());
@@ -492,7 +493,7 @@ public class MapActivity2 extends AppCompatActivity {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
                                 float animatedFraction = animation.getAnimatedFraction();
-                                LatLng newPosition = SphericalUtil.interpolate(petMarker.getPosition(), petLocation, animatedFraction);
+                                LatLng newPosition = SphericalUtil.interpolate(petMarker.getPosition(), petLocation, animatedFraction); //smooth animation
                                 petMarker.setPosition(newPosition);
                             }
                         });
@@ -548,7 +549,7 @@ public class MapActivity2 extends AppCompatActivity {
                 if (userDataSnapshot.exists()) {
                     User user = userDataSnapshot.getValue(User.class);
 
-                    if (userDataSnapshot.hasChild("pets")) {
+                    if (userDataSnapshot.hasChild("pets")) { //if User has node pets
                         DataSnapshot petsSnapshot = userDataSnapshot.child("pets");
                         for (DataSnapshot petSnapshot : petsSnapshot.getChildren()) {
                             Pet pet = petSnapshot.getValue(Pet.class);
@@ -590,7 +591,7 @@ public class MapActivity2 extends AppCompatActivity {
         });
     }
 
-    //Geo location
+    //requests Geo location
     private void requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -601,6 +602,7 @@ public class MapActivity2 extends AppCompatActivity {
             enableMyLocation();
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -663,24 +665,25 @@ public class MapActivity2 extends AppCompatActivity {
     }
 
 
+    //adds pets to the bottom panel
     private void addPetsToContainer() {
         LinearLayout petsContainer = findViewById(R.id.pets_container);
         petsContainer.removeAllViews(); // Clear the container
 
-        for (int i = 0; i < pets.size(); i++) {
+        for (int i = 0; i < pets.size(); i++) { //sets pets inside the bottom panel
             Pet pet = pets.get(i);
 
             PetView petView = new PetView(this);
             petView.setPet(pet);
             Glide.with(this)
                     .load(pet.getImageResource())
-                    .transform(new RoundedCornersTransformation(16))
+                    .transform(new RoundedCornersTransformation(16)) // rounds corners
                     .apply(new RequestOptions().override(200, 200))
                     .into(petView);
             petsContainer.addView(petView);
 
 
-            petView.setOnTouchListener(new View.OnTouchListener() {
+            petView.setOnTouchListener(new View.OnTouchListener() { //if touches goes half transparent for a onHover animation
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
@@ -698,7 +701,7 @@ public class MapActivity2 extends AppCompatActivity {
                 }
             });
 
-            // Add an onClick listener for the pet view
+            //if clicked - moves camera to the clicked pet and makes trail's stroke wider
             petView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -719,7 +722,7 @@ public class MapActivity2 extends AppCompatActivity {
                 }
             });
 
-            petView.setOnLongClickListener(new View.OnLongClickListener() {
+            petView.setOnLongClickListener(new View.OnLongClickListener() { //if pressed long - shows up a popup message with the pet's name
                 @Override
                 public boolean onLongClick(View v) {
                     mediaPlayer1.start();

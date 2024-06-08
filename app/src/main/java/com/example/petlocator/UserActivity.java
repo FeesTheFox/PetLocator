@@ -78,6 +78,8 @@ public class UserActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         setContentView(view);
 
+
+        //gets the info the user's profile from MapActivity or MapActivity2
         Intent intent = getIntent();
         if (intent.hasExtra("Name")) {
             binding.name.setText(intent.getStringExtra("Name"));
@@ -101,7 +103,7 @@ public class UserActivity extends AppCompatActivity {
 
         //loads dogList from database for user
         if (currentUserEmail != null &&  !currentUserEmail.isEmpty()) {
-            userRef = FirebaseDatabase.getInstance("https://petlocator-d7771-default-rtdb.firebaseio.com/").getReference("Users");
+            userRef = FirebaseDatabase.getInstance("https://petlocator-d7771-default-rtdb.firebaseio.com/").getReference("Users"); //Users list
 
             currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

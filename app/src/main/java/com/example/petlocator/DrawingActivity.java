@@ -133,9 +133,9 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                     }
                 } else if (drawingMode == DRAWING_MODE_EYEDROPPER) { //EYEDROPPER
                     if (event.getAction() == MotionEvent.ACTION_UP) {
-                        // Взять цвет пикселя по координатам нажатия
+                        // Takes pixel's color by clicking
                         int color = bitmap.getPixel((int) event.getX(), (int) event.getY());
-                        // Установить его в качестве текущего цвета кисти
+                        // Sets it as the current brush color
                         paintColor = color;
                         drawPaint.setColor(paintColor);
 
@@ -305,7 +305,6 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 ImageSaver.saveImage(DrawingActivity.this, bitmap, fileName, new ImageSaver.OnImageSavedListener() {
                     @Override
                     public void onImageSaved(Uri imageUri) {
-                        // Выводим сообщение об успешном сохранении
                         Toast.makeText(DrawingActivity.this, "Рисунок сохранен", Toast.LENGTH_SHORT).show();
 
 
@@ -472,7 +471,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         drawPaint.setAlpha(currentBrushOpacity);
         imageView.invalidate();
 
-        // Вызываем метод для изменения цвета кисти и обновления цвета фона View для индикатора цвета
+        // Calls method for changing brushes colour and updates View's background for colour Indicator
         changeBrushColor(color);
     }
 

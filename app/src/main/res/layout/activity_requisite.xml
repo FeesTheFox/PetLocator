@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="17sp"
-            android:text="Поддержите меня на бусти! : "
+            android:text="Мой гитхаб! : "
             android:layout_marginLeft="25dp"/>
         <TextView
             android:id="@+id/boosty"
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:text="Boosty"
+            android:text="FeesTheFox"
             android:textSize="17sp"/>
     </LinearLayout>
 

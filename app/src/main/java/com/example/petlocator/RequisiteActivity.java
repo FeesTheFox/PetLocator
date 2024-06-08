@@ -32,7 +32,7 @@ public class RequisiteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mediaPlayer.start();
-                String url = "https://boosty.to/feesthefox";
+                String url = "https://github.com/FeesTheFox";
                 webView.loadUrl(url);
                 webView.setVisibility(View.VISIBLE);
             }
