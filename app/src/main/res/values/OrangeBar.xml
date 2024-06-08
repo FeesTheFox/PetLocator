@@ -7,6 +7,8 @@
         <item name="android:windowBackground">@color/yellow</item>
         <item name="android:statusBarColor">@color/brown</item>
         <item name="android:navigationBarColor">@color/brown</item>
+
+        <item name="android:actionBarItemBackground">@drawable/actionbar_button</item>
     </style>
 
 </resources>
