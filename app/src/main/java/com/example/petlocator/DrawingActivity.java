@@ -280,6 +280,8 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 bitmap = Bitmap.createBitmap(imageView.getWidth(), imageView.getHeight(), Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(bitmap);
 
+                canvas.drawColor(Color.WHITE);
+
                 // Update the image view to display the new bitmap
                 imageView.setImageBitmap(bitmap);
             }
