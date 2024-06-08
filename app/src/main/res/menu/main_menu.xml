@@ -6,20 +6,21 @@
         android:id="@+id/menu_profile"
         android:title="Профиль"
         android:icon="@drawable/profile_icon"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
 
     <item
         android:id="@+id/menu_info"
         android:title="Об авторе"
         android:icon="@drawable/info"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 
     <item
         android:id="@+id/howto"
         android:title="Инструкция"
         android:icon="@drawable/info"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/update"

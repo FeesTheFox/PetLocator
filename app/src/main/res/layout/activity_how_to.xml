@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Приложение PetLocator создано для отслеживания питомцев по карте, а также были добавлены мини-игры и советы по уходу за питомцами"
+            android:text="Приложение PetLocator создано для отслеживания питомцев по карте, развлечения в мини-играх, и изучении различных советов по уходу за питомцами"
             android:textAlignment="center"
             android:textSize="20dp"
             android:textColor="@color/black"/>
@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Чтобы начать пользоваться приложением - cоздайте питомца, обновите карту и установите маркер на ней маркер"
+            android:text="Чтобы начать пользоваться приложением - cоздайте питомца, обновите карту и установите на ней маркер"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20dp">
