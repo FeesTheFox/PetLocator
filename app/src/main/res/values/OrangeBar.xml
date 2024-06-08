@@ -8,7 +8,7 @@
         <item name="android:statusBarColor">@color/brown</item>
         <item name="android:navigationBarColor">@color/brown</item>
 
-        <item name="android:actionBarItemBackground">@drawable/actionbar_button</item>
+        <item name="android:actionBarItemBackground">@drawable/actionbar_button_selector</item>
     </style>
 
 </resources>
