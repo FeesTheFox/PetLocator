@@ -34,6 +34,8 @@
             android:src="@drawable/profile"/>
         <TextView
             android:id="@+id/name"
+            android:background="@drawable/list_item_view_pressed"
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
@@ -41,10 +43,13 @@
             android:shadowColor="@color/cyan"
             android:textColor="@color/black"/>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/line2"
+        android:background="@drawable/list_item_view_pressed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/line1"
         android:orientation="horizontal">
@@ -53,6 +58,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="17sp"
+            android:padding="6dp"
             android:text="Почта: "
             android:layout_marginLeft="25dp"/>
         <TextView
@@ -60,16 +66,19 @@
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="6dp"
             android:text=""
             android:textSize="17sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/line3"
+        android:background="@drawable/list_item_view_pressed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:layout_below="@+id/line2"
+        android:layout_marginLeft="15dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
@@ -77,11 +86,13 @@
             android:textColor="@color/black"
             android:textSize="17sp"
             android:text="Номер телефона: "
+            android:padding="6dp"
             android:layout_marginLeft="25dp"/>
         <TextView
             android:id="@+id/phone"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
+            android:padding="6dp"
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="17sp"/>
