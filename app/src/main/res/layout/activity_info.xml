@@ -40,13 +40,38 @@
             android:id="@+id/infoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Казаков Николай Андреевич, ИКБО-13-22 "
+            android:text="Казаков Николай Андреевич, ИКБО-13-22"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="30dp"
             android:layout_weight="1">
         </TextView>
+
+        <TextView
+            android:id="@+id/infoText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Год создания приложения: 2024"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_weight="1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/infoText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Почта: feesblock@gmail.com"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_weight="1">
+        </TextView>
+
 
 
         <ImageView
