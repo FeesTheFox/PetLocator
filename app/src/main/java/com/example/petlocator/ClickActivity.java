@@ -451,13 +451,12 @@ public class ClickActivity extends AppCompatActivity {
     private void showSnackbar(String message) {
         Snackbar snackbar = Snackbar.make(imageView, message, Snackbar.LENGTH_LONG);
 
-        Typeface typeface = ResourcesCompat.getFont(ClickActivity.this,R.font.kdwilliam);
+        Typeface typeface = ResourcesCompat.getFont(ClickActivity.this,R.font.kdwilliam); //customizing the font inside the snackbar
         @SuppressLint("RestrictedApi") Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
         TextView textView = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
         textView.setTypeface(typeface);
-        snackbar.setBackgroundTint(Color.parseColor("#8B4513"));
-
-        snackbar.setTextColor(Color.parseColor("#F0E68C"));
+        snackbar.setBackgroundTint(Color.parseColor("#8B4513")); //customizing snackbar background
+        snackbar.setTextColor(Color.parseColor("#F0E68C")); //customizing text colour
 
         snackbar.show();
     }

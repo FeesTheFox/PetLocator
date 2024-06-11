@@ -70,17 +70,20 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         mediaPlayer = MediaPlayer.create(this, R.raw.click);
 
 
+
+        //Creating colour indicator
         colorIndicator = new View(this);
 
         colorIndicator.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
 
         colorIndicator.setBackgroundColor(paintColor);
 
+
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) colorIndicator.getLayoutParams();
         layoutParams.setMargins(0, 15, 0, 0);
         colorIndicator.setLayoutParams(layoutParams);
 
-        binding.drawingLayout.addView(colorIndicator);
+        binding.drawingLayout.addView(colorIndicator); // colour indicator under the buttons panel that shows current colour
 
         // Set up touch events for drawing
         imageView.setOnTouchListener(new View.OnTouchListener() {
@@ -141,7 +144,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
 
                         colorIndicator.setBackgroundColor(paintColor);
                     }
-                } else if (drawingMode == DRAWING_MODE_ERASER) {
+                } else if (drawingMode == DRAWING_MODE_ERASER) {  //ERASER
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             isDrawing = true;
@@ -190,21 +193,21 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
         });
 
 
-        binding.brushes.setOnClickListener(new View.OnClickListener() {
+        binding.brushes.setOnClickListener(new View.OnClickListener() { // opens change brush dialog
             @Override
             public void onClick(View v) {
                 showChangeBrushDialog();
             }
         });
 
-        binding.brushSize.setOnClickListener(new View.OnClickListener() {
+        binding.brushSize.setOnClickListener(new View.OnClickListener() { // opens stroke changer and opacity changer window
             @Override
             public void onClick(View v) {
                 showBrushSizeDialog();//dialog for choosing stroke width
             }
         });
 
-        binding.btnColorPicker.setOnClickListener(new View.OnClickListener() {
+        binding.btnColorPicker.setOnClickListener(new View.OnClickListener() { // opens color picker window
             @Override
             public void onClick(View v) {
                 showColorPickerDialog();
@@ -235,6 +238,7 @@ public class DrawingActivity extends AppCompatActivity implements ColorPickerDia
                 drawPaint.setStrokeCap(Paint.Cap.ROUND);
                 drawPaint.setStrokeWidth(20);
 
+                // Create a Paint for the eraser
                 erasePaint = new Paint();
                 erasePaint.setStyle(Paint.Style.STROKE);
                 erasePaint.setStrokeJoin(Paint.Join.ROUND);
